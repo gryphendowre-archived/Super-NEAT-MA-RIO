@@ -1,17 +1,42 @@
+package com.superneatmario;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import com.anji.neat.Evolver;
+import com.anji.util.Properties;
 import com.mojang.mario.MarioComponent;
 
 
 
 public class HelloWorld {
 
+	private static final String XOR_PROPS = "xor.properties";
+	
     public static void main(String[] args) {
         System.out.println("Hello, World");
-        jumpStartMario();
+        //jumpStartMario();
+        //jumpStartAnji();
+    }
+    
+    /**
+     * This method "jumpstarts" Anji with Xor.Properties file in its Property Folder.
+     */
+    public static void jumpStartAnji()
+    {
+    	try
+    	{
+    		Properties props = new Properties(XOR_PROPS);
+        	Evolver evolve = new Evolver();
+        	evolve.init(props);
+        	evolve.run();
+    	}
+    	catch(Exception e)
+    	{
+    		System.out.println("Error is: " + e);
+    	}
+    	
     }
     
     /**

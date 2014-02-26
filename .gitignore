@@ -1,5 +1,7 @@
-# Ignoring objects from the output folders (bin files)
+# Ignoring objects from the output folders 
 bin/
+db/
+nevt/
 
 # Ignoring Eclipse elements
 .classpath
