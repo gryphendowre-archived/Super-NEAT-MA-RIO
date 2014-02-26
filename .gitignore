@@ -1,0 +1,6 @@
+# Ignoring objects from the output folders (bin files)
+bin/
+
+# Ignoring Eclipse elements
+.classpath
+.project
