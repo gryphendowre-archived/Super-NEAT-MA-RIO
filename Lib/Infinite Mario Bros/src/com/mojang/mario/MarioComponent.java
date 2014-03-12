@@ -11,6 +11,7 @@ import java.util.Random;
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.*;
 
+import com.mojang.mario.level.LevelGenerator;
 import com.mojang.mario.sprites.*;
 import com.mojang.sonar.FakeSoundEngine;
 import com.mojang.sonar.SonarSoundEngine;
@@ -119,10 +120,10 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
         //      scene = new LevelScene(graphicsConfiguration);
         mapScene = new MapScene(graphicsConfiguration, this, new Random().nextLong());
         scene = mapScene;
-        scene.setSound(sound);
+        //scene.setSound(sound);
 
-        Art.init(graphicsConfiguration, sound);
-
+        Art.init(graphicsConfiguration, null);
+        Art.stopMusic();
         VolatileImage image = createVolatileImage(320, 240);
         Graphics g = getGraphics();
         Graphics og = image.getGraphics();
@@ -144,8 +145,15 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
 
         boolean naiveTiming = true;
 
-        toTitle();
-
+        //Jumps right into a randomized level
+        startGame();
+        int type = LevelGenerator.TYPE_OVERGROUND;
+        int difficulty = 2;
+        int seed = new Random().nextInt(); 
+        int x1 = new Random().nextInt(); 
+        int y1 = new Random().nextInt();         
+        startLevel(seed * x1 * y1 + x1 * 31871 + y1 * 21871, difficulty, type);
+        
         while (running)
         {
             double lastTime = time;
@@ -313,7 +321,6 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     public void startGame()
     {
         scene = mapScene;
-        mapScene.startMusic();
         mapScene.init();
    }
 }

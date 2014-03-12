@@ -1,12 +1,15 @@
 package com.superneatmario;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
 import com.anji.neat.Evolver;
 import com.anji.util.Properties;
+import com.mojang.mario.Art;
 import com.mojang.mario.MarioComponent;
+import com.mojang.mario.level.LevelGenerator;
 
 
 
@@ -16,8 +19,8 @@ public class HelloWorld {
 	
     public static void main(String[] args) {
         System.out.println("Hello, World");
-        //jumpStartMario();
-        //jumpStartAnji();
+        jumpStartMario();
+        jumpStartAnji();
     }
     
     /**
@@ -44,9 +47,9 @@ public class HelloWorld {
      */
     public static void jumpStartMario()
     {
-    	MarioComponent mario = new MarioComponent(640, 480);
+    	MarioComponent marioComponent = new MarioComponent(640, 480);
         JFrame frame = new JFrame("Mario Test");
-        frame.setContentPane(mario);
+        frame.setContentPane(marioComponent);
         frame.pack();
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,7 +59,9 @@ public class HelloWorld {
         
         frame.setVisible(true);
         
-        mario.start();
+        marioComponent.start();
+        
+        
     }
     
 
