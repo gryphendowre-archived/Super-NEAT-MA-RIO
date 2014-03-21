@@ -19,10 +19,16 @@
  */
 package com.anji.integration;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+
+import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
 import org.jgap.BulkFitnessFunction;
@@ -31,6 +37,9 @@ import org.jgap.Chromosome;
 import com.anji.util.Configurable;
 import com.anji.util.Properties;
 import com.anji.util.Randomizer;
+import com.mojang.mario.LevelScene;
+import com.mojang.mario.MarioComponent;
+import com.mojang.mario.sprites.Mario;
 
 /**
  * Determines fitness based on how close <code>Activator</code> output is to a target.
@@ -124,6 +133,9 @@ protected void setMaxFitnessValue( int aMaxFitnessValue ) {
  * @param genotypes <code>List</code> contains <code>Chromosome</code> objects.
  * @see TargetFitnessFunction#calculateErrorFitness(double[][], double, double)
  */
+
+
+///TODO run mario here? Not sure how to have layer talk to each other when in mid process for evaluation
 final public void evaluate( List genotypes ) {
 	Iterator it = genotypes.iterator();
 	while ( it.hasNext() ) {
@@ -131,7 +143,105 @@ final public void evaluate( List genotypes ) {
 
 		try {
 			Activator activator = activatorFactory.newActivator( genotype );
+			
+			//while mario level is running
+			//For each tick in mario
+			// get sensor data for input from levelscene? make new data fields? 
+			// responses = keypressed for mario
+			System.out.println("Serial ID " + 79318775993206607L); 
+    		MarioComponent marioComponent = new MarioComponent(640, 480,  (79318775993206607L));
+            JFrame frame = new JFrame("Mario Test"+0);
+            frame.setContentPane(marioComponent);
+            frame.pack();
+            frame.setResizable(false);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            frame.setLocation((screenSize.width-frame.getWidth())/2, (screenSize.height-frame.getHeight())/2);
+            
+            frame.setVisible(true);
+            
+            marioComponent.setFocusCycleRoot(true);
+            
+            marioComponent.start();
+            //marioComponent.keyPressed();
+            frame.addKeyListener(marioComponent);
+            frame.addFocusListener(marioComponent);
+            
 
+            try {
+                Thread.sleep(1000);
+            } catch(InterruptedException ex) {
+                //Thread.currentThread().interrupt();
+            	System.out.println("Wat"); 
+            }
+
+            //Continue until ded or win
+            Random rand = new Random();
+            for(int i = 0; ; i ++)
+            {
+            	int keyCode = KeyEvent.VK_RIGHT; 
+
+            	int r = rand.nextInt(6); 
+            	
+            	
+            	/*if (r==0)
+                {
+            		keyCode = KeyEvent.VK_LEFT; 
+                }*/
+                if (r==0 ||r==1)
+                {
+                	keyCode = KeyEvent.VK_RIGHT;
+                }
+                if (r==2)
+                {
+                	keyCode = KeyEvent.VK_DOWN;
+                }
+                if (r==3)
+                {
+                	keyCode = KeyEvent.VK_UP;
+                }
+                if (r==4)
+                {
+                	keyCode = KeyEvent.VK_A;
+                }
+                if (r==5)
+                {
+                	keyCode = KeyEvent.VK_S;
+                }
+                System.out.println("r "  + r +  "  key " + keyCode); 
+            	marioComponent.toggleKey(keyCode, true);
+            	if (r==5)
+            	{
+	            	try {
+	                    Thread.sleep(rand.nextInt(240)+10);
+	                } catch(InterruptedException ex) {
+	                    //Thread.currentThread().interrupt();
+	                	System.out.println("Wat"); 
+	                }
+            	}
+            	else //if (r == 0 || r == 1)
+            	{
+            		try {
+	                    Thread.sleep(250);
+	                } catch(InterruptedException ex) {
+	                    //Thread.currentThread().interrupt();
+	                	System.out.println("Wat"); 
+	                }
+            	}
+            	if (r!=4)
+            		marioComponent.toggleKey(keyCode, false);
+            	
+            	if(marioComponent.scene instanceof LevelScene && (marioComponent.isLossed || marioComponent.isWon))
+            	{
+            		LevelScene curScene = (LevelScene)marioComponent.scene; 
+            		System.out.println("Mario distance = " + curScene.mario.x); 
+            		break;
+            	}
+            }
+            frame.setVisible(false); //you can't see me!
+            frame.dispose(); //Destroy the JFrame object
+			//after death, or win, fitness = distance mario made
 			List idxs = new ArrayList();
 			for ( int i = 0; i < stimuli.length; ++i )
 				idxs.add( new Integer( i ) );

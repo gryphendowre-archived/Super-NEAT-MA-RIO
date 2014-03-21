@@ -7,7 +7,7 @@ public class FrameLauncher
 {
     public static void main(String[] args)
     {
-        MarioComponent mario = new MarioComponent(640, 480);
+        MarioComponent mario = new MarioComponent(640, 480, 2238077255106243788L);
         JFrame frame = new JFrame("Mario Test");
         frame.setContentPane(mario);
         frame.pack();

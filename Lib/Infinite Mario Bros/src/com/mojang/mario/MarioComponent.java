@@ -19,22 +19,32 @@ import com.mojang.sonar.SonarSoundEngine;
 
 public class MarioComponent extends JComponent implements Runnable, KeyListener, FocusListener
 {
-    private static final long serialVersionUID = 739318775993206607L;
+    private static  long serialVersionUID;
     public static final int TICKS_PER_SECOND = 24;
 
     private boolean running = false;
     private int width, height;
     private GraphicsConfiguration graphicsConfiguration;
-    private Scene scene;
+    public Scene scene;
     private SonarSoundEngine sound;
     private boolean focused = false;
     private boolean useScale2x = false;
     private MapScene mapScene;
 
     private Scale2x scale2x = new Scale2x(320, 240);
+    
+    public static int type = LevelGenerator.TYPE_OVERGROUND;
+    public static int difficulty = 1;
+    public static int seed = new Random().nextInt(); 
+    public static int x1 = new Random().nextInt(); 
+    public static int y1 = new Random().nextInt(); 
+    
+    public boolean isLossed = false; 
+    public boolean isWon = false; 
 
-    public MarioComponent(int width, int height)
+    public MarioComponent(int width, int height, long serialUID)
     {
+    	this.serialVersionUID = serialUID; 
         this.setFocusable(true);
         this.setEnabled(true);
         this.width = width;
@@ -58,7 +68,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
         setFocusable(true);
     }
 
-    private void toggleKey(int keyCode, boolean isPressed)
+    public void toggleKey(int keyCode, boolean isPressed)
     {
         if (keyCode == KeyEvent.VK_LEFT)
         {
@@ -100,6 +110,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
 
     public void start()
     {
+    	System.out.println("MarioComponent Start " + running); 
         if (!running)
         {
             running = true;
@@ -146,12 +157,8 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
         boolean naiveTiming = true;
 
         //Jumps right into a randomized level
-        startGame();
-        int type = LevelGenerator.TYPE_OVERGROUND;
-        int difficulty = 2;
-        int seed = new Random().nextInt(); 
-        int x1 = new Random().nextInt(); 
-        int y1 = new Random().nextInt();         
+        //startGame();
+                
         startLevel(seed * x1 * y1 + x1 * 31871 + y1 * 21871, difficulty, type);
         
         while (running)
@@ -266,13 +273,16 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
 
     public void levelFailed()
     {
-        scene = mapScene;
-        mapScene.startMusic();
-        Mario.lives--;
-        if (Mario.lives == 0)
-        {
-            lose();
-        }
+    	isLossed = true;     	
+    	//startLevel(seed * x1 * y1 + x1 * 31871 + y1 * 21871, difficulty, type);
+        //scene = mapScene;
+        //mapScene.startMusic();
+        //Mario.lives--;
+        //if (Mario.lives == 0)
+        //{
+    	//TODO trigger distance when failed
+        //    lose();
+        //}
     }
 
     public void keyTyped(KeyEvent arg0)
@@ -291,9 +301,9 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
 
     public void levelWon()
     {
-        scene = mapScene;
-        mapScene.startMusic();
-        mapScene.levelWon();
+    	isWon = true; 
+    	//startLevel(seed * x1 * y1 + x1 * 31871 + y1 * 21871, difficulty, type);
+    	//TODO get distance for winning 
     }
     
     public void win()
@@ -313,6 +323,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     
     public void lose()
     {
+    	
         scene = new LoseScene(this);
         scene.setSound(sound);
         scene.init();
@@ -323,4 +334,5 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
         scene = mapScene;
         mapScene.init();
    }
+
 }

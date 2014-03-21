@@ -143,7 +143,7 @@ public class LevelScene extends Scene implements SpriteContext
 
         if (xCam < 0) xCam = 0;
         if (xCam > level.width * 16 - 320) xCam = level.width * 16 - 320;
-
+        
         /*      if (recorder != null)
          {
          recorder.addTick(mario.getKeyMask());
@@ -324,14 +324,89 @@ public class LevelScene extends Scene implements SpriteContext
         g.translate(-xCam, -yCam);
         for (Sprite sprite : sprites)
         {
-            if (sprite.layer == 0) sprite.render(g, alpha);
+            if (sprite.layer == 0)
+            { 
+            	sprite.render(g, alpha);   
+            }
+            if(sprite instanceof Enemy || sprite instanceof BulletBill || sprite instanceof Shell || sprite instanceof FlowerEnemy)
+            {
+            	g.setColor(Color.RED);
+            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+            }
+            else if(sprite instanceof Mushroom || sprite instanceof FireFlower)
+            {
+            	g.setColor(Color.BLUE);
+            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+            }
+            else if (sprite instanceof Fireball)
+            {
+            	g.setColor(Color.ORANGE);
+            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+            }
+            
         }
+
+        
+        
         g.translate(xCam, yCam);
 
         layer.setCam(xCam, yCam);
         layer.render(g, tick, paused?0:alpha);
-        layer.renderExit0(g, tick, paused?0:alpha, mario.winTime==0);
+        
+        //Renders lines between mario and items of note
+        for (int x = xCam / 16; x <= (xCam + layer.width) / 16; x++)
+            for (int y = yCam / 16; y <= (yCam + layer.height) / 16; y++)
+            {
+                byte b = level.getBlock(x, y);
 
+                if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_ANIMATED) > 0)
+                {
+                    int animTime = (tick / 3) % 4;
+
+                    if ((b % 16) / 4 == 0 && b / 16 == 1)
+                    {
+                        animTime = (tick / 2 + (x + y) / 8) % 20;
+                        if (animTime > 3) animTime = 0;
+                    }
+                    if ((b % 16) / 4 == 3 && b / 16 == 0)
+                    {
+                        animTime = 2;
+                    }
+                    int yo = 0;
+                    if (x >= 0 && y >= 0 && x < level.width && y < level.height) yo = level.data[x][y];
+                    if (yo > 0) yo = (int) (Math.sin((yo - alpha) / 4.0f * Math.PI) * 8);
+                }
+                
+                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_SPECIAL) > 0)
+                    {
+                        g.setColor(Color.PINK);
+                        //g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2 + 4, 4, 4);
+                        g.drawLine((int)mario.x -xCam, (int)mario.y - yCam, (x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2 + 4);
+                    }
+                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BUMPABLE) > 0)
+                    {
+                        g.setColor(Color.BLUE);
+                        //g.fillRect((x << 4) - xCam + 2, (y << 4) - yCam + 2, 4, 4);
+                        g.drawLine((int)mario.x -xCam, (int)mario.y - yCam, (x << 4) - xCam + 2, (y << 4) - yCam + 2);
+                    }
+                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BREAKABLE) > 0)
+                    {
+                        //g.setColor(Color.GREEN);
+                        //g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
+                    }
+                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_PICKUPABLE) > 0)
+                    {
+                        g.setColor(Color.YELLOW);
+                    	g.drawLine((int)mario.x -xCam, (int)mario.y - yCam, ((x << 4) - xCam + 2), ((y << 4) - yCam + 2 + 4));
+                    }
+                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_ANIMATED) > 0)
+                    {
+                    }
+                }
+        
+        
+        layer.renderExit0(g, tick, paused?0:alpha, mario.winTime==0);
+        
         g.translate(-xCam, -yCam);
         for (Sprite sprite : sprites)
         {
@@ -500,6 +575,7 @@ public class LevelScene extends Scene implements SpriteContext
             }
             else
             {
+            	System.out.println("Tile bumpable at " + x + "  " + y); 
                 Mario.getCoin();
                 sound.play(Art.samples[Art.SAMPLE_GET_COIN], new FixedSoundSource(x * 16 + 8, y * 16 + 8), 1, 1, 1);
                 addSprite(new CoinAnim(x, y));
@@ -529,6 +605,7 @@ public class LevelScene extends Scene implements SpriteContext
         byte block = level.getBlock(x, y);
         if (((Level.TILE_BEHAVIORS[block & 0xff]) & Level.BIT_PICKUPABLE) > 0)
         {
+        	System.out.println("Pickup at " + x + "  " + y); 
             Mario.getCoin();
             sound.play(Art.samples[Art.SAMPLE_GET_COIN], new FixedSoundSource(x * 16 + 8, y * 16 + 8), 1, 1, 1);
             level.setBlock(x, y, (byte) 0);
