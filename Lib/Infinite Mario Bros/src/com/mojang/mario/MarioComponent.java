@@ -34,7 +34,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     private Scale2x scale2x = new Scale2x(320, 240);
     
     public static int type = LevelGenerator.TYPE_OVERGROUND;
-    public static int difficulty = 1;
+    public static int difficulty = 3;
     public static int seed = new Random().nextInt(); 
     public static int x1 = new Random().nextInt(); 
     public static int y1 = new Random().nextInt(); 
@@ -273,6 +273,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
 
     public void levelFailed()
     {
+    	//System.out.println("Lossed"); 
     	isLossed = true;     	
     	//startLevel(seed * x1 * y1 + x1 * 31871 + y1 * 21871, difficulty, type);
         //scene = mapScene;
@@ -300,7 +301,8 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     }
 
     public void levelWon()
-    {
+    {    	
+    	//System.out.println("Won"); 
     	isWon = true; 
     	//startLevel(seed * x1 * y1 + x1 * 31871 + y1 * 21871, difficulty, type);
     	//TODO get distance for winning 

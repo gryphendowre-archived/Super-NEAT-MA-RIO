@@ -412,4 +412,12 @@ public class Enemy extends Sprite
             }
         }
     }
+    public int getType()
+    {
+    	return this.type; 
+    }
+    public int isWinged()
+    {
+    	return this.winged?1:0; 
+    }
 }

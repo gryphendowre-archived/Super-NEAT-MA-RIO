@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.io.*;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -41,7 +42,10 @@ public class LevelScene extends Scene implements SpriteContext
     private MarioComponent renderer;
     private int levelType;
     private int levelDifficulty;
-
+    
+    
+    public List<BigDecimal> distToRedKoopa;
+    
     public LevelScene(GraphicsConfiguration graphicsConfiguration, MarioComponent renderer, long seed, int levelDifficulty, int type)
     {
         this.graphicsConfiguration = graphicsConfiguration;
@@ -69,6 +73,7 @@ public class LevelScene extends Scene implements SpriteContext
          else
          {*/
 //        level = LevelGenerator.createLevel(320, 15, levelSeed);
+        
         level = LevelGenerator.createLevel(320, 15, levelSeed, levelDifficulty, levelType);
         //        }
 
@@ -84,7 +89,7 @@ public class LevelScene extends Scene implements SpriteContext
         else if (levelType==LevelGenerator.TYPE_CASTLE)
             Art.startMusic(3);
         
-
+        distToRedKoopa = new ArrayList<BigDecimal>(); 
         paused = false;
         Sprite.spriteContext = this;
         sprites.clear();
@@ -304,6 +309,9 @@ public class LevelScene extends Scene implements SpriteContext
 
     public void render(Graphics g, float alpha)
     {
+    	//clear out all stimuli 
+    	distToRedKoopa.clear();
+    	
         int xCam = (int) (mario.xOld + (mario.x - mario.xOld) * alpha) - 160;
         int yCam = (int) (mario.yOld + (mario.y - mario.yOld) * alpha) - 120;
         //int xCam = (int) (xCamO + (this.xCam - xCamO) * alpha);
@@ -332,11 +340,81 @@ public class LevelScene extends Scene implements SpriteContext
             {
             	g.setColor(Color.RED);
             	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+            	
+            	
+            	
+            	if(sprite instanceof Enemy)
+            	{
+            		Enemy s = (Enemy)sprite; 
+            		if(s.getType() == Enemy.ENEMY_GREEN_KOOPA || s.getType() == Enemy.ENEMY_RED_KOOPA)
+            		{
+            			if(s.getType() == Enemy.ENEMY_RED_KOOPA)
+            			{
+            				double dist = Math.pow(Math.pow((mario.x-sprite.x),2) + Math.pow(mario.y - sprite.y, 2), 0.5); 
+                        	distToRedKoopa.add(new BigDecimal(dist));
+            			}
+            			
+            			//top
+                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
+                    	//bottom
+                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+            			//left
+                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+                    	//right
+                    	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+            		}
+            		else
+            		{
+            			//top
+                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
+                    	//bottom
+                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+            			//left side
+                    	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+                    	//right
+                    	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+            		}
+            		
+            	}
+            	
+            	else if(sprite instanceof FlowerEnemy)
+            	{
+            		FlowerEnemy s = (FlowerEnemy)sprite; 
+            		
+            		//top
+                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
+                	//bottom
+                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+        			//left
+                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+                	//right
+                	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+            	}
+            	else
+            	{
+            		//top
+                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
+                	//bottom
+                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+        			//left side
+                	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+                	//right
+                	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+            	}
+            	
             }
             else if(sprite instanceof Mushroom || sprite instanceof FireFlower)
             {
-            	g.setColor(Color.BLUE);
+            	g.setColor(Color.GREEN);
             	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+            	//top
+            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
+            	//bottom
+            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+    			//left side
+            	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+            	//right
+            	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
             }
             else if (sprite instanceof Fireball)
             {
@@ -353,8 +431,11 @@ public class LevelScene extends Scene implements SpriteContext
         layer.setCam(xCam, yCam);
         layer.render(g, tick, paused?0:alpha);
         
+        boolean colYBoxExist; 
         //Renders lines between mario and items of note
         for (int x = xCam / 16; x <= (xCam + layer.width) / 16; x++)
+        {
+        	colYBoxExist = false; 
             for (int y = yCam / 16; y <= (yCam + layer.height) / 16; y++)
             {
                 byte b = level.getBlock(x, y);
@@ -402,7 +483,24 @@ public class LevelScene extends Scene implements SpriteContext
                     if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_ANIMATED) > 0)
                     {
                     }
+                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BLOCK_ALL) > 0)
+                	{
+                        colYBoxExist = true; 
+                	}
+                    if( y > (yCam +layer.height/1.1) / 16)
+                    {                    	
+                    	if(!colYBoxExist)
+                    	{
+                    		g.setColor(Color.BLACK);
+	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
+	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
+	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 2, 16);
+	                        g.fillRect((x << 4) - xCam + 14, (y << 4) - yCam, 2, 16);  
+	                        
+                    	}
+                    }
                 }
+        }
         
         
         layer.renderExit0(g, tick, paused?0:alpha, mario.winTime==0);

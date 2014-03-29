@@ -22,6 +22,7 @@ package com.anji.integration;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -40,6 +41,7 @@ import com.anji.util.Randomizer;
 import com.mojang.mario.LevelScene;
 import com.mojang.mario.MarioComponent;
 import com.mojang.mario.sprites.Mario;
+import com.superneatmario.SimANJI;
 
 /**
  * Determines fitness based on how close <code>Activator</code> output is to a target.
@@ -142,135 +144,25 @@ final public void evaluate( List genotypes ) {
 		Chromosome genotype = (Chromosome) it.next();
 
 		try {
-			Activator activator = activatorFactory.newActivator( genotype );
-			
-			//while mario level is running
-			//For each tick in mario
-			// get sensor data for input from levelscene? make new data fields? 
-			// responses = keypressed for mario
-			System.out.println("Serial ID " + 79318775993206607L); 
-    		MarioComponent marioComponent = new MarioComponent(640, 480,  (79318775993206607L));
-            JFrame frame = new JFrame("Mario Test"+0);
-            frame.setContentPane(marioComponent);
-            frame.pack();
-            frame.setResizable(false);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            frame.setLocation((screenSize.width-frame.getWidth())/2, (screenSize.height-frame.getHeight())/2);
-            
-            frame.setVisible(true);
-            
-            marioComponent.setFocusCycleRoot(true);
-            
-            marioComponent.start();
-            //marioComponent.keyPressed();
-            frame.addKeyListener(marioComponent);
-            frame.addFocusListener(marioComponent);
-            
-
-            try {
-                Thread.sleep(1000);
-            } catch(InterruptedException ex) {
-                //Thread.currentThread().interrupt();
-            	System.out.println("Wat"); 
-            }
-
-            //Continue until ded or win
-            Random rand = new Random();
-            for(int i = 0; ; i ++)
-            {
-            	int keyCode = KeyEvent.VK_RIGHT; 
-
-            	int r = rand.nextInt(6); 
-            	
-            	
-            	/*if (r==0)
-                {
-            		keyCode = KeyEvent.VK_LEFT; 
-                }*/
-                if (r==0 ||r==1)
-                {
-                	keyCode = KeyEvent.VK_RIGHT;
-                }
-                if (r==2)
-                {
-                	keyCode = KeyEvent.VK_DOWN;
-                }
-                if (r==3)
-                {
-                	keyCode = KeyEvent.VK_UP;
-                }
-                if (r==4)
-                {
-                	keyCode = KeyEvent.VK_A;
-                }
-                if (r==5)
-                {
-                	keyCode = KeyEvent.VK_S;
-                }
-                System.out.println("r "  + r +  "  key " + keyCode); 
-            	marioComponent.toggleKey(keyCode, true);
-            	if (r==5)
-            	{
-	            	try {
-	                    Thread.sleep(rand.nextInt(240)+10);
-	                } catch(InterruptedException ex) {
-	                    //Thread.currentThread().interrupt();
-	                	System.out.println("Wat"); 
-	                }
-            	}
-            	else //if (r == 0 || r == 1)
-            	{
-            		try {
-	                    Thread.sleep(250);
-	                } catch(InterruptedException ex) {
-	                    //Thread.currentThread().interrupt();
-	                	System.out.println("Wat"); 
-	                }
-            	}
-            	if (r!=4)
-            		marioComponent.toggleKey(keyCode, false);
-            	
-            	if(marioComponent.scene instanceof LevelScene && (marioComponent.isLossed || marioComponent.isWon))
-            	{
-            		LevelScene curScene = (LevelScene)marioComponent.scene; 
-            		System.out.println("Mario distance = " + curScene.mario.x); 
-            		break;
-            	}
-            }
-            frame.setVisible(false); //you can't see me!
-            frame.dispose(); //Destroy the JFrame object
-			//after death, or win, fitness = distance mario made
-			List idxs = new ArrayList();
-			for ( int i = 0; i < stimuli.length; ++i )
-				idxs.add( new Integer( i ) );
-			Collections.shuffle( idxs, randomizer.getRand() );
-
-			Iterator iter = idxs.iterator();
-
-			double[][] shuffledStimuli = new double[ stimuli.length ][ stimuli[ 0 ].length ];
-
-			int k = 0;
-			while ( iter.hasNext() ) {
-				Integer idx = (Integer) iter.next();
-				int i = idx.intValue();
-				for ( int j = 0; j < stimuli[ 0 ].length; j++ )
-					shuffledStimuli[ k ][ j ] = stimuli[ i ][ j ];
-				k++;
+			Activator activator = activatorFactory.newActivator( genotype ); 
+			SimANJI sa = new SimANJI(activator); 
+			sa.run();
+			/*boolean isDoneWithSim = true; //sa.run();
+			double [] halfResponse = new double [10]; 
+			for (int i = 0; i < 10 sa.getResponses().length;i++)
+				halfResponse[i] = new Random().nextDouble(); sa.getResponses(); 
+			double [][] responses = null; 
+			if(isDoneWithSim)
+			{
+				activator = sa.getActivator(); 
+				for (int i = 0; i < 10 sa.getResponses().length;i++)
+					responses[i] = halfResponse sa.getResponses(); 
 			}
-
-			double[][] shuffledResponses = activator.next( shuffledStimuli );
-			double[][] responses = new double[ shuffledResponses.length ][ 1 ];
-
-			for ( int i = 0; i < responses.length; ++i ) {
-				Integer idx = (Integer) idxs.get( i );
-				responses[ idx.intValue() ] = shuffledResponses[ i ];
-			}
-
+            //after death, or win, fitness = distance mario made
 			genotype.setFitnessValue( calculateErrorFitness( responses, activator.getMinResponse(),
 					activator.getMaxResponse() )
-					- (int) ( adjustForNetworkSizeFactor * genotype.size() ) );
+					- (int) ( adjustForNetworkSizeFactor * genotype.size() ) );*/
+
 		}
 		catch ( TranscriberException e ) {
 			logger.warn( "transcriber error: " + e.getMessage() );

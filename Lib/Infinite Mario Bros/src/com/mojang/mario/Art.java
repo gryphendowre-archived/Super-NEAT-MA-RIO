@@ -148,6 +148,7 @@ public class Art
     public static void startMusic(int song)
     {
         stopMusic();
+        /*
         if (sequencer != null)
         {
             try
@@ -162,6 +163,7 @@ public class Art
             {
             }
         }
+        */
     }
 
     public static void stopMusic()

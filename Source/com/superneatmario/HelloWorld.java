@@ -18,7 +18,7 @@ import com.mojang.mario.level.LevelGenerator;
 
 public class HelloWorld {
 
-	private static final String MARIO_PROPS = "xor.properties";
+	private static final String MARIO_PROPS = "mario.properties";
 	
     public static void main(String[] args) {
         System.out.println("Hello, World");
