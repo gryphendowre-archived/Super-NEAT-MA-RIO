@@ -98,18 +98,19 @@ public void init( Properties props ) {
 		activatorFactory = (ActivatorTranscriber) props
 				.singletonObjectProperty( ActivatorTranscriber.class );
 
-		stimuli = Properties.loadArrayFromFile( props.getResourceProperty( STIMULI_FILE_NAME_KEY ) );
-		targets = Properties.loadArrayFromFile( props.getResourceProperty( TARGETS_FILE_NAME_KEY ) );
+		//stimuli = Properties.loadArrayFromFile( props.getResourceProperty( STIMULI_FILE_NAME_KEY ) );
+		//targets = Properties.loadArrayFromFile( props.getResourceProperty( TARGETS_FILE_NAME_KEY ) );
+		targets = new double [6][6]; 
 		targetRange = props.getDoubleProperty( TARGETS_RANGE_KEY, 0.0d );
 		adjustForNetworkSizeFactor = props.getFloatProperty( ADJUST_FOR_NETWORK_SIZE_FACTOR_KEY,
 				0.0f );
 
-		if ( stimuli.length == 0 || targets.length == 0 )
+		/*if ( stimuli.length == 0 || targets.length == 0 )
 			throw new IllegalArgumentException( "require at least 1 training set for stimuli ["
 					+ stimuli.length + "] and targets [" + targets.length + "]" );
 		if ( stimuli.length != targets.length )
 			throw new IllegalArgumentException( "# training sets does not match for stimuli ["
-					+ stimuli.length + "] and targets [" + targets.length + "]" );
+					+ stimuli.length + "] and targets [" + targets.length + "]" );*/
 	}
 	catch ( Exception e ) {
 		throw new IllegalArgumentException( "invalid properties: " + e.getClass().toString() + ": "
@@ -121,7 +122,7 @@ public void init( Properties props ) {
  * @param aMaxFitnessValue maximum raw fitness this function will return
  */
 protected void setMaxFitnessValue( int aMaxFitnessValue ) {
-	int minGenes = stimuli[ 0 ].length + targets[ 0 ].length;
+	int minGenes = 2; //stimuli[ 0 ].length + targets[ 0 ].length;
 	maxFitnessValue = aMaxFitnessValue - (int) ( adjustForNetworkSizeFactor * minGenes );
 }
 
@@ -146,23 +147,23 @@ final public void evaluate( List genotypes ) {
 		try {
 			Activator activator = activatorFactory.newActivator( genotype ); 
 			SimANJI sa = new SimANJI(activator); 
-			sa.run();
-			/*boolean isDoneWithSim = true; //sa.run();
-			double [] halfResponse = new double [10]; 
-			for (int i = 0; i < 10 sa.getResponses().length;i++)
-				halfResponse[i] = new Random().nextDouble(); sa.getResponses(); 
+			//sa.run();
+			boolean isDoneWithSim = sa.run();
 			double [][] responses = null; 
+
 			if(isDoneWithSim)
 			{
+				responses = new double [sa.getResponses().length][sa.getResponses().length]; 
 				activator = sa.getActivator(); 
-				for (int i = 0; i < 10 sa.getResponses().length;i++)
-					responses[i] = halfResponse sa.getResponses(); 
-			}
+				for (int i = 0; i <  sa.getResponses().length;i++)
+					responses[i] = sa.getResponses(); 
+			
+		
             //after death, or win, fitness = distance mario made
 			genotype.setFitnessValue( calculateErrorFitness( responses, activator.getMinResponse(),
 					activator.getMaxResponse() )
-					- (int) ( adjustForNetworkSizeFactor * genotype.size() ) );*/
-
+					- (int) ( adjustForNetworkSizeFactor * genotype.size() ) );/**/
+			}
 		}
 		catch ( TranscriberException e ) {
 			logger.warn( "transcriber error: " + e.getMessage() );

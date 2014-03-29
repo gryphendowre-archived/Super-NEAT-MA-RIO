@@ -130,23 +130,7 @@ public class LevelRenderer
                 {
                     
                 	if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BLOCK_ALL) > 0)
-                	{
-                        colYBoxExist = true; 
-                	}
-                    if( y > (yCam +height/1.1) / 16)
-                    {                    	
-                    	if(!colYBoxExist)
-                    	{
-                    		g.setColor(Color.BLACK);
-	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
-	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
-	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 2, 16);
-	                        g.fillRect((x << 4) - xCam + 14, (y << 4) - yCam, 2, 16);  
-                    	}
-                    }
-                    /*
-                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BLOCK_LOWER) > 0)
-                    {
+                	{                      
                         g.setColor(Color.RED);
                         g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
                     }
@@ -173,7 +157,7 @@ public class LevelRenderer
                     if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_ANIMATED) > 0)
                     {
                     }
-                    */
+                    
                 }
 
             }

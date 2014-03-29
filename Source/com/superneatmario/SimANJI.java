@@ -28,6 +28,9 @@ public class SimANJI {
 	private int popNum = 0; 
 	Activator activator;
 	double[] responses; 
+	double maxResponse; 
+	int maxResponseNode; 
+	
 	public SimANJI(Activator activator) {
 		this.activator = activator; 
 	}
@@ -79,7 +82,7 @@ public class SimANJI {
         
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(1500);
         } catch(InterruptedException ex) {
             //Thread.currentThread().interrupt();
         	System.out.println("Wat"); 
@@ -108,57 +111,64 @@ public class SimANJI {
 			else
 			{	
 				try{
-				List idxs = new ArrayList();
-				for ( int i = 0; i < curScene.distToRedKoopa.size(); ++i )
-					idxs.add( curScene.distToRedKoopa.get(i) );
-				//Collections.shuffle( idxs, randomizer.getRand() );
-				
-				Iterator iter = idxs.iterator();
-				
-				//if all stimuli are 0 , continue 
-				
-				double[] shuffledStimuli = new double[ curScene.distToRedKoopa.size() ];
-				
-				int k = 0;
-				while ( iter.hasNext() ) {
-					BigDecimal idx = (BigDecimal) iter.next();
-					shuffledStimuli[ k ] = (idx.doubleValue()<0.5)?1:0;
-					k++;
-				}
+					
+				double[] stimuli = new double[ 1 /* total inputs from all enemy stuff in level scene*/ ];
+				stimuli[0] = curScene.enemyD1LeftRight; 
 				//System.out.println("0) Red Koopa Count " + curScene.distToRedKoopa.size()); 
-							
+				//System.out.println("Enemy Count " + curScene.enemyD1LeftRight);			
 				 			
 				      
-				responses = activator.next( shuffledStimuli );
+				responses = activator.next( stimuli );
 				
-				System.out.println("1) Red Koopa Count " + curScene.distToRedKoopa.size());
-				System.out.println("responses " + responses[0]); 
-				System.out.println("Response " + activator.getMaxResponse());
-				System.out.println("Max output " + activator.getOutputDimension());
+				System.out.println("Enemy Count " + curScene.enemyD1LeftRight);
+				maxResponse = 0; 
+				maxResponseNode = 0; 
+				for(int i = 0; i < responses.length; i ++)
+				{
+					System.out.println("response "+i + "  " + responses[i]);
+					if(responses[i] > maxResponse)
+					{
+						maxResponse = responses[i]; 
+						maxResponseNode = i; 
+					}
+				}
 				
-				//int keyCode = KeyEvent.VK_RIGHT; 
+				System.out.println("Max Response " + activator.getMaxResponse());
+				System.out.println("Max output dim " + activator.getOutputDimension());
+				
+				int keyCode = KeyEvent.VK_RIGHT; 
 
-            	//int r = rand.nextInt(6); 
-            	/*
+            	int r = getMaxResponseNode(); 
+            	
                 if (r==0 ||r==1)
                 {
                 	keyCode = KeyEvent.VK_RIGHT;
                 }
                 if (r==2)
                 {
+                //down crouches when big
+                // else nothing
                 	keyCode = KeyEvent.VK_DOWN;
                 }
                 if (r==3)
                 {
-                	keyCode = KeyEvent.VK_UP;
+                	keyCode = KeyEvent.VK_LEFT;
                 }
                 if (r==4)
                 {
+                //hold a runs 
+                // tap a fires fireball
                 	keyCode = KeyEvent.VK_A;
                 }
                 if (r==5)
                 {
+                //s jump
                 	keyCode = KeyEvent.VK_S;
+                }
+                //TODO duration
+                 if (r==6)
+                {
+                	keyCode = KeyEvent.VK_UP;
                 }
                 
                 //System.out.println("r "  + r +  "  key " + keyCode); 
@@ -183,10 +193,7 @@ public class SimANJI {
             	}
             	if (r!=4)
             		marioComponent.toggleKey(keyCode, false);
-
-				//System.out.println("Win or loss? " + marioComponent.isLossed + "  " +  marioComponent.isWon); 
-				}
-				*/
+				
 				}
 				catch(Exception e)
 				{
@@ -203,6 +210,10 @@ public class SimANJI {
 	public Activator getActivator()
 	{
 		return activator; 
+	}
+	public int getMaxResponseNode()
+	{
+		return maxResponseNode; 
 	}
 	
 }

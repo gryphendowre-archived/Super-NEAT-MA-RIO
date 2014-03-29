@@ -45,6 +45,16 @@ public class LevelScene extends Scene implements SpriteContext
     
     
     public List<BigDecimal> distToRedKoopa;
+    public int enemyD1UpDown;
+    public int enemyD1LeftRight;
+    
+    public List<BigDecimal> EnemyD2;
+    public List<BigDecimal> EnemyD3; 
+    public List<BigDecimal> EnemyD4; 
+    public List<BigDecimal> EnemyD5; 
+    public List<BigDecimal> EnemyD6; 
+    
+    private static double D1Sensor;  
     
     public LevelScene(GraphicsConfiguration graphicsConfiguration, MarioComponent renderer, long seed, int levelDifficulty, int type)
     {
@@ -90,6 +100,9 @@ public class LevelScene extends Scene implements SpriteContext
             Art.startMusic(3);
         
         distToRedKoopa = new ArrayList<BigDecimal>(); 
+        enemyD1UpDown = 0; 
+        enemyD1LeftRight = 0; 
+        
         paused = false;
         Sprite.spriteContext = this;
         sprites.clear();
@@ -103,6 +116,7 @@ public class LevelScene extends Scene implements SpriteContext
             bgLayer[i] = new BgRenderer(bgLevel, graphicsConfiguration, 320, 240, scrollSpeed);
         }
         mario = new Mario(this);
+        D1Sensor =  mario.wPic*1.5; 
         sprites.add(mario);
         startTime = 1;
         
@@ -311,6 +325,7 @@ public class LevelScene extends Scene implements SpriteContext
     {
     	//clear out all stimuli 
     	distToRedKoopa.clear();
+    	enemyD1LeftRight = 0; 
     	
         int xCam = (int) (mario.xOld + (mario.x - mario.xOld) * alpha) - 160;
         int yCam = (int) (mario.yOld + (mario.y - mario.yOld) * alpha) - 120;
@@ -322,7 +337,7 @@ public class LevelScene extends Scene implements SpriteContext
         if (yCam > level.height * 16 - 240) yCam = level.height * 16 - 240;
 
         //      g.drawImage(Art.background, 0, 0, null);
-
+        
         for (int i = 0; i < 2; i++)
         {
             bgLayer[i].setCam(xCam, yCam);
@@ -336,90 +351,93 @@ public class LevelScene extends Scene implements SpriteContext
             { 
             	sprite.render(g, alpha);   
             }
-            if(sprite instanceof Enemy || sprite instanceof BulletBill || sprite instanceof Shell || sprite instanceof FlowerEnemy)
+            if( sprite.x >= mario.x - D1Sensor && sprite.x <= mario.x + D1Sensor )
             {
-            	g.setColor(Color.RED);
-            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
             	
-            	
-            	
-            	if(sprite instanceof Enemy)
-            	{
-            		Enemy s = (Enemy)sprite; 
-            		if(s.getType() == Enemy.ENEMY_GREEN_KOOPA || s.getType() == Enemy.ENEMY_RED_KOOPA)
-            		{
-            			if(s.getType() == Enemy.ENEMY_RED_KOOPA)
-            			{
-            				double dist = Math.pow(Math.pow((mario.x-sprite.x),2) + Math.pow(mario.y - sprite.y, 2), 0.5); 
-                        	distToRedKoopa.add(new BigDecimal(dist));
-            			}
-            			
-            			//top
-                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
-                    	//bottom
-                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-            			//left
-                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
-                    	//right
-                    	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
-            		}
-            		else
-            		{
-            			//top
-                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
-                    	//bottom
-                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-            			//left side
-                    	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-                    	//right
-                    	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-            		}
-            		
-            	}
-            	
-            	else if(sprite instanceof FlowerEnemy)
-            	{
-            		FlowerEnemy s = (FlowerEnemy)sprite; 
-            		
-            		//top
-                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
-                	//bottom
-                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-        			//left
-                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
-                	//right
-                	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
-            	}
-            	else
-            	{
-            		//top
-                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
-                	//bottom
-                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-        			//left side
-                	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-                	//right
-                	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-            	}
-            	
-            }
-            else if(sprite instanceof Mushroom || sprite instanceof FireFlower)
-            {
-            	g.setColor(Color.GREEN);
-            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
-            	//top
-            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
-            	//bottom
-            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-    			//left side
-            	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-            	//right
-            	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-            }
-            else if (sprite instanceof Fireball)
-            {
-            	g.setColor(Color.ORANGE);
-            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+	            if(sprite instanceof Enemy || sprite instanceof BulletBill || sprite instanceof Shell || sprite instanceof FlowerEnemy)
+	            {
+	            	enemyD1LeftRight++;
+	            	g.setColor(Color.RED);
+	            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+	            	           	            
+	            	if(sprite instanceof Enemy)
+	            	{
+	            		Enemy s = (Enemy)sprite; 
+	            		if(s.getType() == Enemy.ENEMY_GREEN_KOOPA || s.getType() == Enemy.ENEMY_RED_KOOPA)
+	            		{
+	            			if(s.getType() == Enemy.ENEMY_RED_KOOPA)
+	            			{
+	            				double dist = Math.pow(Math.pow((mario.x-sprite.x),2) + Math.pow(mario.y - sprite.y, 2), 0.5); 
+	                        	distToRedKoopa.add(new BigDecimal(dist));
+	            			}
+	            			
+	            			//top
+	                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
+	                    	//bottom
+	                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+	            			//left
+	                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+	                    	//right
+	                    	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+	            		}
+	            		else
+	            		{
+	            			//top
+	                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
+	                    	//bottom
+	                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+	            			//left side
+	                    	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+	                    	//right
+	                    	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+	            		}
+	            		
+	            	}
+	            	
+	            	else if(sprite instanceof FlowerEnemy)
+	            	{
+	            		FlowerEnemy s = (FlowerEnemy)sprite; 
+	            		
+	            		//top
+	                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
+	                	//bottom
+	                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+	        			//left
+	                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+	                	//right
+	                	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+	            	}
+	            	else
+	            	{
+	            		//top
+	                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
+	                	//bottom
+	                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+	        			//left side
+	                	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+	                	//right
+	                	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+	            	}
+	            	
+	            }
+	            else if(sprite instanceof Mushroom || sprite instanceof FireFlower)
+	            {
+	            	g.setColor(Color.GREEN);
+	            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+	            	//top
+	            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
+	            	//bottom
+	            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+	    			//left side
+	            	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+	            	//right
+	            	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+	            }
+	            else if (sprite instanceof Fireball)
+	            {
+	            	g.setColor(Color.ORANGE);
+	            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+	            }
             }
             
         }

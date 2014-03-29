@@ -130,7 +130,6 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
 
         //      scene = new LevelScene(graphicsConfiguration);
         mapScene = new MapScene(graphicsConfiguration, this, new Random().nextLong());
-        scene = mapScene;
         //scene.setSound(sound);
 
         Art.init(graphicsConfiguration, null);

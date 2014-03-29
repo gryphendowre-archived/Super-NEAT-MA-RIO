@@ -1,6 +1,7 @@
 package com.superneatmario;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
 import java.util.Random;
 
 import javax.swing.JApplet;
@@ -20,7 +21,7 @@ public class HelloWorld {
 
 	private static final String MARIO_PROPS = "mario.properties";
 	
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         System.out.println("Hello, World");
         //
         jumpStartAnji();
@@ -30,22 +31,17 @@ public class HelloWorld {
     /**
      * This method "jumpstarts" Anji with Xor.Properties file in its Property Folder.
      * @return 
+     * @throws Exception 
      */
-    public static void jumpStartAnji()
+    public static void jumpStartAnji() throws Exception
     {
-    	try
-    	{
+
     		Properties props = new Properties(MARIO_PROPS);
         	Evolver evolve = new Evolver();
         	evolve.init(props);
         	evolve.run();
         	
         	//return evolve.getChamp();
-    	}
-    	catch(Exception e)
-    	{
-    		System.out.println("Error is: " + e);
-    	}
 		//return null;
     	
     }
