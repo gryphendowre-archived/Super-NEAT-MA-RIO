@@ -86,6 +86,7 @@ private ActivatorTranscriber activatorFactory;
 
 private Randomizer randomizer;
 
+private final static double COIN_ALPHA = 2.0; 
 /**
  * See <a href=" {@docRoot}/params.htm" target="anji_params">Parameter Details </a> for
  * specific property settings.
@@ -138,38 +139,50 @@ protected void setMaxFitnessValue( int aMaxFitnessValue ) {
  */
 
 
-///TODO run mario here? Not sure how to have layer talk to each other when in mid process for evaluation
 final public void evaluate( List genotypes ) {
 	Iterator it = genotypes.iterator();
-	while ( it.hasNext() ) {
+	int seed = new Random().nextInt(); 
+	int genomeNum = 0; 
+	//ExecutorService service = Executors.newFixedThreadPool(1);
+	while ( it.hasNext() ) {	
 		Chromosome genotype = (Chromosome) it.next();
-
+	    //service.submit(new EvalThreadTask(activatorFactory, genotype, genomeNum,seed));	
 		try {
 			Activator activator = activatorFactory.newActivator( genotype ); 
-			SimANJI sa = new SimANJI(activator); 
-			//sa.run();
-			boolean isDoneWithSim = sa.run();
+			SimANJI sa = new SimANJI(activator, seed, genomeNum); 
+			boolean isDone = sa.run();
+			//sa.start();;
 			double [][] responses = null; 
-
-			if(isDoneWithSim)
+			
+			if(isDone)
 			{
-				responses = new double [sa.getResponses().length][sa.getResponses().length]; 
+				/*responses = new double [sa.getResponses().length][sa.getResponses().length]; 
 				activator = sa.getActivator(); 
 				for (int i = 0; i <  sa.getResponses().length;i++)
-					responses[i] = sa.getResponses(); 
+					responses[i] = sa.getResponses(); */
 			
-		
-            //after death, or win, fitness = distance mario made
-			genotype.setFitnessValue( calculateErrorFitness( responses, activator.getMinResponse(),
-					activator.getMaxResponse() )
-					- (int) ( adjustForNetworkSizeFactor * genotype.size() ) );/**/
+			
+			//after death, or win, fitness = distance mario made
+				//calculateErrorFitness( responses, activator.getMinResponse(),
+				//activator.getMaxResponse()
+				System.out.println("Fitness Val " + (int)(sa.getDistance() + sa.getCoins() )); 
+				genotype.setFitnessValue( (int)(sa.getDistance() + sa.getCoins()*COIN_ALPHA -sa.getTimeLeft() ) );/**/
 			}
+				
 		}
 		catch ( TranscriberException e ) {
 			logger.warn( "transcriber error: " + e.getMessage() );
 			genotype.setFitnessValue( 1 );
 		}
+		genomeNum++; 
+		
 	}
+	/*service.shutdown();
+	try {
+		service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+	} catch (InterruptedException e) {
+	  
+	}*/
 }
 
 /**

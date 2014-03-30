@@ -197,9 +197,13 @@ public int getSpeciatedFitnessValue() {
  */
 public void setFitnessValue( int a_newFitnessValue ) {
 	if ( a_newFitnessValue > 0 )
+	{
 		m_fitnessValue = a_newFitnessValue;
+		
+	}
 	else
 		m_fitnessValue = 1;
+	System.out.println("Genome Fitness " + m_fitnessValue) ;
 }
 
 /**

@@ -8,7 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.*;
 import java.util.Random;
 
-import javax.sound.sampled.LineUnavailableException;
+//import javax.sound.sampled.LineUnavailableException;
 import javax.swing.*;
 
 import com.mojang.mario.level.LevelGenerator;
@@ -20,7 +20,7 @@ import com.mojang.sonar.SonarSoundEngine;
 public class MarioComponent extends JComponent implements Runnable, KeyListener, FocusListener
 {
     private static  long serialVersionUID;
-    public static final int TICKS_PER_SECOND = 24;
+    public static final int TICKS_PER_SECOND = 96;
 
     private boolean running = false;
     private int width, height;
@@ -41,10 +41,10 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     
     public boolean isLossed = false; 
     public boolean isWon = false; 
-
-    public MarioComponent(int width, int height, long serialUID)
+    
+    public MarioComponent(int width, int height, long serialUID, int seed)
     {
-    	this.serialVersionUID = serialUID; 
+    	this.seed = seed; 
         this.setFocusable(true);
         this.setEnabled(true);
         this.width = width;
@@ -55,7 +55,22 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
         setMinimumSize(size);
         setMaximumSize(size);
 
-        try
+
+        setFocusable(true);
+    }
+    public MarioComponent(int width, int height, long serialUID)
+    {
+        this.setFocusable(true);
+        this.setEnabled(true);
+        this.width = width;
+        this.height = height;
+
+        Dimension size = new Dimension(width, height);
+        setPreferredSize(size);
+        setMinimumSize(size);
+        setMaximumSize(size);
+
+        /*try
         {
             sound = new SonarSoundEngine(64);
         }
@@ -63,7 +78,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
         {
             e.printStackTrace();
             sound = new FakeSoundEngine();
-        }
+        }*/
 
         setFocusable(true);
     }
@@ -156,7 +171,6 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
         boolean naiveTiming = true;
 
         //Jumps right into a randomized level
-        //startGame();
                 
         startLevel(seed * x1 * y1 + x1 * 31871 + y1 * 21871, difficulty, type);
         
@@ -193,7 +207,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
             }
 
             float alpha = (float) (now * TICKS_PER_SECOND - tick);
-            sound.clientTick(alpha);
+            //sound.clientTick(alpha);
 
             int x = (int) (Math.sin(now) * 16 + 160);
             int y = (int) (Math.cos(now) * 16 + 120);
@@ -266,7 +280,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     public void startLevel(long seed, int difficulty, int type)
     {
         scene = new LevelScene(graphicsConfiguration, this, seed, difficulty, type);
-        scene.setSound(sound);
+        //scene.setSound(sound);
         scene.init();
     }
 
@@ -310,7 +324,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     public void win()
     {
         scene = new WinScene(this);
-        scene.setSound(sound);
+        //scene.setSound(sound);
         scene.init();
     }
     
@@ -318,7 +332,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     {
         Mario.resetStatic();
         scene = new TitleScene(this, graphicsConfiguration);
-        scene.setSound(sound);
+        //scene.setSound(sound);
         scene.init();
     }
     
@@ -326,7 +340,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     {
     	
         scene = new LoseScene(this);
-        scene.setSound(sound);
+        //scene.setSound(sound);
         scene.init();
     }
 

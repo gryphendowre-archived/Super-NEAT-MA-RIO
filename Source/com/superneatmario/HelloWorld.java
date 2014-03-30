@@ -50,42 +50,7 @@ public class HelloWorld {
      * This method mimics the FrameLauncher.java class in starting the Mario Program.
      * @param ch 
      */
-    public static void jumpStartMario()
-    {
-    	
-    	//for (int i = 0; i < 4; i++)
-		//{
-    		System.out.println("Serial ID " + 79318775993206607L); 
-    		MarioComponent marioComponent = new MarioComponent(640, 480,  (79318775993206607L));
-            JFrame frame = new JFrame("Mario Test"+0);
-            frame.setContentPane(marioComponent);
-            frame.pack();
-            frame.setResizable(false);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            frame.setLocation((screenSize.width-frame.getWidth())/2, (screenSize.height-frame.getHeight())/2);
-            
-            frame.setVisible(true);
-            
-            marioComponent.setFocusCycleRoot(true);
-            
-            marioComponent.start();
-            //marioComponent.keyPressed();
-            frame.addKeyListener(marioComponent);
-            frame.addFocusListener(marioComponent);
-    	//SimANJI sa = new SimANJI(); 
-    	//sa.start(1);
-		//}
-         /*
-    	SimANJI sa2 = new SimANJI(); 
-    	sa2.start(2);
-    	
-    	SimANJI sa3 = new SimANJI(); 
-    	sa3.start(3);
-       */
-        
-    }
+   
     
 
 }

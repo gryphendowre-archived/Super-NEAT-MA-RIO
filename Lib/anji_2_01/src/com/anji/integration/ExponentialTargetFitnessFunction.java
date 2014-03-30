@@ -39,7 +39,7 @@ public class ExponentialTargetFitnessFunction extends TargetFitnessFunction {
 
 	private double[][] nullResponses;
 
-	private final static int MAX_FITNESS = Integer.MAX_VALUE;
+	private final static int MAX_FITNESS = 500;
 
 	/**
 	 * See <a href=" {@docRoot}/params.htm" target="anji_params">Parameter Details </a> for

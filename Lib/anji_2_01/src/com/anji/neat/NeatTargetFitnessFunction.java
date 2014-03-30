@@ -37,7 +37,7 @@ public class NeatTargetFitnessFunction extends TargetFitnessFunction {
 
 	private final static boolean SUM_OF_SQUARES = false;
 
-	private final static int MAX_FITNESS = 160000000;
+	private final static int MAX_FITNESS = 2000;
 
 	/**
 	 * See <a href=" {@docRoot}/params.htm" target="anji_params">Parameter Details </a> for

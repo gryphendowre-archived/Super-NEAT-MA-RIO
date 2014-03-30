@@ -33,7 +33,7 @@ public class LevelScene extends Scene implements SpriteContext
 
     public boolean paused = false;
     public int startTime = 0;
-    private int timeLeft;
+    public int timeLeft;
 
     //    private Recorder recorder = new Recorder();
     //    private Replayer replayer = null;
@@ -41,20 +41,37 @@ public class LevelScene extends Scene implements SpriteContext
     private long levelSeed;
     private MarioComponent renderer;
     private int levelType;
-    private int levelDifficulty;
+    private int levelDifficulty;    
     
-    
-    public List<BigDecimal> distToRedKoopa;
-    public int enemyD1UpDown;
     public int enemyD1LeftRight;
+    public int enemyD2LeftRight;
+    public int enemyD3LeftRight;
+    public int enemyD4LeftRight;
+    public int enemyD5LeftRight;
     
-    public List<BigDecimal> EnemyD2;
-    public List<BigDecimal> EnemyD3; 
-    public List<BigDecimal> EnemyD4; 
-    public List<BigDecimal> EnemyD5; 
-    public List<BigDecimal> EnemyD6; 
+    public int goodItemD1LeftRight;
+    public int goodItemD2LeftRight;
+    public int goodItemD3LeftRight;
+    public int goodItemD4LeftRight;
+    public int goodItemD5LeftRight;
     
-    private static double D1Sensor;  
+    public int holeD1LeftRight;
+    public int holeD2LeftRight;
+    public int holeD3LeftRight;
+    public int holeD4LeftRight;
+    public int holeD5LeftRight;
+    
+    public int obstacleD1LeftRight;
+    public int obstacleD2LeftRight;
+    public int obstacleD3LeftRight;
+    public int obstacleD4LeftRight;
+    public int obstacleD5LeftRight;
+    
+    private static double D1Sensor;
+    private static double D2Sensor;  
+    private static double D3Sensor;  
+    private static double D4Sensor;  
+    private static double D5Sensor;  
     
     public LevelScene(GraphicsConfiguration graphicsConfiguration, MarioComponent renderer, long seed, int levelDifficulty, int type)
     {
@@ -99,9 +116,29 @@ public class LevelScene extends Scene implements SpriteContext
         else if (levelType==LevelGenerator.TYPE_CASTLE)
             Art.startMusic(3);
         
-        distToRedKoopa = new ArrayList<BigDecimal>(); 
-        enemyD1UpDown = 0; 
         enemyD1LeftRight = 0; 
+        enemyD2LeftRight = 0; 
+        enemyD3LeftRight = 0; 
+        enemyD4LeftRight = 0; 
+        enemyD5LeftRight = 0; 
+        
+        goodItemD1LeftRight = 0;
+        goodItemD2LeftRight = 0;
+        goodItemD3LeftRight = 0;
+        goodItemD4LeftRight = 0;
+        goodItemD5LeftRight = 0;
+        
+        holeD1LeftRight = 0; 
+        holeD2LeftRight = 0; 
+        holeD3LeftRight = 0; 
+        holeD4LeftRight = 0; 
+        holeD5LeftRight = 0; 
+       
+        obstacleD1LeftRight = 0; 
+        obstacleD2LeftRight = 0; 
+        obstacleD3LeftRight = 0; 
+        obstacleD4LeftRight = 0; 
+        obstacleD5LeftRight = 0; 
         
         paused = false;
         Sprite.spriteContext = this;
@@ -116,11 +153,17 @@ public class LevelScene extends Scene implements SpriteContext
             bgLayer[i] = new BgRenderer(bgLevel, graphicsConfiguration, 320, 240, scrollSpeed);
         }
         mario = new Mario(this);
-        D1Sensor =  mario.wPic*1.5; 
+        D1Sensor =  mario.wPic*1.5;
+        D2Sensor =  D1Sensor*2; 
+        D3Sensor =  D1Sensor*3; 
+        D4Sensor =  D1Sensor*4; 
+        D5Sensor =  D1Sensor*5;
+        
         sprites.add(mario);
         startTime = 1;
         
-        timeLeft = 200*15;
+        //KANN time change
+        timeLeft = 40*15;
 
         tick = 0;
     }
@@ -264,7 +307,7 @@ public class LevelScene extends Scene implements SpriteContext
 
             if (hasShotCannon)
             {
-                sound.play(Art.samples[Art.SAMPLE_CANNON_FIRE], new FixedSoundSource(xCannon * 16, yCam + 120), 1, 1, 1);
+                //sound.play(Art.samples[Art.SAMPLE_CANNON_FIRE], new FixedSoundSource(xCannon * 16, yCam + 120), 1, 1, 1);
             }
 
             for (Sprite sprite : sprites)
@@ -324,8 +367,29 @@ public class LevelScene extends Scene implements SpriteContext
     public void render(Graphics g, float alpha)
     {
     	//clear out all stimuli 
-    	distToRedKoopa.clear();
     	enemyD1LeftRight = 0; 
+    	enemyD2LeftRight = 0; 
+        enemyD3LeftRight = 0; 
+        enemyD4LeftRight = 0; 
+        enemyD5LeftRight = 0; 
+        
+        goodItemD1LeftRight = 0;
+        goodItemD2LeftRight = 0;
+        goodItemD3LeftRight = 0;
+        goodItemD4LeftRight = 0;
+        goodItemD5LeftRight = 0;
+        
+        holeD1LeftRight = 0; 
+        holeD2LeftRight = 0; 
+        holeD3LeftRight = 0; 
+        holeD4LeftRight = 0; 
+        holeD5LeftRight = 0; 
+       
+        obstacleD1LeftRight = 0; 
+        obstacleD2LeftRight = 0; 
+        obstacleD3LeftRight = 0; 
+        obstacleD4LeftRight = 0; 
+        obstacleD5LeftRight = 0; 
     	
         int xCam = (int) (mario.xOld + (mario.x - mario.xOld) * alpha) - 160;
         int yCam = (int) (mario.yOld + (mario.y - mario.yOld) * alpha) - 120;
@@ -345,100 +409,153 @@ public class LevelScene extends Scene implements SpriteContext
         }
 
         g.translate(-xCam, -yCam);
+        boolean inD1;
+        boolean inD2; 
+        boolean inD3; 
+        boolean inD4; 
+        boolean inD5; 
         for (Sprite sprite : sprites)
         {
             if (sprite.layer == 0)
             { 
             	sprite.render(g, alpha);   
             }
-            if( sprite.x >= mario.x - D1Sensor && sprite.x <= mario.x + D1Sensor )
-            {
+            inD1 = sprite.x >= mario.x - D1Sensor && sprite.x <= mario.x + D1Sensor; 
+            inD2 = sprite.x >= mario.x - D2Sensor && sprite.x <= mario.x + D2Sensor;
+            inD3 = sprite.x >= mario.x - D3Sensor && sprite.x <= mario.x + D3Sensor;
+            inD4 = sprite.x >= mario.x - D4Sensor && sprite.x <= mario.x + D4Sensor;
+            inD5 = sprite.x >= mario.x - D5Sensor && sprite.x <= mario.x + D5Sensor;
             	
-	            if(sprite instanceof Enemy || sprite instanceof BulletBill || sprite instanceof Shell || sprite instanceof FlowerEnemy)
-	            {
-	            	enemyD1LeftRight++;
-	            	g.setColor(Color.RED);
-	            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
-	            	           	            
-	            	if(sprite instanceof Enemy)
-	            	{
-	            		Enemy s = (Enemy)sprite; 
-	            		if(s.getType() == Enemy.ENEMY_GREEN_KOOPA || s.getType() == Enemy.ENEMY_RED_KOOPA)
-	            		{
-	            			if(s.getType() == Enemy.ENEMY_RED_KOOPA)
-	            			{
-	            				double dist = Math.pow(Math.pow((mario.x-sprite.x),2) + Math.pow(mario.y - sprite.y, 2), 0.5); 
-	                        	distToRedKoopa.add(new BigDecimal(dist));
-	            			}
-	            			
-	            			//top
-	                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
-	                    	//bottom
-	                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-	            			//left
-	                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
-	                    	//right
-	                    	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
-	            		}
-	            		else
-	            		{
-	            			//top
-	                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
-	                    	//bottom
-	                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-	            			//left side
-	                    	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-	                    	//right
-	                    	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-	            		}
-	            		
-	            	}
-	            	
-	            	else if(sprite instanceof FlowerEnemy)
-	            	{
-	            		FlowerEnemy s = (FlowerEnemy)sprite; 
-	            		
-	            		//top
-	                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
-	                	//bottom
-	                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-	        			//left
-	                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
-	                	//right
-	                	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
-	            	}
-	            	else
-	            	{
-	            		//top
-	                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
-	                	//bottom
-	                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-	        			//left side
-	                	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-	                	//right
-	                	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-	            	}
-	            	
-	            }
-	            else if(sprite instanceof Mushroom || sprite instanceof FireFlower)
-	            {
-	            	g.setColor(Color.GREEN);
-	            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
-	            	//top
-	            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
-	            	//bottom
-	            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-	    			//left side
-	            	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-	            	//right
-	            	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-	            }
-	            else if (sprite instanceof Fireball)
-	            {
-	            	g.setColor(Color.ORANGE);
-	            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
-	            }
+            if(sprite instanceof Enemy || sprite instanceof BulletBill || sprite instanceof Shell || sprite instanceof FlowerEnemy)
+            {
+            	if(inD1)
+            	{
+            		g.setColor(Color.BLACK);
+            		enemyD1LeftRight++;
+            	}
+            	else if(inD2)
+            	{
+            		g.setColor(Color.RED);
+            		enemyD2LeftRight++;
+            	}
+            	else if(inD3)
+            	{
+            		g.setColor(Color.ORANGE);
+            		enemyD3LeftRight++;
+            	}
+            	else if(inD4)
+            	{
+            		g.setColor(Color.YELLOW);
+            		enemyD4LeftRight++;
+            	}
+            	else if(inD5)
+            	{
+            		g.setColor(Color.WHITE);
+            		enemyD5LeftRight++;
+            	}
+            	
+            	
+            	//g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+            	           	            
+            	if(sprite instanceof Enemy)
+            	{
+            		Enemy s = (Enemy)sprite; 
+            		if(s.getType() == Enemy.ENEMY_GREEN_KOOPA || s.getType() == Enemy.ENEMY_RED_KOOPA)
+            		{
+            			            			
+            			//top
+                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
+                    	//bottom
+                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+            			//left
+                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+                    	//right
+                    	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+            		}
+            		else
+            		{
+            			//top
+                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
+                    	//bottom
+                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+            			//left side
+                    	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+                    	//right
+                    	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+            		}
+            		
+            	}
+            	
+            	else if(sprite instanceof FlowerEnemy)
+            	{
+            		FlowerEnemy s = (FlowerEnemy)sprite; 
+            		
+            		//top
+                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
+                	//bottom
+                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+        			//left
+                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+                	//right
+                	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+            	}
+            	else
+            	{
+            		//top
+                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
+                	//bottom
+                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+        			//left side
+                	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+                	//right
+                	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+            	}
+            	
             }
+            else if(sprite instanceof Mushroom || sprite instanceof FireFlower)
+            {
+            	if(inD1)
+            	{
+            		g.setColor(Color.WHITE);
+            		goodItemD1LeftRight++;
+            	}
+            	else if(inD2)
+            	{
+            		g.setColor(Color.GREEN);
+            		goodItemD2LeftRight++;
+            	}
+            	else if(inD3)
+            	{
+            		g.setColor(Color.CYAN);
+            		goodItemD3LeftRight++;
+            	}
+            	else if(inD4)
+            	{
+            		g.setColor(Color.BLUE);
+            		goodItemD4LeftRight++;
+            	}
+            	else if(inD5)
+            	{
+            		g.setColor(Color.PINK);
+            		goodItemD5LeftRight++;
+            	}
+            	//g.setColor(Color.GREEN);
+            	//g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+            	//top
+            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
+            	//bottom
+            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+    			//left side
+            	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+            	//right
+            	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+            }
+            else if (sprite instanceof Fireball)
+            {
+            	g.setColor(Color.ORANGE);
+            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+            }
+            
             
         }
 
@@ -450,6 +567,11 @@ public class LevelScene extends Scene implements SpriteContext
         layer.render(g, tick, paused?0:alpha);
         
         boolean colYBoxExist; 
+        inD1 = false; 
+        inD2 = false; 
+        inD3 = false; 
+        inD4 = false; 
+        inD5 = false; 
         //Renders lines between mario and items of note
         for (int x = xCam / 16; x <= (xCam + layer.width) / 16; x++)
         {
@@ -475,41 +597,204 @@ public class LevelScene extends Scene implements SpriteContext
                     if (x >= 0 && y >= 0 && x < level.width && y < level.height) yo = level.data[x][y];
                     if (yo > 0) yo = (int) (Math.sin((yo - alpha) / 4.0f * Math.PI) * 8);
                 }
+                int blockX = (x << 4) - xCam; 
+                int blockY = (y << 4) - yCam; 
+                int marioX = (int) (mario.x - xCam) ;
+                int marioY = (int) (mario.y - yCam) ;
+                
+                inD1 = blockX >= marioX - D1Sensor && blockX <= marioX + D1Sensor; 
+                inD2 = blockX >= marioX - D2Sensor && blockX <= marioX + D2Sensor;
+                inD3 = blockX >= marioX - D3Sensor && blockX <= marioX + D3Sensor;
+                inD4 = blockX >= marioX - D4Sensor && blockX <= marioX + D4Sensor;
+                inD5 = blockX >= marioX - D5Sensor && blockX <= marioX + D5Sensor;
                 
                     if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_SPECIAL) > 0)
                     {
-                        g.setColor(Color.PINK);
+                    	g.setColor(new Color(139,69,19));
+                        if(inD1)
+                    	{
+                    		g.setColor(Color.GREEN);
+                    		goodItemD1LeftRight++;
+                    	}
+                    	else if(inD2)
+                    	{
+                    		g.setColor(Color.CYAN);
+                    		goodItemD2LeftRight++;
+                    	}
+                    	else if(inD3)
+                    	{
+                    		g.setColor(Color.BLUE);
+                    		goodItemD3LeftRight++;
+                    	}
+                    	else if(inD4)
+                    	{
+                    		g.setColor(Color.MAGENTA);
+                    		goodItemD4LeftRight++;
+                    	}
+                    	else if(inD5)
+                    	{
+                    		g.setColor(Color.PINK);
+                    		goodItemD5LeftRight++;
+                    	}
+ 
+                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
+                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
+                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 2, 16);
+                        g.fillRect((x << 4) - xCam + 14, (y << 4) - yCam, 2, 16);  
                         //g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2 + 4, 4, 4);
-                        g.drawLine((int)mario.x -xCam, (int)mario.y - yCam, (x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2 + 4);
+                        //g.drawLine((int)marioX -xCam, (int)mario.y - yCam, (x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2 + 4);
                     }
-                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BUMPABLE) > 0)
+                    else if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BUMPABLE) > 0)
                     {
-                        g.setColor(Color.BLUE);
+                    	g.setColor(new Color(139,69,19));
+                    	if(inD1)
+                    	{
+                    		g.setColor(Color.GREEN);
+                    		goodItemD1LeftRight++;
+                    	}
+                    	else if(inD2)
+                    	{
+                    		g.setColor(Color.CYAN);
+                    		goodItemD2LeftRight++;
+                    	}
+                    	else if(inD3)
+                    	{
+                    		g.setColor(Color.BLUE);
+                    		goodItemD3LeftRight++;
+                    	}
+                    	else if(inD4)
+                    	{
+                    		g.setColor(Color.MAGENTA);
+                    		goodItemD4LeftRight++;
+                    	}
+                    	else if(inD5)
+                    	{
+                    		g.setColor(Color.PINK);
+                    		goodItemD5LeftRight++;
+                    	}
+                    	
+                        //g.setColor(Color.BLUE);
                         //g.fillRect((x << 4) - xCam + 2, (y << 4) - yCam + 2, 4, 4);
-                        g.drawLine((int)mario.x -xCam, (int)mario.y - yCam, (x << 4) - xCam + 2, (y << 4) - yCam + 2);
+                        //g.drawLine((int)marioX -xCam, (int)mario.y - yCam, (x << 4) - xCam + 2, (y << 4) - yCam + 2);
+                    	g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
+                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
+                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 2, 16);
+                        g.fillRect((x << 4) - xCam + 14, (y << 4) - yCam, 2, 16);  
                     }
-                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BREAKABLE) > 0)
+                    else if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BREAKABLE) > 0)
                     {
                         //g.setColor(Color.GREEN);
                         //g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
                     }
-                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_PICKUPABLE) > 0)
+                    else if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_PICKUPABLE) > 0)
                     {
-                        g.setColor(Color.YELLOW);
-                    	g.drawLine((int)mario.x -xCam, (int)mario.y - yCam, ((x << 4) - xCam + 2), ((y << 4) - yCam + 2 + 4));
+                    	g.setColor(new Color(139,69,19));
+                    	if(inD1)
+                    	{
+                    		g.setColor(Color.GREEN);
+                    		goodItemD1LeftRight++;
+                    	}
+                    	else if(inD2)
+                    	{
+                    		g.setColor(Color.CYAN);
+                    		goodItemD2LeftRight++;
+                    	}
+                    	else if(inD3)
+                    	{
+                    		g.setColor(Color.BLUE);
+                    		goodItemD3LeftRight++;
+                    	}
+                    	else if(inD4)
+                    	{
+                    		g.setColor(Color.MAGENTA);
+                    		goodItemD4LeftRight++;
+                    	}
+                    	else if(inD5)
+                    	{
+                    		g.setColor(Color.PINK);
+                    		goodItemD5LeftRight++;
+                    	}
+
+                        //g.setColor(Color.YELLOW);
+                    	//g.drawLine((int)marioX -xCam, (int)mario.y - yCam, ((x << 4) - xCam + 2), ((y << 4) - yCam + 2 + 4));
+                    	g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
+                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
+                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 2, 16);
+                        g.fillRect((x << 4) - xCam + 14, (y << 4) - yCam, 2, 16);  
                     }
-                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_ANIMATED) > 0)
+                    else if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_ANIMATED) > 0)
                     {
                     }
-                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BLOCK_ALL) > 0)
+                    else if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BLOCK_ALL) > 0)
                 	{
+                    	if(blockY  <= marioY)
+                    	{
+                    		g.setColor(new Color(139,69,19));
+	                    	if(inD1)
+	                    	{
+	                    		g.setColor(Color.BLACK);
+	                    		obstacleD1LeftRight++;
+	                    	}
+	                    	else if(inD2)
+	                    	{
+	                    		g.setColor(Color.DARK_GRAY);
+	                    		obstacleD2LeftRight++;
+	                    	}
+	                    	else if(inD3)
+	                    	{
+	                    		g.setColor(Color.GRAY);
+	                    		obstacleD3LeftRight++;
+	                    	}
+	                    	else if(inD4)
+	                    	{
+	                    		g.setColor(Color.LIGHT_GRAY);
+	                    		obstacleD4LeftRight++;
+	                    	}
+	                    	else if(inD5)
+	                    	{
+	                    		g.setColor(Color.WHITE);
+	                    		obstacleD5LeftRight++;
+	                    	}
+	                    	
+	                    	
+	                    	g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
+	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
+	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 2, 16);
+	                        g.fillRect((x << 4) - xCam + 14, (y << 4) - yCam, 2, 16);  
+                    	}
                         colYBoxExist = true; 
                 	}
-                    if( y > (yCam +layer.height/1.1) / 16)
+                    if( y > (yCam +layer.height/1.1) / 16 && y < (yCam +layer.height) / 16)
                     {                    	
                     	if(!colYBoxExist)
                     	{
-                    		g.setColor(Color.BLACK);
+                    		g.setColor(new Color(139,69,19));
+                    		if(inD1)
+                    		{
+                    			g.setColor(Color.BLACK);
+                    			holeD1LeftRight++;
+                    		}
+                    		else if(inD2)
+                    		{
+                    			g.setColor(Color.RED);
+                    			holeD2LeftRight++;
+                    		}
+                    		else if(inD3)
+                    		{
+                    			g.setColor(Color.ORANGE);
+                    			holeD3LeftRight++;
+                    		}
+                    		else if(inD4)
+                    		{
+                    			g.setColor(Color.YELLOW);
+                    			holeD4LeftRight++;
+                    		}
+                    		else if(inD5)
+                    		{
+                    			g.setColor(Color.WHITE);
+                    			holeD5LeftRight++;
+                    		}
+                    		
 	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
 	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
 	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 2, 16);
@@ -679,7 +964,7 @@ public class LevelScene extends Scene implements SpriteContext
 
             if (((Level.TILE_BEHAVIORS[block & 0xff]) & Level.BIT_SPECIAL) > 0)
             {
-                sound.play(Art.samples[Art.SAMPLE_ITEM_SPROUT], new FixedSoundSource(x * 16 + 8, y * 16 + 8), 1, 1, 1);
+                //sound.play(Art.samples[Art.SAMPLE_ITEM_SPROUT], new FixedSoundSource(x * 16 + 8, y * 16 + 8), 1, 1, 1);
                 if (!Mario.large)
                 {
                     addSprite(new Mushroom(this, x * 16 + 8, y * 16 + 8));
@@ -693,7 +978,7 @@ public class LevelScene extends Scene implements SpriteContext
             {
             	System.out.println("Tile bumpable at " + x + "  " + y); 
                 Mario.getCoin();
-                sound.play(Art.samples[Art.SAMPLE_GET_COIN], new FixedSoundSource(x * 16 + 8, y * 16 + 8), 1, 1, 1);
+                //sound.play(Art.samples[Art.SAMPLE_GET_COIN], new FixedSoundSource(x * 16 + 8, y * 16 + 8), 1, 1, 1);
                 addSprite(new CoinAnim(x, y));
             }
         }
@@ -703,7 +988,7 @@ public class LevelScene extends Scene implements SpriteContext
             bumpInto(x, y - 1);
             if (canBreakBricks)
             {
-                sound.play(Art.samples[Art.SAMPLE_BREAK_BLOCK], new FixedSoundSource(x * 16 + 8, y * 16 + 8), 1, 1, 1);
+                //sound.play(Art.samples[Art.SAMPLE_BREAK_BLOCK], new FixedSoundSource(x * 16 + 8, y * 16 + 8), 1, 1, 1);
                 level.setBlock(x, y, (byte) 0);
                 for (int xx = 0; xx < 2; xx++)
                     for (int yy = 0; yy < 2; yy++)
@@ -723,7 +1008,7 @@ public class LevelScene extends Scene implements SpriteContext
         {
         	System.out.println("Pickup at " + x + "  " + y); 
             Mario.getCoin();
-            sound.play(Art.samples[Art.SAMPLE_GET_COIN], new FixedSoundSource(x * 16 + 8, y * 16 + 8), 1, 1, 1);
+            //sound.play(Art.samples[Art.SAMPLE_GET_COIN], new FixedSoundSource(x * 16 + 8, y * 16 + 8), 1, 1, 1);
             level.setBlock(x, y, (byte) 0);
             addSprite(new CoinAnim(x, y + 1));
         }
