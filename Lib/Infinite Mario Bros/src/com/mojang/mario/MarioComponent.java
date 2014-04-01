@@ -20,7 +20,7 @@ import com.mojang.sonar.SonarSoundEngine;
 public class MarioComponent extends JComponent implements Runnable, KeyListener, FocusListener
 {
     private static  long serialVersionUID;
-    public static final int TICKS_PER_SECOND = 24;
+    public static final int TICKS_PER_SECOND = 192;
 
     private boolean running = false;
     private int width, height;

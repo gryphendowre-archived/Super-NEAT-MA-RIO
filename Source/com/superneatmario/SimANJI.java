@@ -106,7 +106,10 @@ public class SimANJI {
         for (int loop = 0; ; loop++)
         {        	
         	LevelScene curScene = (LevelScene)marioComponent.scene;          
-			
+			if (curScene == null)
+			{
+				continue;
+			}
         	//System.out.println("Win or loss? " + marioComponent.isLossed + "  " +  marioComponent.isWon); 
         	if(curScene.isLose || curScene.isWon)
 			{
