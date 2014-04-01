@@ -178,7 +178,9 @@ public class SimANJI {
 				        curScene.obstacleD2UpDown , 
 				        curScene.obstacleD3UpDown , 
 				        curScene.obstacleD4UpDown , 
-				        curScene.obstacleD5UpDown}; 
+				        curScene.obstacleD5UpDown, 
+				        curScene.mario.onGround?1.0:0,
+				        curScene.mario.mayJump?1.0:0}; 
 				
 				//System.out.println("0) Red Koopa Count " + curScene.distToRedKoopa.size()); 
 				//System.out.println("Enemy Count " + curScene.enemyD1LeftRight);			
@@ -196,7 +198,7 @@ public class SimANJI {
 				maxResponseNode = 0; 
 				for(int i = 0; i < responses.length; i ++)
 				{
-					System.out.println("response "+i + "  " + responses[i]);
+					//System.out.println("response "+i + "  " + responses[i]);
 					/*if(responses[i] > maxResponse)
 					{
 						maxResponse = responses[i]; 

@@ -166,7 +166,7 @@ final public void evaluate( List genotypes ) {
 				//calculateErrorFitness( responses, activator.getMinResponse(),
 				//activator.getMaxResponse()
 				System.out.println("Fitness Val " + (int)(sa.getDistance() + sa.getCoins() )); 
-				genotype.setFitnessValue( (int)(sa.getDistance()*1.5 + sa.getCoins()*COIN_ALPHA -sa.getTimeLeft() ) );/**/
+				genotype.setFitnessValue( (int)(sa.getDistance()*1.5 + sa.getCoins()*COIN_ALPHA ) );/**/
 			}
 				
 		}

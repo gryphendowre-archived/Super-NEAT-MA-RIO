@@ -38,8 +38,8 @@ public class Mario extends Sprite
     public boolean[] keys;
     private float runTime;
     boolean wasOnGround = false;
-    boolean onGround = false;
-    private boolean mayJump = false;
+    public boolean onGround = false;
+    public boolean mayJump = false;
     private boolean ducking = false;
     private boolean sliding = false;
     private int jumpTime = 0;
