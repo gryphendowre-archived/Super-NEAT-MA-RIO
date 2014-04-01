@@ -67,12 +67,45 @@ public class LevelScene extends Scene implements SpriteContext
     public int obstacleD4LeftRight;
     public int obstacleD5LeftRight;
     
-    private static double D1Sensor;
-    private static double D2Sensor;  
-    private static double D3Sensor;  
-    private static double D4Sensor;  
-    private static double D5Sensor;  
     
+    public int enemyD1UpDown;
+    public int enemyD2UpDown;
+    public int enemyD3UpDown;
+    public int enemyD4UpDown;
+    public int enemyD5UpDown;
+    
+    public int goodItemD1UpDown;
+    public int goodItemD2UpDown;
+    public int goodItemD3UpDown;
+    public int goodItemD4UpDown;
+    public int goodItemD5UpDown;
+    
+    public int holeD1UpDown;
+    public int holeD2UpDown;
+    public int holeD3UpDown;
+    public int holeD4UpDown;
+    public int holeD5UpDown;
+    
+    public int obstacleD1UpDown;
+    public int obstacleD2UpDown;
+    public int obstacleD3UpDown;
+    public int obstacleD4UpDown;
+    public int obstacleD5UpDown;
+    
+    private static double D1SensorX;
+    private static double D2SensorX;  
+    private static double D3SensorX;  
+    private static double D4SensorX;  
+    private static double D5SensorX;
+    
+    private static double D1SensorY;
+    private static double D2SensorY;  
+    private static double D3SensorY;  
+    private static double D4SensorY;  
+    private static double D5SensorY;
+    
+    public boolean isLose = false; 
+    public boolean isWon = false;
     public LevelScene(GraphicsConfiguration graphicsConfiguration, MarioComponent renderer, long seed, int levelDifficulty, int type)
     {
         this.graphicsConfiguration = graphicsConfiguration;
@@ -102,6 +135,8 @@ public class LevelScene extends Scene implements SpriteContext
 //        level = LevelGenerator.createLevel(320, 15, levelSeed);
         
         level = LevelGenerator.createLevel(320, 15, levelSeed, levelDifficulty, levelType);
+        isLose = false; 
+        isWon = false;
         //        }
 
         /*        if (recorder != null)
@@ -116,30 +151,6 @@ public class LevelScene extends Scene implements SpriteContext
         else if (levelType==LevelGenerator.TYPE_CASTLE)
             Art.startMusic(3);
         
-        enemyD1LeftRight = 0; 
-        enemyD2LeftRight = 0; 
-        enemyD3LeftRight = 0; 
-        enemyD4LeftRight = 0; 
-        enemyD5LeftRight = 0; 
-        
-        goodItemD1LeftRight = 0;
-        goodItemD2LeftRight = 0;
-        goodItemD3LeftRight = 0;
-        goodItemD4LeftRight = 0;
-        goodItemD5LeftRight = 0;
-        
-        holeD1LeftRight = 0; 
-        holeD2LeftRight = 0; 
-        holeD3LeftRight = 0; 
-        holeD4LeftRight = 0; 
-        holeD5LeftRight = 0; 
-       
-        obstacleD1LeftRight = 0; 
-        obstacleD2LeftRight = 0; 
-        obstacleD3LeftRight = 0; 
-        obstacleD4LeftRight = 0; 
-        obstacleD5LeftRight = 0; 
-        
         paused = false;
         Sprite.spriteContext = this;
         sprites.clear();
@@ -153,17 +164,23 @@ public class LevelScene extends Scene implements SpriteContext
             bgLayer[i] = new BgRenderer(bgLevel, graphicsConfiguration, 320, 240, scrollSpeed);
         }
         mario = new Mario(this);
-        D1Sensor =  mario.wPic*1.5;
-        D2Sensor =  D1Sensor*2; 
-        D3Sensor =  D1Sensor*3; 
-        D4Sensor =  D1Sensor*4; 
-        D5Sensor =  D1Sensor*5;
+        D1SensorX =  mario.wPic*1.5;
+        D2SensorX =  D1SensorX*2; 
+        D3SensorX =  D1SensorX*3; 
+        D4SensorX =  D1SensorX*4; 
+        D5SensorX =  D1SensorX*5;
+        
+        D1SensorY =  mario.hPic*2;
+        D2SensorY =  D1SensorY*2; 
+        D3SensorY =  D1SensorY*3; 
+        D4SensorY =  D1SensorY*4; 
+        D5SensorY =  D1SensorY*5;
         
         sprites.add(mario);
         startTime = 1;
         
         //KANN time change
-        timeLeft = 40*15;
+        timeLeft = 20*15;
 
         tick = 0;
     }
@@ -390,6 +407,30 @@ public class LevelScene extends Scene implements SpriteContext
         obstacleD3LeftRight = 0; 
         obstacleD4LeftRight = 0; 
         obstacleD5LeftRight = 0; 
+        
+        enemyD1UpDown = 0; 
+    	enemyD2UpDown = 0; 
+        enemyD3UpDown = 0; 
+        enemyD4UpDown = 0; 
+        enemyD5UpDown = 0; 
+        
+        goodItemD1UpDown = 0;
+        goodItemD2UpDown = 0;
+        goodItemD3UpDown = 0;
+        goodItemD4UpDown = 0;
+        goodItemD5UpDown = 0;
+        
+        holeD1UpDown = 0; 
+        holeD2UpDown = 0; 
+        holeD3UpDown = 0; 
+        holeD4UpDown = 0; 
+        holeD5UpDown = 0; 
+       
+        obstacleD1UpDown = 0; 
+        obstacleD2UpDown = 0; 
+        obstacleD3UpDown = 0; 
+        obstacleD4UpDown = 0; 
+        obstacleD5UpDown = 0; 
     	
         int xCam = (int) (mario.xOld + (mario.x - mario.xOld) * alpha) - 160;
         int yCam = (int) (mario.yOld + (mario.y - mario.yOld) * alpha) - 120;
@@ -409,49 +450,89 @@ public class LevelScene extends Scene implements SpriteContext
         }
 
         g.translate(-xCam, -yCam);
-        boolean inD1;
-        boolean inD2; 
-        boolean inD3; 
-        boolean inD4; 
-        boolean inD5; 
+        boolean inD1X;
+        boolean inD2X; 
+        boolean inD3X; 
+        boolean inD4X; 
+        boolean inD5X; 
+        
+        boolean inD1Y;
+        boolean inD2Y; 
+        boolean inD3Y; 
+        boolean inD4Y; 
+        boolean inD5Y; 
+        
+        
         for (Sprite sprite : sprites)
         {
             if (sprite.layer == 0)
             { 
             	sprite.render(g, alpha);   
             }
-            inD1 = sprite.x >= mario.x - D1Sensor && sprite.x <= mario.x + D1Sensor; 
-            inD2 = sprite.x >= mario.x - D2Sensor && sprite.x <= mario.x + D2Sensor;
-            inD3 = sprite.x >= mario.x - D3Sensor && sprite.x <= mario.x + D3Sensor;
-            inD4 = sprite.x >= mario.x - D4Sensor && sprite.x <= mario.x + D4Sensor;
-            inD5 = sprite.x >= mario.x - D5Sensor && sprite.x <= mario.x + D5Sensor;
+            inD1X = sprite.x >= mario.x - D1SensorX && sprite.x <= mario.x + D1SensorX; 
+            inD2X = sprite.x >= mario.x - D2SensorX && sprite.x <= mario.x + D2SensorX;
+            inD3X = sprite.x >= mario.x - D3SensorX && sprite.x <= mario.x + D3SensorX;
+            inD4X = sprite.x >= mario.x - D4SensorX && sprite.x <= mario.x + D4SensorX;
+            inD5X = sprite.x >= mario.x - D5SensorX && sprite.x <= mario.x + D5SensorX;
+            
+            inD1Y = sprite.y >= mario.y - D1SensorY && sprite.y <= mario.y + D1SensorY; 
+            inD2Y = sprite.y >= mario.y - D2SensorY && sprite.y <= mario.y + D2SensorY;
+            inD3Y = sprite.y >= mario.y - D3SensorY && sprite.y <= mario.y + D3SensorY;
+            inD4Y = sprite.y >= mario.y - D4SensorY && sprite.y <= mario.y + D4SensorY;
+            inD5Y = sprite.y >= mario.y - D5SensorY && sprite.y <= mario.y + D5SensorY;
             	
             if(sprite instanceof Enemy || sprite instanceof BulletBill || sprite instanceof Shell || sprite instanceof FlowerEnemy)
             {
-            	if(inD1)
+            	if(inD1X)
             	{
             		g.setColor(Color.BLACK);
-            		enemyD1LeftRight++;
+            		enemyD1LeftRight=1;
             	}
-            	else if(inD2)
+            	else if(inD2X)
             	{
             		g.setColor(Color.RED);
-            		enemyD2LeftRight++;
+            		enemyD2LeftRight=1;
             	}
-            	else if(inD3)
+            	else if(inD3X)
             	{
             		g.setColor(Color.ORANGE);
-            		enemyD3LeftRight++;
+            		enemyD3LeftRight=1;
             	}
-            	else if(inD4)
+            	else if(inD4X)
             	{
             		g.setColor(Color.YELLOW);
-            		enemyD4LeftRight++;
+            		enemyD4LeftRight=1;
             	}
-            	else if(inD5)
+            	else if(inD5X)
             	{
             		g.setColor(Color.WHITE);
-            		enemyD5LeftRight++;
+            		enemyD5LeftRight=1;
+            	}
+            	
+            	if(inD1Y)
+            	{
+            		g.setColor(Color.BLACK);
+            		enemyD1UpDown=1;
+            	}
+            	else if(inD2Y)
+            	{
+            		g.setColor(Color.RED);
+            		enemyD2UpDown=1;
+            	}
+            	else if(inD3Y)
+            	{
+            		g.setColor(Color.ORANGE);
+            		enemyD3UpDown=1;
+            	}
+            	else if(inD4Y)
+            	{
+            		g.setColor(Color.YELLOW);
+            		enemyD4UpDown=1;
+            	}
+            	else if(inD5Y)
+            	{
+            		g.setColor(Color.WHITE);
+            		enemyD5UpDown=1;
             	}
             	
             	
@@ -514,30 +595,56 @@ public class LevelScene extends Scene implements SpriteContext
             }
             else if(sprite instanceof Mushroom || sprite instanceof FireFlower)
             {
-            	if(inD1)
+            	if(inD1X)
             	{
             		g.setColor(Color.WHITE);
-            		goodItemD1LeftRight++;
+            		goodItemD1LeftRight=1;
             	}
-            	else if(inD2)
+            	else if(inD2X)
             	{
             		g.setColor(Color.GREEN);
-            		goodItemD2LeftRight++;
+            		goodItemD2LeftRight=1;
             	}
-            	else if(inD3)
+            	else if(inD3X)
             	{
             		g.setColor(Color.CYAN);
-            		goodItemD3LeftRight++;
+            		goodItemD3LeftRight=1;
             	}
-            	else if(inD4)
+            	else if(inD4X)
             	{
             		g.setColor(Color.BLUE);
-            		goodItemD4LeftRight++;
+            		goodItemD4LeftRight=1;
             	}
-            	else if(inD5)
+            	else if(inD5X)
             	{
             		g.setColor(Color.PINK);
-            		goodItemD5LeftRight++;
+            		goodItemD5LeftRight=1;
+            	}
+            	
+            	if(inD1Y)
+            	{
+            		g.setColor(Color.WHITE);
+            		goodItemD1UpDown=1;
+            	}
+            	else if(inD2Y)
+            	{
+            		g.setColor(Color.GREEN);
+            		goodItemD2UpDown=1;
+            	}
+            	else if(inD3Y)
+            	{
+            		g.setColor(Color.CYAN);
+            		goodItemD3UpDown=1;
+            	}
+            	else if(inD4Y)
+            	{
+            		g.setColor(Color.BLUE);
+            		goodItemD4UpDown=1;
+            	}
+            	else if(inD5Y)
+            	{
+            		g.setColor(Color.PINK);
+            		goodItemD5UpDown=1;
             	}
             	//g.setColor(Color.GREEN);
             	//g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
@@ -567,11 +674,17 @@ public class LevelScene extends Scene implements SpriteContext
         layer.render(g, tick, paused?0:alpha);
         
         boolean colYBoxExist; 
-        inD1 = false; 
-        inD2 = false; 
-        inD3 = false; 
-        inD4 = false; 
-        inD5 = false; 
+        inD1X = false; 
+        inD2X = false; 
+        inD3X = false; 
+        inD4X = false; 
+        inD5X = false; 
+        
+        inD1Y = false; 
+        inD2Y = false; 
+        inD3Y = false; 
+        inD4Y = false; 
+        inD5Y = false; 
         //Renders lines between mario and items of note
         for (int x = xCam / 16; x <= (xCam + layer.width) / 16; x++)
         {
@@ -602,39 +715,71 @@ public class LevelScene extends Scene implements SpriteContext
                 int marioX = (int) (mario.x - xCam) ;
                 int marioY = (int) (mario.y - yCam) ;
                 
-                inD1 = blockX >= marioX - D1Sensor && blockX <= marioX + D1Sensor; 
-                inD2 = blockX >= marioX - D2Sensor && blockX <= marioX + D2Sensor;
-                inD3 = blockX >= marioX - D3Sensor && blockX <= marioX + D3Sensor;
-                inD4 = blockX >= marioX - D4Sensor && blockX <= marioX + D4Sensor;
-                inD5 = blockX >= marioX - D5Sensor && blockX <= marioX + D5Sensor;
+                inD1X = blockX >= marioX - D1SensorX && blockX <= marioX + D1SensorX; 
+                inD2X = blockX >= marioX - D2SensorX && blockX <= marioX + D2SensorX;
+                inD3X = blockX >= marioX - D3SensorX && blockX <= marioX + D3SensorX;
+                inD4X = blockX >= marioX - D4SensorX && blockX <= marioX + D4SensorX;
+                inD5X = blockX >= marioX - D5SensorX && blockX <= marioX + D5SensorX;
+                
+                inD1Y = blockY >= marioY - D1SensorY && blockY <= marioY + D1SensorY; 
+                inD2Y = blockY >= marioY - D2SensorY && blockY <= marioY + D2SensorY;
+                inD3Y = blockY >= marioY - D3SensorY && blockY <= marioY + D3SensorY;
+                inD4Y = blockY >= marioY - D4SensorY && blockY <= marioY + D4SensorY;
+                inD5Y = blockY >= marioY - D5SensorY && blockY <= marioY + D5SensorY;
                 
                     if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_SPECIAL) > 0)
                     {
                     	g.setColor(new Color(139,69,19));
-                        if(inD1)
+                        if(inD1X)
                     	{
                     		g.setColor(Color.GREEN);
-                    		goodItemD1LeftRight++;
+                    		goodItemD1LeftRight=1;
                     	}
-                    	else if(inD2)
+                    	else if(inD2X)
                     	{
                     		g.setColor(Color.CYAN);
-                    		goodItemD2LeftRight++;
+                    		goodItemD2LeftRight=1;
                     	}
-                    	else if(inD3)
+                    	else if(inD3X)
                     	{
                     		g.setColor(Color.BLUE);
-                    		goodItemD3LeftRight++;
+                    		goodItemD3LeftRight=1;
                     	}
-                    	else if(inD4)
+                    	else if(inD4X)
                     	{
                     		g.setColor(Color.MAGENTA);
-                    		goodItemD4LeftRight++;
+                    		goodItemD4LeftRight=1;
                     	}
-                    	else if(inD5)
+                    	else if(inD5X)
                     	{
                     		g.setColor(Color.PINK);
-                    		goodItemD5LeftRight++;
+                    		goodItemD5LeftRight=1;
+                    	}
+                        
+                        if(inD1Y)
+                    	{
+                    		g.setColor(Color.GREEN);
+                    		goodItemD1UpDown=1;
+                    	}
+                    	else if(inD2Y)
+                    	{
+                    		g.setColor(Color.CYAN);
+                    		goodItemD2UpDown=1;
+                    	}
+                    	else if(inD3Y)
+                    	{
+                    		g.setColor(Color.BLUE);
+                    		goodItemD3UpDown=1;
+                    	}
+                    	else if(inD4Y)
+                    	{
+                    		g.setColor(Color.MAGENTA);
+                    		goodItemD4UpDown=1;
+                    	}
+                    	else if(inD5Y)
+                    	{
+                    		g.setColor(Color.PINK);
+                    		goodItemD5UpDown=1;
                     	}
  
                         g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
@@ -647,30 +792,56 @@ public class LevelScene extends Scene implements SpriteContext
                     else if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BUMPABLE) > 0)
                     {
                     	g.setColor(new Color(139,69,19));
-                    	if(inD1)
+                    	if(inD1X)
                     	{
                     		g.setColor(Color.GREEN);
-                    		goodItemD1LeftRight++;
+                    		goodItemD1LeftRight=1;
                     	}
-                    	else if(inD2)
+                    	else if(inD2X)
                     	{
                     		g.setColor(Color.CYAN);
-                    		goodItemD2LeftRight++;
+                    		goodItemD2LeftRight=1;
                     	}
-                    	else if(inD3)
+                    	else if(inD3X)
                     	{
                     		g.setColor(Color.BLUE);
-                    		goodItemD3LeftRight++;
+                    		goodItemD3LeftRight=1;
                     	}
-                    	else if(inD4)
+                    	else if(inD4X)
                     	{
                     		g.setColor(Color.MAGENTA);
-                    		goodItemD4LeftRight++;
+                    		goodItemD4LeftRight=1;
                     	}
-                    	else if(inD5)
+                    	else if(inD5X)
                     	{
                     		g.setColor(Color.PINK);
-                    		goodItemD5LeftRight++;
+                    		goodItemD5LeftRight=1;
+                    	}
+                    	
+                    	if(inD1Y)
+                    	{
+                    		g.setColor(Color.GREEN);
+                    		goodItemD1UpDown=1;
+                    	}
+                    	else if(inD2Y)
+                    	{
+                    		g.setColor(Color.CYAN);
+                    		goodItemD2UpDown=1;
+                    	}
+                    	else if(inD3Y)
+                    	{
+                    		g.setColor(Color.BLUE);
+                    		goodItemD3UpDown=1;
+                    	}
+                    	else if(inD4Y)
+                    	{
+                    		g.setColor(Color.MAGENTA);
+                    		goodItemD4UpDown=1;
+                    	}
+                    	else if(inD5Y)
+                    	{
+                    		g.setColor(Color.PINK);
+                    		goodItemD5UpDown=1;
                     	}
                     	
                         //g.setColor(Color.BLUE);
@@ -689,30 +860,56 @@ public class LevelScene extends Scene implements SpriteContext
                     else if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_PICKUPABLE) > 0)
                     {
                     	g.setColor(new Color(139,69,19));
-                    	if(inD1)
+                    	if(inD1X)
                     	{
                     		g.setColor(Color.GREEN);
-                    		goodItemD1LeftRight++;
+                    		goodItemD1LeftRight=1;
                     	}
-                    	else if(inD2)
+                    	else if(inD2X)
                     	{
                     		g.setColor(Color.CYAN);
-                    		goodItemD2LeftRight++;
+                    		goodItemD2LeftRight=1;
                     	}
-                    	else if(inD3)
+                    	else if(inD3X)
                     	{
                     		g.setColor(Color.BLUE);
-                    		goodItemD3LeftRight++;
+                    		goodItemD3LeftRight=1;
                     	}
-                    	else if(inD4)
+                    	else if(inD4X)
                     	{
                     		g.setColor(Color.MAGENTA);
-                    		goodItemD4LeftRight++;
+                    		goodItemD4LeftRight=1;
                     	}
-                    	else if(inD5)
+                    	else if(inD5X)
                     	{
                     		g.setColor(Color.PINK);
-                    		goodItemD5LeftRight++;
+                    		goodItemD5LeftRight=1;
+                    	}
+                    	
+                    	if(inD1Y)
+                    	{
+                    		g.setColor(Color.GREEN);
+                    		goodItemD1UpDown=1;
+                    	}
+                    	else if(inD2Y)
+                    	{
+                    		g.setColor(Color.CYAN);
+                    		goodItemD2UpDown=1;
+                    	}
+                    	else if(inD3Y)
+                    	{
+                    		g.setColor(Color.BLUE);
+                    		goodItemD3UpDown=1;
+                    	}
+                    	else if(inD4Y)
+                    	{
+                    		g.setColor(Color.MAGENTA);
+                    		goodItemD4UpDown=1;
+                    	}
+                    	else if(inD5Y)
+                    	{
+                    		g.setColor(Color.PINK);
+                    		goodItemD5UpDown=1;
                     	}
 
                         //g.setColor(Color.YELLOW);
@@ -730,33 +927,57 @@ public class LevelScene extends Scene implements SpriteContext
                     	if(blockY  <= marioY)
                     	{
                     		g.setColor(new Color(139,69,19));
-	                    	if(inD1)
+	                    	if(inD1X)
 	                    	{
 	                    		g.setColor(Color.BLACK);
-	                    		obstacleD1LeftRight++;
+	                    		obstacleD1LeftRight=1;
 	                    	}
-	                    	else if(inD2)
+	                    	else if(inD2X)
 	                    	{
 	                    		g.setColor(Color.DARK_GRAY);
-	                    		obstacleD2LeftRight++;
+	                    		obstacleD2LeftRight=1;
 	                    	}
-	                    	else if(inD3)
+	                    	else if(inD3X)
 	                    	{
 	                    		g.setColor(Color.GRAY);
-	                    		obstacleD3LeftRight++;
+	                    		obstacleD3LeftRight=1;
 	                    	}
-	                    	else if(inD4)
+	                    	else if(inD4X)
 	                    	{
 	                    		g.setColor(Color.LIGHT_GRAY);
-	                    		obstacleD4LeftRight++;
+	                    		obstacleD4LeftRight=1;
 	                    	}
-	                    	else if(inD5)
+	                    	else if(inD5X)
 	                    	{
 	                    		g.setColor(Color.WHITE);
-	                    		obstacleD5LeftRight++;
+	                    		obstacleD5LeftRight=1;
 	                    	}
 	                    	
-	                    	
+	                    	if(inD1Y)
+	                    	{
+	                    		g.setColor(Color.BLACK);
+	                    		obstacleD1UpDown=1;
+	                    	}
+	                    	else if(inD2Y)
+	                    	{
+	                    		g.setColor(Color.DARK_GRAY);
+	                    		obstacleD2UpDown=1;
+	                    	}
+	                    	else if(inD3Y)
+	                    	{
+	                    		g.setColor(Color.GRAY);
+	                    		obstacleD3UpDown=1;
+	                    	}
+	                    	else if(inD4Y)
+	                    	{
+	                    		g.setColor(Color.LIGHT_GRAY);
+	                    		obstacleD4UpDown=1;
+	                    	}
+	                    	else if(inD5Y)
+	                    	{
+	                    		g.setColor(Color.WHITE);
+	                    		obstacleD5UpDown=1;
+	                    	}
 	                    	g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
 	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
 	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 2, 16);
@@ -769,30 +990,56 @@ public class LevelScene extends Scene implements SpriteContext
                     	if(!colYBoxExist)
                     	{
                     		g.setColor(new Color(139,69,19));
-                    		if(inD1)
+                    		if(inD1X)
                     		{
                     			g.setColor(Color.BLACK);
-                    			holeD1LeftRight++;
+                    			holeD1LeftRight=1;
                     		}
-                    		else if(inD2)
+                    		else if(inD2X)
                     		{
                     			g.setColor(Color.RED);
-                    			holeD2LeftRight++;
+                    			holeD2LeftRight=1;
                     		}
-                    		else if(inD3)
+                    		else if(inD3X)
                     		{
                     			g.setColor(Color.ORANGE);
-                    			holeD3LeftRight++;
+                    			holeD3LeftRight=1;
                     		}
-                    		else if(inD4)
+                    		else if(inD4X)
                     		{
                     			g.setColor(Color.YELLOW);
-                    			holeD4LeftRight++;
+                    			holeD4LeftRight=1;
                     		}
-                    		else if(inD5)
+                    		else if(inD5X)
                     		{
                     			g.setColor(Color.WHITE);
-                    			holeD5LeftRight++;
+                    			holeD5LeftRight=1;
+                    		}
+                    		
+                    		if(inD1Y)
+                    		{
+                    			g.setColor(Color.BLACK);
+                    			holeD1UpDown=1;
+                    		}
+                    		else if(inD2Y)
+                    		{
+                    			g.setColor(Color.RED);
+                    			holeD2UpDown=1;
+                    		}
+                    		else if(inD3Y)
+                    		{
+                    			g.setColor(Color.ORANGE);
+                    			holeD3UpDown=1;
+                    		}
+                    		else if(inD4Y)
+                    		{
+                    			g.setColor(Color.YELLOW);
+                    			holeD4UpDown=1;
+                    		}
+                    		else if(inD5Y)
+                    		{
+                    			g.setColor(Color.WHITE);
+                    			holeD5UpDown=1;
                     		}
                     		
 	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
@@ -836,11 +1083,12 @@ public class LevelScene extends Scene implements SpriteContext
         {
             float t = startTime + alpha - 2;
             t = t * t * 0.6f;
-            renderBlackout(g, 160, 120, (int) (t));
+            //renderBlackout(g, 160, 120, (int) (t));
         }
 //        mario.x>level.xExit*16
         if (mario.winTime > 0)
         {
+        	this.isWon = true; 
             float t = mario.winTime + alpha;
             t = t * t * 0.2f;
 
@@ -851,11 +1099,12 @@ public class LevelScene extends Scene implements SpriteContext
 //                init();
             }
 
-            renderBlackout(g, (int) (mario.xDeathPos - xCam), (int) (mario.yDeathPos - yCam), (int) (320 - t));
+            //renderBlackout(g, (int) (mario.xDeathPos - xCam), (int) (mario.yDeathPos - yCam), (int) (320 - t));
         }
 
         if (mario.deathTime > 0)
         {
+        	this.isLose = true; 
             float t = mario.deathTime + alpha;
             t = t * t * 0.4f;
 
@@ -866,7 +1115,7 @@ public class LevelScene extends Scene implements SpriteContext
 //                init();
             }
 
-            renderBlackout(g, (int) (mario.xDeathPos - xCam), (int) (mario.yDeathPos - yCam), (int) (320 - t));
+            //renderBlackout(g, (int) (mario.xDeathPos - xCam), (int) (mario.yDeathPos - yCam), (int) (320 - t));
         }
     }
 

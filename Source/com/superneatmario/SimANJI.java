@@ -90,23 +90,25 @@ public class SimANJI {
         frame.addFocusListener(marioComponent);
         
         
-/*        try {
-            this.wait(1500);
+        try {
+            Thread.sleep(1500);
         } catch(InterruptedException ex) {
             //Thread.currentThread().interrupt();
         	System.out.println("Wat"); 
-        }*/
+        }
 
         
         //Continue until ded or win
         Random rand = new Random();
         final int TICKS_PER_SECOND = 24;
+        boolean startDuration = false;
+        boolean continueDuration= false; 
         for (int loop = 0; ; loop++)
         {        	
         	LevelScene curScene = (LevelScene)marioComponent.scene;          
 			
         	//System.out.println("Win or loss? " + marioComponent.isLossed + "  " +  marioComponent.isWon); 
-        	if(marioComponent.isLossed || marioComponent.isWon)
+        	if(curScene.isLose || curScene.isWon)
 			{
 				System.out.println("Mario won or loss"); 
 				curScene = (LevelScene)marioComponent.scene; 
@@ -151,11 +153,32 @@ public class SimANJI {
 				        curScene.holeD2LeftRight , 
 				        curScene.holeD3LeftRight , 
 				        curScene.holeD4LeftRight , 
-				        curScene.holeD5LeftRight , curScene.obstacleD1LeftRight , 
+				        curScene.holeD5LeftRight ,
+				        curScene.obstacleD1LeftRight , 
 				        curScene.obstacleD2LeftRight , 
 				        curScene.obstacleD3LeftRight , 
 				        curScene.obstacleD4LeftRight , 
-				        curScene.obstacleD5LeftRight, 1 }; 
+				        curScene.obstacleD5LeftRight,
+				        curScene.enemyD1UpDown , 
+						curScene.enemyD2UpDown , 
+						curScene.enemyD3UpDown , 
+						curScene.enemyD4UpDown , 
+						curScene.enemyD5UpDown , 
+						curScene.goodItemD1UpDown ,
+				        curScene.goodItemD2UpDown ,
+				        curScene.goodItemD3UpDown ,
+				        curScene.goodItemD4UpDown ,
+				        curScene.goodItemD5UpDown ,
+				        curScene.holeD1UpDown , 
+				        curScene.holeD2UpDown , 
+				        curScene.holeD3UpDown , 
+				        curScene.holeD4UpDown , 
+				        curScene.holeD5UpDown , 
+				        curScene.obstacleD1UpDown , 
+				        curScene.obstacleD2UpDown , 
+				        curScene.obstacleD3UpDown , 
+				        curScene.obstacleD4UpDown , 
+				        curScene.obstacleD5UpDown}; 
 				
 				//System.out.println("0) Red Koopa Count " + curScene.distToRedKoopa.size()); 
 				//System.out.println("Enemy Count " + curScene.enemyD1LeftRight);			
@@ -173,7 +196,7 @@ public class SimANJI {
 				maxResponseNode = 0; 
 				for(int i = 0; i < responses.length; i ++)
 				{
-					//System.out.println("response "+i + "  " + responses[i]);
+					System.out.println("response "+i + "  " + responses[i]);
 					/*if(responses[i] > maxResponse)
 					{
 						maxResponse = responses[i]; 
@@ -197,11 +220,13 @@ public class SimANJI {
 		                {
 		                //down crouches when big
 		                // else nothing
-		                	keyCode = KeyEvent.VK_DOWN;
+		                	//keyCode = KeyEvent.VK_DOWN;
+		                	keyCode = KeyEvent.VK_RIGHT;
 		                }
 		                if (r==2)
 		                {
-		                	keyCode = KeyEvent.VK_LEFT;
+		                	//keyCode = KeyEvent.VK_LEFT;
+		                	keyCode = KeyEvent.VK_RIGHT;
 		                }
 		                if (r==3)
 		                {
@@ -209,37 +234,50 @@ public class SimANJI {
 		                // tap a fires fireball
 		                	keyCode = KeyEvent.VK_A;
 		                }
+		                //attempt to manage triggers speed freq of button mashing
+		                /**/
 		                if (r==4)
 		                {
 		                //s jump
 		                	keyCode = KeyEvent.VK_S;
+		                	
 		                }
-		                //TODO duration
-		                /* if (r==6)
+		                /*if (r==5)
 		                {
-		                	keyCode = KeyEvent.VK_UP;
+	                		continueDuration = true; 
 		                }*/
+		                
 		                if(responses[i]>activator.getMaxResponse()-0.1)
 						{    
 		                	switch(r)
 		                	{
 		                	case 0: 
 		                		System.out.println("Right"); 
+		                		break;
 		                	case 1: 
 		                		System.out.println("Down"); 
+		                		break;
 		                	case 2: 
 		                		System.out.println("Left"); 
+		                		break;
 		                	case 3: 
 		                		System.out.println("A"); 
+		                		break;
+		                	/*case 4: 
+		                		System.out.println("Cont"); */
 		                	case 4: 
 		                		System.out.println("Jump"); 
+		                		break;
 		                	}
-			                
-			            	marioComponent.toggleKey(keyCode, true);
+		                	marioComponent.toggleKey(keyCode, true);	
+
+
 						}
 						else
 						{
+							
 							marioComponent.toggleKey(keyCode, false);
+							
 						}
 					}
 				}
