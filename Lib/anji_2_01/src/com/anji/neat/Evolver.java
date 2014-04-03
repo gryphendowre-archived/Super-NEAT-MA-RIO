@@ -188,20 +188,20 @@ public void run() throws Exception {
 			.getFitnessValue() );
 
 	// generations
-	for ( int generation = 0; ( generation < numEvolutions && adjustedFitness < targetFitness ); ++generation ) {
+	for ( int generation = 0;  generation < numEvolutions; ++generation ) {
 		// generation start time
 		Date generationStartDate = Calendar.getInstance().getTime();
 		logger.info( "Generation " + generation + ": start" );
 
 		// next generation
-		genotype.evolve();
+		genotype.evolve(generation);
 
 		// result data
 		champ = genotype.getFittestChromosome();
 		adjustedFitness = ( maxFitness > 0 ? (double) champ.getFitnessValue() / maxFitness : champ
 				.getFitnessValue() );
-		if ( adjustedFitness >= thresholdFitness && generationOfFirstSolution == -1 )
-			generationOfFirstSolution = generation;
+//		if ( adjustedFitness >= thresholdFitness && generationOfFirstSolution == -1 )
+//			generationOfFirstSolution = generation;
 
 		// generation finish
 		Date generationEndDate = Calendar.getInstance().getTime();

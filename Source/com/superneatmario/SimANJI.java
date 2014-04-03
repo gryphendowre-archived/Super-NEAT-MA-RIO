@@ -8,6 +8,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +29,7 @@ import com.mojang.mario.MarioComponent;
 public class SimANJI {
 
 	private boolean running = false;
-	private int popNum = 0; 
+	private int generation = 0; 
 	Activator activator;
 	double[] responses; 
 	double maxResponse; 
@@ -36,10 +40,11 @@ public class SimANJI {
 	private float distance;
 	private int timeLeft;
 	private int genomeNum; 
-	public SimANJI(Activator activator, int seed, int genomeNum) {
+	public SimANJI(Activator activator, int seed, int genomeNum, int generation) {
 		this.genomeNum = genomeNum; 
 		this.activator = activator; 
 		this.seed = seed; 
+		this.generation = generation; 
 	}
 
 	/*public void start(int i )
@@ -67,9 +72,9 @@ public class SimANJI {
 		//For each tick in mario
 		// get sensor data for input from levelscene? make new data fields? 
 		// responses = keypressed for mario
-		System.out.println("Serial ID " + ( genomeNum+18775993206607L)); 
+		//System.out.println("Serial ID " + ( genomeNum+18775993206607L)); 
 		
-		MarioComponent marioComponent = new MarioComponent(640, 480,  ( genomeNum+18775993206607L), seed);
+		MarioComponent marioComponent = new MarioComponent(640, 480,  ( genomeNum+18775993206607L), seed, generation);
         JFrame frame = new JFrame("Mario");
         frame.setContentPane(marioComponent);
         frame.pack();
@@ -91,7 +96,7 @@ public class SimANJI {
         
         
         try {
-            Thread.sleep(1500);
+            Thread.sleep(2000);
         } catch(InterruptedException ex) {
             //Thread.currentThread().interrupt();
         	System.out.println("Wat"); 
@@ -100,11 +105,12 @@ public class SimANJI {
         
         //Continue until ded or win
         Random rand = new Random();
-        final int TICKS_PER_SECOND = 24;
-        boolean startDuration = false;
-        boolean continueDuration= false; 
+
+        int display = 0; 
         for (int loop = 0; ; loop++)
         {        	
+        	if(marioComponent.scene == null)
+        		continue; 
         	LevelScene curScene = (LevelScene)marioComponent.scene;          
 			
         	//System.out.println("Win or loss? " + marioComponent.isLossed + "  " +  marioComponent.isWon); 
@@ -127,28 +133,34 @@ public class SimANJI {
 				frame.setVisible(false); //disappear
 				frame.dispose(); //Destroy the JFrame object
 				//Thread.dumpStack();
-				System.out.println("Thread count " + Thread.activeCount()); 
+				//System.out.println("Thread count " + Thread.activeCount()); 
 				marioComponent = null; 
 				System.gc(); 
-				System.out.println("Thread count " + Thread.activeCount()); 
+				convertImg_to_vid();
+				//System.out.println("Thread count " + Thread.activeCount()); 
 				break;
 			}
 			else
-			{	
+			{	//NOTE: creates a pseudo sync w/ mario component
+				//stimuli were broke w/o this
+				if(marioComponent.endofNewTick == false)
+	        		continue; 
+	        	display++; 
 				try{
 					
 					
-					 /* total inputs from all enemy,items,holes,obstacles x5 in level scene*/ 
-				double[] stimuli = {curScene.enemyD1LeftRight , 
+					 /* reduce dim w/o including good items atm or how low holes are*/
+				double[] stimuli = {
+						curScene.enemyD1LeftRight , 
 						curScene.enemyD2LeftRight , 
 						curScene.enemyD3LeftRight , 
 						curScene.enemyD4LeftRight , 
 						curScene.enemyD5LeftRight , 
-						curScene.goodItemD1LeftRight ,
-				        curScene.goodItemD2LeftRight ,
-				        curScene.goodItemD3LeftRight ,
-				        curScene.goodItemD4LeftRight ,
-				        curScene.goodItemD5LeftRight ,
+//						curScene.goodItemD1LeftRight ,
+//				        curScene.goodItemD2LeftRight ,
+//				        curScene.goodItemD3LeftRight ,
+//				        curScene.goodItemD4LeftRight ,
+//				        curScene.goodItemD5LeftRight ,
 				        curScene.holeD1LeftRight , 
 				        curScene.holeD2LeftRight , 
 				        curScene.holeD3LeftRight , 
@@ -164,24 +176,32 @@ public class SimANJI {
 						curScene.enemyD3UpDown , 
 						curScene.enemyD4UpDown , 
 						curScene.enemyD5UpDown , 
-						curScene.goodItemD1UpDown ,
-				        curScene.goodItemD2UpDown ,
-				        curScene.goodItemD3UpDown ,
-				        curScene.goodItemD4UpDown ,
-				        curScene.goodItemD5UpDown ,
-				        curScene.holeD1UpDown , 
-				        curScene.holeD2UpDown , 
-				        curScene.holeD3UpDown , 
-				        curScene.holeD4UpDown , 
-				        curScene.holeD5UpDown , 
+//						curScene.goodItemD1UpDown ,
+//				        curScene.goodItemD2UpDown ,
+//				        curScene.goodItemD3UpDown ,
+//				        curScene.goodItemD4UpDown ,
+//				        curScene.goodItemD5UpDown ,
+//				        curScene.holeD1UpDown , 
+//				        curScene.holeD2UpDown , 
+//				        curScene.holeD3UpDown , 
+//				        curScene.holeD4UpDown , 
+//				        curScene.holeD5UpDown , 
 				        curScene.obstacleD1UpDown , 
 				        curScene.obstacleD2UpDown , 
 				        curScene.obstacleD3UpDown , 
 				        curScene.obstacleD4UpDown , 
 				        curScene.obstacleD5UpDown, 
-				        curScene.mario.onGround?1.0:0,
-				        curScene.mario.mayJump?1.0:0}; 
+				        curScene.mario.onGround?1.0:0}; 
 				
+				if(display%48 == 0)
+				{
+					System.out.println("Stimuli "); 
+					for(int idx = 0; idx< stimuli.length; idx++)
+					{
+						System.out.print(stimuli[idx] + ", "); 
+					}
+					System.out.println(); 
+				}
 				//System.out.println("0) Red Koopa Count " + curScene.distToRedKoopa.size()); 
 				//System.out.println("Enemy Count " + curScene.enemyD1LeftRight);			
 				 			
@@ -244,14 +264,11 @@ public class SimANJI {
 		                	keyCode = KeyEvent.VK_S;
 		                	
 		                }
-		                /*if (r==5)
-		                {
-	                		continueDuration = true; 
-		                }*/
 		                
 		                if(responses[i]>activator.getMaxResponse()-0.1)
 						{    
-		                	switch(r)
+		                	//System.out.println("response "+i + "  " + responses[i]);
+		                	/*switch(r)
 		                	{
 		                	case 0: 
 		                		System.out.println("Right"); 
@@ -265,12 +282,10 @@ public class SimANJI {
 		                	case 3: 
 		                		System.out.println("A"); 
 		                		break;
-		                	/*case 4: 
-		                		System.out.println("Cont"); */
 		                	case 4: 
 		                		System.out.println("Jump"); 
 		                		break;
-		                	}
+		                	}*/
 		                	marioComponent.toggleKey(keyCode, true);	
 
 
@@ -282,33 +297,7 @@ public class SimANJI {
 							
 						}
 					}
-				}
-				/*try {
-                    Thread.sleep(250);
-                } catch(InterruptedException ex) {
-                    //Thread.currentThread().interrupt();
-                	System.out.println("Wat"); 
-                }*/
-            	/*if (r==5)
-            	{
-	            	try {
-	                    Thread.sleep(rand.nextInt(240)+10);
-	                } catch(InterruptedException ex) {
-	                    //Thread.currentThread().interrupt();
-	                	System.out.println("Wat"); 
-	                }
-            	}
-            	else //if (r == 0 || r == 1)
-            	{
-            		try {
-	                    Thread.sleep(250);
-	                } catch(InterruptedException ex) {
-	                    //Thread.currentThread().interrupt();
-	                	System.out.println("Wat"); 
-	                }
-            	}
-            	if (r!=4)
-            		*/
+				}				
 				
 				}
 				catch(Exception e)
@@ -355,5 +344,25 @@ public class SimANJI {
 	public double getTimeLeft() {
 		return this.timeLeft; 
 	}
-	
+	//For rendering
+	void convertImg_to_vid()
+    {
+        /*Process chperm;
+        String path = "..\\Windows Programs\\Program Files (x86)\\FFMpeg\\bin\\ffmpeg.exe -f image2 -i Documents"+File.separator+"School"+File.separator+"Grad School"+File.separator+"Spring 2014"+File.separator+"Project"+File.separator+"Videos"+File.separator+"img%d.jpg -vcodecmpeg2video Documents"+File.separator+"School"+File.separator+"Grad School"+File.separator+"Spring 2014"+File.separator+"Project"+File.separator+"MakeVideo"+File.separator+"a.mpg\n";
+        try {
+        	System.out.println(path); 
+            chperm=Runtime.getRuntime().exec("cmd");
+        	//ByteArrayOutputStream baos = new ByteArrayOutputStream();
+              DataOutputStream os = 
+                  new DataOutputStream(chperm.getOutputStream());
+
+                  os.writeBytes(path);
+                  os.flush();
+
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } */
+    }
 }
