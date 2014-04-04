@@ -180,7 +180,7 @@ public class LevelScene extends Scene implements SpriteContext
         startTime = 1;
         
         //KANN time change
-        timeLeft = 200*15;
+        timeLeft = 20*15;
 
         tick = 0;
     }

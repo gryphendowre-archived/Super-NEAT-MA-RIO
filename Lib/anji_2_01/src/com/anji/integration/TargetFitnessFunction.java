@@ -143,15 +143,15 @@ final public void evaluate( List genotypes ) {
 	Iterator it = genotypes.iterator();
 	int seed = new Random().nextInt(); 
 	int genomeNum = 0; 
-	//ExecutorService service = Executors.newFixedThreadPool(1);
+	//ExecutorService service = Executors.newFixedThreadPool(3);
 	while ( it.hasNext() ) {	
 		Chromosome genotype = (Chromosome) it.next();
-	    //service.submit(new EvalThreadTask(activatorFactory, genotype, genomeNum,seed));	
+	    //service.execute(new EvalThreadTask(activatorFactory, genotype, genomeNum, seed));	
 		try {
 			Activator activator = activatorFactory.newActivator( genotype ); 
 			SimANJI sa = new SimANJI(activator, seed, genomeNum); 
-			boolean isDone = sa.run();
-			//sa.start();;
+			boolean isDone = sa.start();
+			//sa.start();
 			double [][] responses = null; 
 			
 			if(isDone)
@@ -177,6 +177,15 @@ final public void evaluate( List genotypes ) {
 		genomeNum++; 
 		
 	}
+	
+//	service.shutdown();
+//	while (!service.isTerminated())
+//	{
+//		//System.out.println("Not Finished");
+//	}
+//	
+//	System.out.println("Finished the service");
+	
 	/*service.shutdown();
 	try {
 		service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);

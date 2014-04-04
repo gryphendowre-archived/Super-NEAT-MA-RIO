@@ -22,7 +22,7 @@ import com.mojang.mario.Art;
 import com.mojang.mario.LevelScene;
 import com.mojang.mario.MarioComponent;
 
-public class SimANJI {
+public class SimANJI implements Runnable{
 
 	private boolean running = false;
 	private int popNum = 0; 
@@ -60,7 +60,13 @@ public class SimANJI {
         running = false;
     }
 	
-	public boolean run() 
+	public boolean start()
+	{
+		run();
+		return true;
+	}
+	
+	public void run() 
 	{
 		
 		//while mario level is running
@@ -77,7 +83,12 @@ public class SimANJI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation((screenSize.width-frame.getWidth()), (screenSize.height-frame.getHeight())/2);
+        Random randW = new Random(screenSize.width);
+        Random randH = new Random(screenSize.height);
+        frame.setLocation((screenSize.width-frame.getWidth()),
+        		(screenSize.height - frame.getHeight())/2);
+        //randH.nextInt()
+        //frame.setLocation((screenSize.width-frame.getWidth()), (screenSize.height-frame.getHeight())/2);
         
         frame.setVisible(true);
         
@@ -320,7 +331,7 @@ public class SimANJI {
 				}
 	        }
 	    }
-        return true; 
+        //return true; 
 	}
 	private void setTimeLeft(int timeLeft) {
 		this.timeLeft = timeLeft; 		
