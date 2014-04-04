@@ -6,8 +6,14 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
+
+
+
+import javax.imageio.ImageIO;
 //import javax.sound.sampled.LineUnavailableException;
 import javax.swing.*;
 
@@ -20,7 +26,7 @@ import com.mojang.sonar.SonarSoundEngine;
 public class MarioComponent extends JComponent implements Runnable, KeyListener, FocusListener
 {
     private static  long serialVersionUID;
-    public static final int TICKS_PER_SECOND = 24;
+    public static final int TICKS_PER_SECOND = 48;
 
     private boolean running = false;
     private int width, height;
@@ -34,20 +40,20 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     private Scale2x scale2x = new Scale2x(320, 240);
     
     public static int type = LevelGenerator.TYPE_OVERGROUND;
-    public static int difficulty = 3;
+    public static int difficulty = 0;
     public static int seed = new Random().nextInt(); 
     public static int x1 = new Random().nextInt(); 
     public static int y1 = new Random().nextInt(); 
-
-    
-    public MarioComponent(int width, int height, long serialUID, int seed)
+    public boolean endofNewTick = false; 
+    private int generation; 
+    public MarioComponent(int width, int height, long serialUID, int seed, int generation)
     {
     	this.seed = seed; 
         this.setFocusable(true);
         this.setEnabled(true);
         this.width = width;
         this.height = height;
-
+        this.generation = generation ; 
         Dimension size = new Dimension(width, height);
         setPreferredSize(size);
         setMinimumSize(size);
@@ -123,7 +129,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
 
     public void start()
     {
-    	System.out.println("MarioComponent Start " + running); 
+    	//System.out.println("MarioComponent Start " + running); 
         if (!running)
         {
             running = true;
@@ -171,9 +177,10 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
         //Jumps right into a randomized level
                 
         startLevel(seed * x1 * y1 + x1 * 31871 + y1 * 21871, difficulty, type);
-        
+        int everyTick = 0; 
         while (running)
         {
+        	endofNewTick = false; 
             double lastTime = time;
             time = System.nanoTime() / 1000000000.0;
             double passedTime = time - lastTime;
@@ -214,13 +221,13 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
             og.fillRect(0, 0, 320, 240);
 
             scene.render(og, alpha);
-
+            
             if (!this.hasFocus() && tick/4%2==0)
             {
-                String msg = "CLICK TO PLAY";
+                //String msg = "CLICK TO PLAY";
 
-                drawString(og, msg, 160 - msg.length() * 4 + 1, 110 + 1, 0);
-                drawString(og, msg, 160 - msg.length() * 4, 110, 7);
+                //drawString(og, msg, 160 - msg.length() * 4 + 1, 110 + 1, 0);
+                //drawString(og, msg, 160 - msg.length() * 4, 110, 7);
             }
             og.setColor(Color.BLACK);
             /*          drawString(og, "FPS: " + fps, 5, 5, 0);
@@ -243,7 +250,18 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
             }
 
             renderedFrames++;
-
+            everyTick++; 
+            
+            //For Rendering
+            /*try {
+                // retrieve image
+                BufferedImage bi = image.getSnapshot(); 
+                
+                String path = "E:"+File.separator+"Joe"+File.separator+"Documents"+File.separator+"School"+File.separator+"Grad School"+File.separator+"Spring 2014"+File.separator+"Project"+File.separator+"Videos"+File.separator+"img"+everyTick+".png";
+                File outputfile = new File(path);
+                ImageIO.write(bi, "png", outputfile);
+            } catch (IOException e) {
+            }*/
             try
             {
                 Thread.sleep(5);
@@ -251,11 +269,12 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
             catch (InterruptedException e)
             {
             }
+            endofNewTick = true;
         }
 
-        Art.stopMusic();
+       // Art.stopMusic();
     }
-
+    
     private void drawString(Graphics g, String text, int x, int y, int c)
     {
         char[] ch = text.toCharArray();
@@ -277,7 +296,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
 
     public void startLevel(long seed, int difficulty, int type)
     {
-        scene = new LevelScene(graphicsConfiguration, this, seed, difficulty, type);
+        scene = new LevelScene(graphicsConfiguration, this, seed, difficulty, type, generation);
         //scene.setSound(sound);
         scene.init();
     }

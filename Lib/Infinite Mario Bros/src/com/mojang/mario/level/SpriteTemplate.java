@@ -31,6 +31,7 @@ public class SpriteTemplate
             sprite = new Enemy(world, x*16+8, y*16+15, dir, type, winged);
         }
         sprite.spriteTemplate = this;
-        world.addSprite(sprite);
+        //TODO Kann, add back in for enemies
+        //world.addSprite(sprite);
     }
 }

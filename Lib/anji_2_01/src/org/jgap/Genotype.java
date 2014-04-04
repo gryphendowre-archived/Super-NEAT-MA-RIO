@@ -239,8 +239,9 @@ public synchronized Chromosome getFittestChromosome() {
  * Genetic event <code>GeneticEvent.GENOTYPE_EVALUATED_EVENT</code> is fired between steps 2
  * and 3. Genetic event <code>GeneticEvent.GENOTYPE_EVOLVED_EVENT</code> is fired after step
  * 4.
+ * @param generation 
  */
-public synchronized void evolve() {
+public synchronized void evolve(int generation) {
 	try {
 		m_activeConfiguration.lockSettings();
 
@@ -251,7 +252,7 @@ public synchronized void evolve() {
 		// --------------------------------------------------------------
 		BulkFitnessFunction bulkFunction = m_activeConfiguration.getBulkFitnessFunction();
 		if ( bulkFunction != null )
-			bulkFunction.evaluate( m_chromosomes );
+			bulkFunction.evaluate( m_chromosomes,generation );
 		else {
 			// Refactored such that Chromosome does not need a reference to Configuration. Left his
 			// in for backward compatibility, but it makes more sense to use BulkFitnessFunction

@@ -102,7 +102,7 @@ public void init( Properties props ) {
 		//stimuli = Properties.loadArrayFromFile( props.getResourceProperty( STIMULI_FILE_NAME_KEY ) );
 		//targets = Properties.loadArrayFromFile( props.getResourceProperty( TARGETS_FILE_NAME_KEY ) );
 		targets = new double [6][6]; 
-		targetRange = props.getDoubleProperty( TARGETS_RANGE_KEY, 0.0d );
+		//targetRange = props.getDoubleProperty( TARGETS_RANGE_KEY, 0.0d );
 		adjustForNetworkSizeFactor = props.getFloatProperty( ADJUST_FOR_NETWORK_SIZE_FACTOR_KEY,
 				0.0f );
 
@@ -139,17 +139,18 @@ protected void setMaxFitnessValue( int aMaxFitnessValue ) {
  */
 
 
-final public void evaluate( List genotypes ) {
+final public void evaluate( List genotypes, int generation ) {
 	Iterator it = genotypes.iterator();
 	int seed = new Random().nextInt(); 
 	int genomeNum = 0; 
 	//ExecutorService service = Executors.newFixedThreadPool(3);
+	double maxFitness = -1.0; 
 	while ( it.hasNext() ) {	
 		Chromosome genotype = (Chromosome) it.next();
 	    //service.execute(new EvalThreadTask(activatorFactory, genotype, genomeNum, seed));	
 		try {
 			Activator activator = activatorFactory.newActivator( genotype ); 
-			SimANJI sa = new SimANJI(activator, seed, genomeNum); 
+			SimANJI sa = new SimANJI(activator, seed, genomeNum, generation); 
 			boolean isDone = sa.start();
 			//sa.start();
 			double [][] responses = null; 
@@ -165,8 +166,12 @@ final public void evaluate( List genotypes ) {
 			//after death, or win, fitness = distance mario made
 				//calculateErrorFitness( responses, activator.getMinResponse(),
 				//activator.getMaxResponse()
-				System.out.println("Fitness Val " + (int)(sa.getDistance() + sa.getCoins() )); 
-				genotype.setFitnessValue( (int)(sa.getDistance()*1.5 + sa.getCoins()*COIN_ALPHA ) );/**/
+				System.out.println("Fitness Val " + (int)(sa.getDistance() /*+ sa.getCoins()*/ )); 
+				genotype.setFitnessValue( (int)(sa.getDistance() - sa.getTimeLeft()/**1.5 + sa.getCoins()*COIN_ALPHA*/ ) );/**/
+				if( (int)sa.getDistance() > getMaxFitnessValue())
+				{
+					setMaxFitnessValue((int)sa.getDistance()); 
+				}
 			}
 				
 		}
@@ -177,6 +182,13 @@ final public void evaluate( List genotypes ) {
 		genomeNum++; 
 		
 	}
+//	Iterator it2 = genotypes.iterator();
+//
+//	//most a fitness should be is one
+//	while ( it2.hasNext() ) {	
+//		Chromosome genotype = (Chromosome) it2.next();
+//		genotype.setFitnessValue( genotype.getFitnessValue()/getMaxFitnessValue() );/**/
+//	}
 	
 //	service.shutdown();
 //	while (!service.isTerminated())
