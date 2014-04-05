@@ -19,17 +19,11 @@
  */
 package com.anji.integration;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
-import javax.swing.JFrame;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
 import org.jgap.BulkFitnessFunction;
@@ -38,10 +32,6 @@ import org.jgap.Chromosome;
 import com.anji.util.Configurable;
 import com.anji.util.Properties;
 import com.anji.util.Randomizer;
-import com.mojang.mario.LevelScene;
-import com.mojang.mario.MarioComponent;
-import com.mojang.mario.sprites.Mario;
-import com.superneatmario.SimANJI;
 
 /**
  * Determines fitness based on how close <code>Activator</code> output is to a target.
@@ -143,42 +133,42 @@ final public void evaluate( List genotypes, int generation ) {
 	Iterator it = genotypes.iterator();
 	int seed = new Random().nextInt(); 
 	int genomeNum = 0; 
-	//ExecutorService service = Executors.newFixedThreadPool(3);
+	ExecutorService service = Executors.newFixedThreadPool(1);
 	double maxFitness = -1.0; 
 	while ( it.hasNext() ) {	
 		Chromosome genotype = (Chromosome) it.next();
-	    //service.execute(new EvalThreadTask(activatorFactory, genotype, genomeNum, seed));	
-		try {
-			Activator activator = activatorFactory.newActivator( genotype ); 
-			SimANJI sa = new SimANJI(activator, seed, genomeNum, generation); 
-			boolean isDone = sa.start();
-			//sa.start();
-			double [][] responses = null; 
-			
-			if(isDone)
-			{
-				/*responses = new double [sa.getResponses().length][sa.getResponses().length]; 
-				activator = sa.getActivator(); 
-				for (int i = 0; i <  sa.getResponses().length;i++)
-					responses[i] = sa.getResponses(); */
-			
-			
-			//after death, or win, fitness = distance mario made
-				//calculateErrorFitness( responses, activator.getMinResponse(),
-				//activator.getMaxResponse()
-				System.out.println("Fitness Val " + (int)(sa.getDistance() /*+ sa.getCoins()*/ )); 
-				genotype.setFitnessValue( (int)(sa.getDistance() - sa.getTimeLeft()/**1.5 + sa.getCoins()*COIN_ALPHA*/ ) );/**/
-				if( (int)sa.getDistance() > getMaxFitnessValue())
-				{
-					setMaxFitnessValue((int)sa.getDistance()); 
-				}
-			}
-				
-		}
-		catch ( TranscriberException e ) {
-			logger.warn( "transcriber error: " + e.getMessage() );
-			genotype.setFitnessValue( 1 );
-		}
+	    service.execute(new EvalThreadTask(activatorFactory, genotype, genomeNum, seed, generation));	
+//		try {
+//			Activator activator = activatorFactory.newActivator( genotype ); 
+//			SimANJI sa = new SimANJI(activator, seed, genomeNum, generation); 
+//			boolean isDone = sa.start();
+//			//sa.start();
+//			double [][] responses = null; 
+//			
+//			if(isDone)
+//			{
+//				/*responses = new double [sa.getResponses().length][sa.getResponses().length]; 
+//				activator = sa.getActivator(); 
+//				for (int i = 0; i <  sa.getResponses().length;i++)
+//					responses[i] = sa.getResponses(); */
+//			
+//			
+//			//after death, or win, fitness = distance mario made
+//				//calculateErrorFitness( responses, activator.getMinResponse(),
+//				//activator.getMaxResponse()
+//				System.out.println("Fitness Val " + (int)(sa.getDistance() /*+ sa.getCoins()*/ )); 
+//				genotype.setFitnessValue( (int)(sa.getDistance() - sa.getTimeLeft()/**1.5 + sa.getCoins()*COIN_ALPHA*/ ) );/**/
+//				if( (int)sa.getDistance() > getMaxFitnessValue())
+//				{
+//					setMaxFitnessValue((int)sa.getDistance()); 
+//				}
+//			}
+//				
+//		}
+//		catch ( TranscriberException e ) {
+//			logger.warn( "transcriber error: " + e.getMessage() );
+//			genotype.setFitnessValue( 1 );
+//		}
 		genomeNum++; 
 		
 	}
@@ -190,13 +180,13 @@ final public void evaluate( List genotypes, int generation ) {
 //		genotype.setFitnessValue( genotype.getFitnessValue()/getMaxFitnessValue() );/**/
 //	}
 	
-//	service.shutdown();
-//	while (!service.isTerminated())
-//	{
-//		//System.out.println("Not Finished");
-//	}
-//	
-//	System.out.println("Finished the service");
+	service.shutdown();
+	while (!service.isTerminated())
+	{
+		//System.out.println("Not Finished");
+	}
+	
+	System.out.println("Finished the service");
 	
 	/*service.shutdown();
 	try {

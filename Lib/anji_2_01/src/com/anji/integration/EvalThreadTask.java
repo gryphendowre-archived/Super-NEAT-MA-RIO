@@ -1,5 +1,7 @@
 package com.anji.integration;
 
+import java.util.Random;
+
 import org.jgap.Chromosome;
 
 import com.superneatmario.SimANJI;
@@ -12,13 +14,19 @@ public class EvalThreadTask implements Runnable {
 	private Chromosome genotype;
 	private int genomeNum;
 	private int seed;
+	private int generation;
+	private Random randGenerator;
+	private int randThreadNum;
 	
-	public EvalThreadTask(ActivatorTranscriber activatorFactory, Chromosome geno, int genoNum, int seed)
+	public EvalThreadTask(ActivatorTranscriber activatorFactory, Chromosome geno, int genoNum, int seed, int generation)
 	{
+		this.randGenerator = new Random();
+		this.randThreadNum = this.randGenerator.nextInt(1000000);
 		this.activatorFactory = activatorFactory;
 		this.genotype = geno;
 		this.genomeNum = genoNum;
 		this.seed = seed;
+		this.generation = generation;
 	}
 	
 	@Override
@@ -27,7 +35,7 @@ public class EvalThreadTask implements Runnable {
 		try 
 		{
 			Activator activator = this.activatorFactory.newActivator(this.genotype);
-			SimANJI sa = new SimANJI(activator, this.seed, this.genomeNum);
+			SimANJI sa = new SimANJI(activator, this.seed, this.genomeNum, this.generation, this.randThreadNum);
 			boolean isDone = sa.start();
 			
 			double [][] responses = null;

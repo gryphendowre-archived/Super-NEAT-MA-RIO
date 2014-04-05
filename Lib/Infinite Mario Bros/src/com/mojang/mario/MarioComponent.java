@@ -46,14 +46,17 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     public static int y1 = new Random().nextInt(); 
     public boolean endofNewTick = false; 
     private int generation; 
-    public MarioComponent(int width, int height, long serialUID, int seed, int generation)
+    private int randomThreadNum;
+    
+    public MarioComponent(int width, int height, long serialUID, int seed, int generation, int threadNum)
     {
     	this.seed = seed; 
         this.setFocusable(true);
         this.setEnabled(true);
         this.width = width;
         this.height = height;
-        this.generation = generation ; 
+        this.generation = generation ;
+        this.randomThreadNum = threadNum;
         Dimension size = new Dimension(width, height);
         setPreferredSize(size);
         setMinimumSize(size);
@@ -132,8 +135,9 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     	//System.out.println("MarioComponent Start " + running); 
         if (!running)
         {
+        	Random rand = new Random(10);
             running = true;
-            new Thread(this, "Game Thread").start();
+            new Thread(this, "Game Thread" + randomThreadNum).start();
         }
     }
 

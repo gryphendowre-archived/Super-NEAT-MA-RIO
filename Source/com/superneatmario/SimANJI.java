@@ -40,11 +40,14 @@ public class SimANJI implements Runnable{
 	private float distance;
 	private int timeLeft;
 	private int genomeNum; 
-	public SimANJI(Activator activator, int seed, int genomeNum, int generation) {
+	private int randomThreadNum;
+	
+	public SimANJI(Activator activator, int seed, int genomeNum, int generation, int threadNum) {
 		this.genomeNum = genomeNum; 
 		this.activator = activator; 
 		this.seed = seed; 
-		this.generation = generation; 
+		this.generation = generation;
+		this.randomThreadNum = threadNum;
 	}
 
 	/*public void start(int i )
@@ -80,7 +83,7 @@ public class SimANJI implements Runnable{
 		// responses = keypressed for mario
 		//System.out.println("Serial ID " + ( genomeNum+18775993206607L)); 
 		
-		MarioComponent marioComponent = new MarioComponent(640, 480,  ( genomeNum+18775993206607L), seed, generation);
+		MarioComponent marioComponent = new MarioComponent(640, 480,  ( genomeNum+18775993206607L), seed, generation, randomThreadNum);
         JFrame frame = new JFrame("Mario");
         frame.setContentPane(marioComponent);
         frame.pack();
