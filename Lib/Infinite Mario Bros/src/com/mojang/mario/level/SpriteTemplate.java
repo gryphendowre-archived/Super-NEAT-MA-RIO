@@ -32,6 +32,6 @@ public class SpriteTemplate
         }
         sprite.spriteTemplate = this;
         //TODO Kann, add back in for enemies
-        //world.addSprite(sprite);
+        world.addSprite(sprite);
     }
 }

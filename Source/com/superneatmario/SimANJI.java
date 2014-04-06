@@ -83,7 +83,7 @@ public class SimANJI implements Runnable{
 		// responses = keypressed for mario
 		//System.out.println("Serial ID " + ( genomeNum+18775993206607L)); 
 		
-		MarioComponent marioComponent = new MarioComponent(640, 480,  ( genomeNum+18775993206607L), seed, generation, randomThreadNum);
+		MarioComponent marioComponent = new MarioComponent(640, 480,  ( genomeNum+18775993206607L), seed, generation, genomeNum);
         JFrame frame = new JFrame("Mario");
         frame.setContentPane(marioComponent);
         frame.pack();
@@ -162,7 +162,7 @@ public class SimANJI implements Runnable{
 				//stimuli were broke w/o this
 				if(marioComponent.endofNewTick == false)
 	        		continue; 
-	        	display++; 
+	        	
 				try{
 					
 					
@@ -172,7 +172,7 @@ public class SimANJI implements Runnable{
 						curScene.enemyD2LeftRight , 
 						curScene.enemyD3LeftRight , 
 						curScene.enemyD4LeftRight , 
-						curScene.enemyD5LeftRight , 
+//						curScene.enemyD5LeftRight , 
 //						curScene.goodItemD1LeftRight ,
 //				        curScene.goodItemD2LeftRight ,
 //				        curScene.goodItemD3LeftRight ,
@@ -180,26 +180,26 @@ public class SimANJI implements Runnable{
 //				        curScene.goodItemD5LeftRight ,
 				        curScene.holeD1LeftRight , 
 				        curScene.holeD2LeftRight , 
-				        curScene.holeD3LeftRight , 
-				        curScene.holeD4LeftRight , 
-				        curScene.holeD5LeftRight ,
+//				        curScene.holeD3LeftRight , 
+//				        curScene.holeD4LeftRight , 
+//				        curScene.holeD5LeftRight ,
 				        curScene.obstacleD1LeftRight , 
 				        curScene.obstacleD2LeftRight , 
-				        curScene.obstacleD3LeftRight , 
-				        curScene.obstacleD4LeftRight , 
-				        curScene.obstacleD5LeftRight,
+//				        curScene.obstacleD3LeftRight , 
+//				        curScene.obstacleD4LeftRight , 
+//				        curScene.obstacleD5LeftRight,
 				        curScene.enemyD1UpDown , 
 						curScene.enemyD2UpDown , 
 						curScene.enemyD3UpDown , 
 						curScene.enemyD4UpDown , 
-						curScene.enemyD5UpDown , 
+//						curScene.enemyD5UpDown , 
 //						curScene.goodItemD1UpDown ,
 //				        curScene.goodItemD2UpDown ,
 //				        curScene.goodItemD3UpDown ,
 //				        curScene.goodItemD4UpDown ,
 //				        curScene.goodItemD5UpDown ,
-//				        curScene.holeD1UpDown , 
-//				        curScene.holeD2UpDown , 
+				        curScene.holeD1UpDown , 
+				        curScene.holeD2UpDown , 
 //				        curScene.holeD3UpDown , 
 //				        curScene.holeD4UpDown , 
 //				        curScene.holeD5UpDown , 
@@ -207,18 +207,14 @@ public class SimANJI implements Runnable{
 				        curScene.obstacleD2UpDown , 
 				        curScene.obstacleD3UpDown , 
 				        curScene.obstacleD4UpDown , 
-				        curScene.obstacleD5UpDown, 
-				        curScene.mario.onGround?1.0:0}; 
+//				        curScene.obstacleD5UpDown, 
+				        curScene.mario.onGround?1.0:0, 				        		
+				        (double)Math.round(curScene.mario.xa * 1000) / 1000, 
+				        (double)Math.round(curScene.mario.ya * 1000) / 1000, 
+				        curScene.numEmptySpace, 
+				        curScene.yBlockSensor}; 
 				
-				if(display%48 == 0)
-				{
-					System.out.println("Stimuli "); 
-					for(int idx = 0; idx< stimuli.length; idx++)
-					{
-						System.out.print(stimuli[idx] + ", "); 
-					}
-					System.out.println(); 
-				}
+				
 				//System.out.println("0) Red Koopa Count " + curScene.distToRedKoopa.size()); 
 				//System.out.println("Enemy Count " + curScene.enemyD1LeftRight);			
 				 			
@@ -229,7 +225,16 @@ public class SimANJI implements Runnable{
 				
 				responses = activator.next( stimuli );
 				
-				
+				if(display%48 == 0)
+				{
+					System.out.println("Stimuli "); 
+					for(int idx = 0; idx< stimuli.length; idx++)
+					{
+						System.out.print(stimuli[idx] + ", "); 
+					}
+					System.out.println(); 
+				}
+				display++; 
 				
 				maxResponse = 0; 
 				maxResponseNode = 0; 
@@ -255,19 +260,19 @@ public class SimANJI implements Runnable{
 		                {
 		                	keyCode = KeyEvent.VK_RIGHT;
 		                }
+//		                if (r==1)
+//		                {
+//		                //down crouches when big
+//		                // else nothing
+//		                	//keyCode = KeyEvent.VK_DOWN;
+//		                	keyCode = KeyEvent.VK_RIGHT;
+//		                }
 		                if (r==1)
 		                {
-		                //down crouches when big
-		                // else nothing
-		                	//keyCode = KeyEvent.VK_DOWN;
-		                	keyCode = KeyEvent.VK_RIGHT;
+		                	keyCode = KeyEvent.VK_LEFT;
+		                	//keyCode = KeyEvent.VK_RIGHT;
 		                }
 		                if (r==2)
-		                {
-		                	//keyCode = KeyEvent.VK_LEFT;
-		                	keyCode = KeyEvent.VK_RIGHT;
-		                }
-		                if (r==3)
 		                {
 		                //hold a runs 
 		                // tap a fires fireball
@@ -275,7 +280,7 @@ public class SimANJI implements Runnable{
 		                }
 		                //attempt to manage triggers speed freq of button mashing
 		                /**/
-		                if (r==4)
+		                if (r==3)
 		                {
 		                //s jump
 		                	keyCode = KeyEvent.VK_S;

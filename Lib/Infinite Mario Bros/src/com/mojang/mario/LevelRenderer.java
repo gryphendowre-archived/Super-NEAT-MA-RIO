@@ -134,29 +134,29 @@ public class LevelRenderer
                         g.setColor(Color.RED);
                         g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
                     }
-                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_SPECIAL) > 0)
-                    {
-                        g.setColor(Color.PINK);
-                        g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2 + 4, 4, 4);
-                    }
-                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BUMPABLE) > 0)
-                    {
-                        g.setColor(Color.BLUE);
-                        g.fillRect((x << 4) - xCam + 2, (y << 4) - yCam + 2, 4, 4);
-                    }
-                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BREAKABLE) > 0)
-                    {
-                        g.setColor(Color.GREEN);
-                        g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
-                    }
-                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_PICKUPABLE) > 0)
-                    {
-                        g.setColor(Color.YELLOW);
-                        g.fillRect((x << 4) - xCam + 2, (y << 4) - yCam + 2 + 4, 4, 4);
-                    }
-                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_ANIMATED) > 0)
-                    {
-                    }
+//                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_SPECIAL) > 0)
+//                    {
+//                        g.setColor(Color.PINK);
+//                        g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2 + 4, 4, 4);
+//                    }
+//                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BUMPABLE) > 0)
+//                    {
+//                        g.setColor(Color.BLUE);
+//                        g.fillRect((x << 4) - xCam + 2, (y << 4) - yCam + 2, 4, 4);
+//                    }
+//                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BREAKABLE) > 0)
+//                    {
+//                        g.setColor(Color.GREEN);
+//                        g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
+//                    }
+//                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_PICKUPABLE) > 0)
+//                    {
+//                        g.setColor(Color.YELLOW);
+//                        g.fillRect((x << 4) - xCam + 2, (y << 4) - yCam + 2 + 4, 4, 4);
+//                    }
+//                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_ANIMATED) > 0)
+//                    {
+//                    }
                     
                 }
 

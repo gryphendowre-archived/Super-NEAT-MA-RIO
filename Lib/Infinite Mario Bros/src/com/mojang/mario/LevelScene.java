@@ -43,54 +43,57 @@ public class LevelScene extends Scene implements SpriteContext
     private int levelType;
     private int levelDifficulty;    
     
-    public int enemyD1LeftRight;
-    public int enemyD2LeftRight;
-    public int enemyD3LeftRight;
-    public int enemyD4LeftRight;
-    public int enemyD5LeftRight;
+    public double enemyD1LeftRight;
+    public double enemyD2LeftRight;
+    public double enemyD3LeftRight;
+    public double enemyD4LeftRight;
+    public double enemyD5LeftRight;
     
-    public int goodItemD1LeftRight;
-    public int goodItemD2LeftRight;
-    public int goodItemD3LeftRight;
-    public int goodItemD4LeftRight;
-    public int goodItemD5LeftRight;
+    public double goodItemD1LeftRight;
+    public double goodItemD2LeftRight;
+    public double goodItemD3LeftRight;
+    public double goodItemD4LeftRight;
+    public double goodItemD5LeftRight;
     
-    public int holeD1LeftRight;
-    public int holeD2LeftRight;
-    public int holeD3LeftRight;
-    public int holeD4LeftRight;
-    public int holeD5LeftRight;
+    public double holeD1LeftRight;
+    public double holeD2LeftRight;
+    public double holeD3LeftRight;
+    public double holeD4LeftRight;
+    public double holeD5LeftRight;
     
-    public int obstacleD1LeftRight;
-    public int obstacleD2LeftRight;
-    public int obstacleD3LeftRight;
-    public int obstacleD4LeftRight;
-    public int obstacleD5LeftRight;
+    public double obstacleD1LeftRight;
+    public double obstacleD2LeftRight;
+    public double obstacleD3LeftRight;
+    public double obstacleD4LeftRight;
+    public double obstacleD5LeftRight;
     
     
-    public int enemyD1UpDown;
-    public int enemyD2UpDown;
-    public int enemyD3UpDown;
-    public int enemyD4UpDown;
-    public int enemyD5UpDown;
+    public double enemyD1UpDown;
+    public double enemyD2UpDown;
+    public double enemyD3UpDown;
+    public double enemyD4UpDown;
+    public double enemyD5UpDown;
     
-    public int goodItemD1UpDown;
-    public int goodItemD2UpDown;
-    public int goodItemD3UpDown;
-    public int goodItemD4UpDown;
-    public int goodItemD5UpDown;
+    public double goodItemD1UpDown;
+    public double goodItemD2UpDown;
+    public double goodItemD3UpDown;
+    public double goodItemD4UpDown;
+    public double goodItemD5UpDown;
     
-    public int holeD1UpDown;
-    public int holeD2UpDown;
-    public int holeD3UpDown;
-    public int holeD4UpDown;
-    public int holeD5UpDown;
+    public double holeD1UpDown;
+    public double holeD2UpDown;
+    public double holeD3UpDown;
+    public double holeD4UpDown;
+    public double holeD5UpDown;
     
-    public int obstacleD1UpDown;
-    public int obstacleD2UpDown;
-    public int obstacleD3UpDown;
-    public int obstacleD4UpDown;
-    public int obstacleD5UpDown;
+    public double obstacleD1UpDown;
+    public double obstacleD2UpDown;
+    public double obstacleD3UpDown;
+    public double obstacleD4UpDown;
+    public double obstacleD5UpDown;
+    
+    public double numEmptySpace; 
+    public double yBlockSensor; 
     
     private static double D1SensorX;
     private static double D2SensorX;  
@@ -107,7 +110,8 @@ public class LevelScene extends Scene implements SpriteContext
     public boolean isLose = false; 
     public boolean isWon = false;
     private int generation ;
-    public LevelScene(GraphicsConfiguration graphicsConfiguration, MarioComponent renderer, long seed, int levelDifficulty, int type, int generation)
+    private int genomeNum; 
+    public LevelScene(GraphicsConfiguration graphicsConfiguration, MarioComponent renderer, long seed, int levelDifficulty, int type, int generation, int genomeNum)
     {
         this.graphicsConfiguration = graphicsConfiguration;
         this.levelSeed = seed;
@@ -115,6 +119,7 @@ public class LevelScene extends Scene implements SpriteContext
         this.levelDifficulty = levelDifficulty;
         this.levelType = type;
         this.generation = generation; 
+        this.genomeNum = genomeNum; 
     }
 
     public void init()
@@ -173,7 +178,7 @@ public class LevelScene extends Scene implements SpriteContext
         
         //KANN time change
         //Increase time w/ generations (factor of 1 second per gen)
-        timeLeft = (generation+30)*15 ;
+        timeLeft = (generation+25)*15 ;
 
         tick = 0;
     }
@@ -436,6 +441,9 @@ public class LevelScene extends Scene implements SpriteContext
         obstacleD3UpDown = 0; 
         obstacleD4UpDown = 0; 
         obstacleD5UpDown = 0; 
+        
+        numEmptySpace = 0; 
+        yBlockSensor = 0; 
     	
         int xCam = (int) (mario.xOld + (mario.x - mario.xOld) * alpha) - 160;
         int yCam = (int) (mario.yOld + (mario.y - mario.yOld) * alpha) - 120;
@@ -496,53 +504,154 @@ public class LevelScene extends Scene implements SpriteContext
             	{
             		//g.setColor(Color.BLACK);
             		enemyD1LeftRight=1*behindOrFront;
+            		if(inD1Y)
+                	{
+                		//g.setColor(Color.BLACK);
+                		enemyD1UpDown=1*belowOrAbove;
+                	}
+                	else if(inD2Y)
+                	{
+                		//g.setColor(Color.RED);
+                		enemyD2UpDown=1*belowOrAbove;
+                	}
+                	else if(inD3Y)
+                	{
+                		//g.setColor(Color.ORANGE);
+                		enemyD3UpDown=1*belowOrAbove;
+                	}
+                	else if(inD4Y)
+                	{
+                		//g.setColor(Color.YELLOW);
+                		enemyD4UpDown=1*belowOrAbove;
+                	}
+                	else if(inD5Y)
+                	{
+                		//g.setColor(Color.WHITE);
+                		enemyD5UpDown=1*belowOrAbove;
+                	}
             	}
             	else if(inD2X)
             	{
             		//g.setColor(Color.RED);
             		enemyD2LeftRight=1*behindOrFront;
+            		if(inD1Y)
+                	{
+                		//g.setColor(Color.BLACK);
+                		enemyD1UpDown=1*belowOrAbove;
+                	}
+                	else if(inD2Y)
+                	{
+                		//g.setColor(Color.RED);
+                		enemyD2UpDown=1*belowOrAbove;
+                	}
+                	else if(inD3Y)
+                	{
+                		//g.setColor(Color.ORANGE);
+                		enemyD3UpDown=1*belowOrAbove;
+                	}
+                	else if(inD4Y)
+                	{
+                		//g.setColor(Color.YELLOW);
+                		enemyD4UpDown=1*belowOrAbove;
+                	}
+                	else if(inD5Y)
+                	{
+                		//g.setColor(Color.WHITE);
+                		enemyD5UpDown=1*belowOrAbove;
+                	}
             	}
             	else if(inD3X)
             	{
             		//g.setColor(Color.ORANGE);
             		enemyD3LeftRight=1*behindOrFront;
+            		if(inD1Y)
+                	{
+                		//g.setColor(Color.BLACK);
+                		enemyD1UpDown=1*belowOrAbove;
+                	}
+                	else if(inD2Y)
+                	{
+                		//g.setColor(Color.RED);
+                		enemyD2UpDown=1*belowOrAbove;
+                	}
+                	else if(inD3Y)
+                	{
+                		//g.setColor(Color.ORANGE);
+                		enemyD3UpDown=1*belowOrAbove;
+                	}
+                	else if(inD4Y)
+                	{
+                		//g.setColor(Color.YELLOW);
+                		enemyD4UpDown=1*belowOrAbove;
+                	}
+                	else if(inD5Y)
+                	{
+                		//g.setColor(Color.WHITE);
+                		enemyD5UpDown=1*belowOrAbove;
+                	}
             	}
             	else if(inD4X)
             	{
             		//g.setColor(Color.YELLOW);
             		enemyD4LeftRight=1*behindOrFront;
+            		if(inD1Y)
+                	{
+                		//g.setColor(Color.BLACK);
+                		enemyD1UpDown=1*belowOrAbove;
+                	}
+                	else if(inD2Y)
+                	{
+                		//g.setColor(Color.RED);
+                		enemyD2UpDown=1*belowOrAbove;
+                	}
+                	else if(inD3Y)
+                	{
+                		//g.setColor(Color.ORANGE);
+                		enemyD3UpDown=1*belowOrAbove;
+                	}
+                	else if(inD4Y)
+                	{
+                		//g.setColor(Color.YELLOW);
+                		enemyD4UpDown=1*belowOrAbove;
+                	}
+                	else if(inD5Y)
+                	{
+                		//g.setColor(Color.WHITE);
+                		enemyD5UpDown=1*belowOrAbove;
+                	}
             	}
             	else if(inD5X)
             	{
             		//g.setColor(Color.WHITE);
             		enemyD5LeftRight=1*behindOrFront;
+            		if(inD1Y)
+                	{
+                		//g.setColor(Color.BLACK);
+                		enemyD1UpDown=1*belowOrAbove;
+                	}
+                	else if(inD2Y)
+                	{
+                		//g.setColor(Color.RED);
+                		enemyD2UpDown=1*belowOrAbove;
+                	}
+                	else if(inD3Y)
+                	{
+                		//g.setColor(Color.ORANGE);
+                		enemyD3UpDown=1*belowOrAbove;
+                	}
+                	else if(inD4Y)
+                	{
+                		//g.setColor(Color.YELLOW);
+                		enemyD4UpDown=1*belowOrAbove;
+                	}
+                	else if(inD5Y)
+                	{
+                		//g.setColor(Color.WHITE);
+                		enemyD5UpDown=1*belowOrAbove;
+                	}
             	}
             	
-            	if(inD1Y)
-            	{
-            		//g.setColor(Color.BLACK);
-            		enemyD1UpDown=1*belowOrAbove;
-            	}
-            	else if(inD2Y)
-            	{
-            		//g.setColor(Color.RED);
-            		enemyD2UpDown=1*belowOrAbove;
-            	}
-            	else if(inD3Y)
-            	{
-            		//g.setColor(Color.ORANGE);
-            		enemyD3UpDown=1*belowOrAbove;
-            	}
-            	else if(inD4Y)
-            	{
-            		//g.setColor(Color.YELLOW);
-            		enemyD4UpDown=1*belowOrAbove;
-            	}
-            	else if(inD5Y)
-            	{
-            		//g.setColor(Color.WHITE);
-            		enemyD5UpDown=1*belowOrAbove;
-            	}
+            	
             	
             	if(inD1X && inD1Y)
             	{
@@ -713,7 +822,13 @@ public class LevelScene extends Scene implements SpriteContext
         D4SensorY =  D1SensorY*4; 
         D5SensorY =  D1SensorY*5;
         		
-        boolean colYBoxExist; 
+        boolean colYBoxExist;
+        boolean foundPathEmpty;
+        boolean getFirstPlatform; 
+        boolean blockInGround; 
+        int colCountTilFull = 0; 
+        
+        boolean firstXTrigger = false; 
         inD1X = false; 
         inD2X = false; 
         inD3X = false; 
@@ -725,14 +840,20 @@ public class LevelScene extends Scene implements SpriteContext
         inD3Y = false; 
         inD4Y = false; 
         inD5Y = false; 
+        boolean inD0Y = false; 
+        boolean blocking = true; 
+        
         //Renders lines between mario and items of note
         for (int x = xCam / 16; x <= (xCam + layer.width) / 16; x++)
         {
         	colYBoxExist = false; 
+        	foundPathEmpty= true; 
+        	getFirstPlatform = true; 
+        	blockInGround = false; 
             for (int y = yCam / 16; y <= (yCam + layer.height) / 16; y++)
             {
-                byte b = level.getBlock(x, y);
-
+                byte b = level.getBlock(x, y);                
+                
                 if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_ANIMATED) > 0)
                 {
                     int animTime = (tick / 3) % 4;
@@ -754,6 +875,7 @@ public class LevelScene extends Scene implements SpriteContext
                 int blockY = (y << 4) - yCam; 
                 int marioX = (int) (mario.x - xCam) ;
                 int marioY = (int) (mario.y - yCam) ;
+
                 
                 inD1X = blockX >= marioX - D1SensorX && blockX <= marioX + D1SensorX; 
                 inD2X = blockX >= marioX - D2SensorX && blockX <= marioX + D2SensorX;
@@ -761,16 +883,21 @@ public class LevelScene extends Scene implements SpriteContext
                 inD4X = blockX >= marioX - D4SensorX && blockX <= marioX + D4SensorX;
                 inD5X = blockX >= marioX - D5SensorX && blockX <= marioX + D5SensorX;
                 
+                inD0Y =  blockY >= marioY - D1SensorY/2 && blockY <= marioY +  D1SensorY/2 ;
                 inD1Y = blockY >= marioY - D1SensorY && blockY <= marioY + D1SensorY; 
                 inD2Y = blockY >= marioY - D2SensorY && blockY <= marioY + D2SensorY;
                 inD3Y = blockY >= marioY - D3SensorY && blockY <= marioY + D3SensorY;
                 inD4Y = blockY >= marioY - D4SensorY && blockY <= marioY + D4SensorY;
                 inD5Y = blockY >= marioY - D5SensorY && blockY <= marioY + D5SensorY;
                 
+                double behindOrFront = marioX - blockX>0?0.0:1.0;
+                double belowOrAbove = marioY - blockY>0?1.0:-1.0; 
+                
+                
+                
                 //Stimuli -1 to 1? 
                 //Scene translated
-                int behindOrFront = marioX - blockX>0?-1:1;
-                int belowOrAbove = marioY - blockY>0?1:-1; 
+                
                     if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_SPECIAL) > 0)
                     {
                     	//g.setColor(new Color(139,69,19));
@@ -965,83 +1092,101 @@ public class LevelScene extends Scene implements SpriteContext
                     }
                     else if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_ANIMATED) > 0)
                     {
-                    }
+                    }                    
                     else if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BLOCK_ALL) > 0)
                 	{
+                    
+                        
+                    	
                     	if(blockY  <= marioY && blockY  >= level.height)
                     	{
                     		g.setColor(new Color(139,69,19));
 	                    	if(inD1X)
 	                    	{
+	                    		firstXTrigger = true; 
 	                    		//g.setColor(Color.BLACK);
 	                    		obstacleD1LeftRight=1*behindOrFront;
+	                    		
+	                    		if(inD1Y)
+		                    	{
+		                    		g.setColor(Color.BLACK);
+		                    		obstacleD1UpDown=1*belowOrAbove;
+		                    	}
+		                    	else if(inD2Y)
+		                    	{
+		                    		g.setColor(Color.DARK_GRAY);
+		                    		obstacleD2UpDown=1*belowOrAbove;
+		                    	}
+		                    	else if(inD3Y)
+		                    	{
+		                    		g.setColor(Color.GRAY);
+		                    		obstacleD3UpDown=1*belowOrAbove;
+		                    	}
+		                    	else if(inD4Y)
+		                    	{
+		                    		g.setColor(Color.LIGHT_GRAY);
+		                    		obstacleD4UpDown=1*belowOrAbove;
+		                    	}
+//		                    	else if(inD5Y)
+//		                    	{
+//		                    		//g.setColor(Color.WHITE);
+//		                    		obstacleD5UpDown=1*belowOrAbove;
+//		                    	}
 	                    	}
-	                    	else if(inD2X)
+	                    	else if(!firstXTrigger && inD2X)
 	                    	{
 	                    		g.setColor(Color.DARK_GRAY);
 	                    		obstacleD2LeftRight=1*behindOrFront;
+	                    		
+	                    		
+	                    		if(inD1Y)
+		                    	{
+		                    		//g.setColor(Color.BLACK);
+	                    			g.setColor(Color.DARK_GRAY);
+		                    		obstacleD1UpDown=1*belowOrAbove;
+		                    	}
+		                    	else if(inD2Y)
+		                    	{
+		                    		g.setColor(Color.GRAY);
+		                    		//g.setColor(Color.DARK_GRAY);
+		                    		obstacleD2UpDown=1*belowOrAbove;
+		                    	}
+		                    	else if(inD3Y)
+		                    	{
+		                    		//g.setColor(Color.GRAY);
+		                    		g.setColor(Color.LIGHT_GRAY);
+		                    		obstacleD3UpDown=1*belowOrAbove;
+		                    	}
+		                    	else if(inD4Y)
+		                    	{
+		                    		//g.setColor(Color.LIGHT_GRAY);
+		                    		g.setColor(Color.WHITE);
+		                    		obstacleD4UpDown=1*belowOrAbove;
+		                    	}
+//		                    	else if(inD5Y)
+//		                    	{
+//		                    		//g.setColor(Color.WHITE);
+//		                    		obstacleD5UpDown=1*belowOrAbove;
+//		                    	}
 	                    	}
-	                    	else if(inD3X)
-	                    	{
-	                    		//g.setColor(Color.GRAY);
-	                    		obstacleD3LeftRight=1*behindOrFront;
-	                    	}
-	                    	else if(inD4X)
-	                    	{
-	                    		//g.setColor(Color.LIGHT_GRAY);
-	                    		obstacleD4LeftRight=1*behindOrFront;
-	                    	}
-	                    	else if(inD5X)
-	                    	{
-	                    		//g.setColor(Color.WHITE);
-	                    		obstacleD5LeftRight=1*behindOrFront;
-	                    	}
+//	                    	else if(inD3X)
+//	                    	{
+//	                    		//g.setColor(Color.GRAY);
+//	                    		obstacleD3LeftRight=1*behindOrFront;
+//	                    	}
+//	                    	else if(inD4X)
+//	                    	{
+//	                    		//g.setColor(Color.LIGHT_GRAY);
+//	                    		obstacleD4LeftRight=1*behindOrFront;
+//	                    	}
+//	                    	else if(inD5X)
+//	                    	{
+//	                    		//g.setColor(Color.WHITE);
+//	                    		obstacleD5LeftRight=1*behindOrFront;
+//	                    	}
 
-	                    	if(inD1Y)
-	                    	{
-	                    		//g.setColor(Color.BLACK);
-	                    		obstacleD1UpDown=1*belowOrAbove;
-	                    	}
-	                    	else if(inD2Y)
-	                    	{
-	                    		//g.setColor(Color.DARK_GRAY);
-	                    		obstacleD2UpDown=1*belowOrAbove;
-	                    	}
-	                    	else if(inD3Y)
-	                    	{
-	                    		//g.setColor(Color.GRAY);
-	                    		obstacleD3UpDown=1*belowOrAbove;
-	                    	}
-	                    	else if(inD4Y)
-	                    	{
-	                    		//g.setColor(Color.LIGHT_GRAY);
-	                    		obstacleD4UpDown=1*belowOrAbove;
-	                    	}
-	                    	else if(inD5Y)
-	                    	{
-	                    		//g.setColor(Color.WHITE);
-	                    		obstacleD5UpDown=1*belowOrAbove;
-	                    	}
-	                    	if(inD1X && inD1Y)
-	                    	{
-	                    		g.setColor(Color.BLACK);
-	                    	}
-	                    	else if(inD2X && inD2Y)
-	                    	{
-	                    		g.setColor(Color.DARK_GRAY);
-	                    	}
-	                    	else if(inD3X && inD3Y)
-	                    	{
-	                    		g.setColor(Color.GRAY);
-	                    	}
-	                    	else if(inD4X && inD4Y)
-	                    	{
-	                    		g.setColor(Color.LIGHT_GRAY);
-	                    	}
-	                    	else if(inD5X && inD5Y)
-	                    	{
-	                    		g.setColor(Color.WHITE);
-	                    	}
+	                    	
+	                    	
 	                    	
 	                    	g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
 	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
@@ -1050,6 +1195,89 @@ public class LevelScene extends Scene implements SpriteContext
                     	}
                         colYBoxExist = true; 
                 	}
+                    blocking= ((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BLOCK_ALL) > 0;
+                    blocking |= ((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BLOCK_UPPER) > 0;
+                    blocking |= ((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BLOCK_LOWER) > 0;
+                    
+//                    inD1X = blockX >= marioX - D1SensorX && blockX <= marioX + D1SensorX; 
+//                    inD2X = blockX >= marioX - D2SensorX && blockX <= marioX + D2SensorX;
+//                    inD3X = blockX >= marioX - D3SensorX && blockX <= marioX + D3SensorX;
+//                    inD4X = blockX >= marioX - D4SensorX && blockX <= marioX + D4SensorX;
+//                    inD5X = blockX >= marioX - D5SensorX && blockX <= marioX + D5SensorX;
+                    
+                   
+                    inD1Y = blockY >= marioY - D1SensorY && blockY <= marioY + D1SensorY; 
+                    inD2Y = blockY >= marioY - D2SensorY && blockY <= marioY + D2SensorY;
+                    inD3Y = blockY >= marioY - D3SensorY && blockY <= marioY + D3SensorY;
+                    inD4Y = blockY >= marioY - D4SensorY && blockY <= marioY + D4SensorY;
+                    inD5Y = blockY >= marioY - D5SensorY && blockY <= marioY + D5SensorY;
+                    
+                    if(inD5X && blocking && (blockX >=marioX))
+                    {
+                    	
+                    	
+    	                if (inD0Y )
+    	                {
+//    	                	System.out.println("block y " + blockY + " mario y " + marioY); 
+    	                	g.setColor(Color.YELLOW);
+    	                    g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
+        	                foundPathEmpty = false; 
+        	                colCountTilFull++; 
+        	                if(numEmptySpace>0 && getFirstPlatform)
+    	                    {
+    	                    	yBlockSensor = belowOrAbove; 
+    	                    	getFirstPlatform = false; 
+    	                    }
+    	                }
+    	                
+    	                else if (inD2Y&& belowOrAbove<0)
+    	                {
+//    	                	System.out.println("block y " + blockY + " mario y " + marioY); 
+    	                	g.setColor(Color.GREEN);
+    	                    g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
+    	                    foundPathEmpty = false; 
+    	                    colCountTilFull++; 
+    	                    if(numEmptySpace>0 && getFirstPlatform)
+    	                    {
+    	                    	yBlockSensor = belowOrAbove; 
+    	                    	getFirstPlatform = false; 
+    	                    }
+    	                }
+    	                else if (inD2Y&& belowOrAbove>0)
+    	                {
+//    	                	System.out.println("block y " + blockY + " mario y " + marioY); 
+    	                	g.setColor(Color.RED);
+    	                    g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
+    	                    foundPathEmpty = false; 
+    	                    colCountTilFull++; 
+    	                    
+    	                    if(numEmptySpace>0 && getFirstPlatform)
+    	                    {
+    	                    	yBlockSensor = belowOrAbove; 
+    	                    	getFirstPlatform = false; 
+    	                    }
+    	                }
+    	                	 
+
+    	                
+
+                    }
+                    
+                    
+                    
+                    
+                	inD1X = blockX >= marioX - D1SensorX && blockX <= marioX + D1SensorX; 
+                    inD2X = blockX >= marioX - D2SensorX && blockX <= marioX + D2SensorX;
+                    inD3X = blockX >= marioX - D3SensorX && blockX <= marioX + D3SensorX;
+                    inD4X = blockX >= marioX - D4SensorX && blockX <= marioX + D4SensorX;
+                    inD5X = blockX >= marioX - D5SensorX && blockX <= marioX + D5SensorX;
+                    
+                    inD1Y = blockY >= marioY - D1SensorY && blockY <= marioY + D1SensorY; 
+                    inD2Y = blockY >= marioY - D2SensorY && blockY <= marioY + D2SensorY;
+                    inD3Y = blockY >= marioY - D3SensorY && blockY <= marioY + D3SensorY;
+                    inD4Y = blockY >= marioY - D4SensorY && blockY <= marioY + D4SensorY;
+                    inD5Y = blockY >= marioY - D5SensorY && blockY <= marioY + D5SensorY;
+                    
                     if( y > (yCam +layer.height/1.1) / 16 && y < (yCam +layer.height) / 16)
                     {                    	
                     	if(!colYBoxExist)
@@ -1115,6 +1343,21 @@ public class LevelScene extends Scene implements SpriteContext
                     	}
                     }
                 }
+            
+            
+            if(foundPathEmpty && inD5X && (x<<4  >= (int)mario.x ) && mario.onGround && obstacleD1UpDown ==0)
+            {
+                	g.setColor(Color.BLACK);
+                    g.fillRect((x << 4) - xCam + 2 + 4, (int)mario.y  , 4, 4);
+                    numEmptySpace++; 
+                    
+                    
+
+            }
+//            System.out.println("colCountTilFull " + colCountTilFull);
+//            System.out.println("numEmptySpace " + numEmptySpace); 
+//            System.out.println("yBlockSensor " + yBlockSensor);
+            
         }
         
         
@@ -1129,8 +1372,9 @@ public class LevelScene extends Scene implements SpriteContext
         g.setColor(Color.BLACK);
         layer.renderExit1(g, tick, paused?0:alpha);
         
-        drawStringDropShadow(g, "MARIO " + df.format(Mario.lives), 0, 0, 7);
-        drawStringDropShadow(g, "00000000", 0, 1, 7);
+        drawStringDropShadow(g, "Generation " + df.format(this.generation), 0, 0, 7);
+        drawStringDropShadow(g, "Genome " + df.format(this.genomeNum), 0, 1, 7);
+//        drawStringDropShadow(g, "00000000", 0, 1, 7);
         
         drawStringDropShadow(g, "COIN", 14, 0, 7);
         drawStringDropShadow(g, " "+df.format(Mario.coins), 14, 1, 7);

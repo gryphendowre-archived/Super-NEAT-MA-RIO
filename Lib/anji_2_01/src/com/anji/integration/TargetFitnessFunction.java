@@ -137,6 +137,7 @@ final public void evaluate( List genotypes, int generation ) {
 	double maxFitness = -1.0; 
 	while ( it.hasNext() ) {	
 		Chromosome genotype = (Chromosome) it.next();
+//		System.out.println("Specie  " + genotype.getSpecie().getRepresentativeId()); 
 	    service.execute(new EvalThreadTask(activatorFactory, genotype, genomeNum, seed, generation));	
 //		try {
 //			Activator activator = activatorFactory.newActivator( genotype ); 

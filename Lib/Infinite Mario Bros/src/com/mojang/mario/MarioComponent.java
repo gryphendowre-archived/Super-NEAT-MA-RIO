@@ -48,7 +48,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     private int generation; 
     private int randomThreadNum;
     
-    public MarioComponent(int width, int height, long serialUID, int seed, int generation, int threadNum)
+    public MarioComponent(int width, int height, long serialUID, int seed, int generation, int genomeNum)
     {
     	this.seed = seed; 
         this.setFocusable(true);
@@ -56,7 +56,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
         this.width = width;
         this.height = height;
         this.generation = generation ;
-        this.randomThreadNum = threadNum;
+        this.randomThreadNum = genomeNum;
         Dimension size = new Dimension(width, height);
         setPreferredSize(size);
         setMinimumSize(size);
@@ -300,7 +300,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
 
     public void startLevel(long seed, int difficulty, int type)
     {
-        scene = new LevelScene(graphicsConfiguration, this, seed, difficulty, type, generation);
+        scene = new LevelScene(graphicsConfiguration, this, seed, difficulty, type, generation, this.randomThreadNum);
         //scene.setSound(sound);
         scene.init();
     }
