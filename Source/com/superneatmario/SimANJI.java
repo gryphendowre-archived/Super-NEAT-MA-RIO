@@ -41,6 +41,7 @@ public class SimANJI implements Runnable{
 	private int timeLeft;
 	private int genomeNum; 
 	private int randomThreadNum;
+	private int didWin; 
 	
 	public SimANJI(Activator activator, int seed, int genomeNum, int generation, int threadNum) {
 		this.genomeNum = genomeNum; 
@@ -133,6 +134,8 @@ public class SimANJI implements Runnable{
         	//System.out.println("Win or loss? " + marioComponent.isLossed + "  " +  marioComponent.isWon); 
         	if(curScene.isLose || curScene.isWon)
 			{
+        		if (curScene.isWon)
+        			didWin = 1; 
 				System.out.println("Mario won or loss"); 
 				curScene = (LevelScene)marioComponent.scene; 
 				System.out.println("Mario distance = " + curScene.mario.x);
@@ -225,15 +228,15 @@ public class SimANJI implements Runnable{
 				
 				responses = activator.next( stimuli );
 				
-				if(display%48 == 0)
-				{
-					System.out.println("Stimuli "); 
-					for(int idx = 0; idx< stimuli.length; idx++)
-					{
-						System.out.print(stimuli[idx] + ", "); 
-					}
-					System.out.println(); 
-				}
+//				if(display%48 == 0)
+//				{
+//					System.out.println("Stimuli "); 
+//					for(int idx = 0; idx< stimuli.length; idx++)
+//					{
+//						System.out.print(stimuli[idx] + ", "); 
+//					}
+//					System.out.println(); 
+//				}
 				display++; 
 				
 				maxResponse = 0; 
@@ -365,6 +368,10 @@ public class SimANJI implements Runnable{
 
 	public double getTimeLeft() {
 		return this.timeLeft; 
+	}
+	public int didMarioWin()
+	{
+		return didWin; 
 	}
 	//For rendering
 	void convertImg_to_vid()

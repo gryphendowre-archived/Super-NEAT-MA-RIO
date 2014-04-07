@@ -178,7 +178,7 @@ public class LevelScene extends Scene implements SpriteContext
         
         //KANN time change
         //Increase time w/ generations (factor of 1 second per gen)
-        timeLeft = (generation+25)*15 ;
+        timeLeft = (generation+120)*15 ;
 
         tick = 0;
     }
