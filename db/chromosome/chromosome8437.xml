@@ -1,0 +1,56 @@
+<chromosome id="8437"><neuron id="8382" type="in" activation="sigmoid"/>
+<neuron id="8383" type="in" activation="sigmoid"/>
+<neuron id="8384" type="in" activation="sigmoid"/>
+<neuron id="8385" type="in" activation="sigmoid"/>
+<neuron id="8386" type="in" activation="sigmoid"/>
+<neuron id="8387" type="in" activation="sigmoid"/>
+<neuron id="8388" type="in" activation="sigmoid"/>
+<neuron id="8389" type="in" activation="sigmoid"/>
+<neuron id="8390" type="in" activation="sigmoid"/>
+<neuron id="8391" type="in" activation="sigmoid"/>
+<neuron id="8392" type="in" activation="sigmoid"/>
+<neuron id="8393" type="in" activation="sigmoid"/>
+<neuron id="8394" type="in" activation="sigmoid"/>
+<neuron id="8395" type="in" activation="sigmoid"/>
+<neuron id="8396" type="in" activation="sigmoid"/>
+<neuron id="8397" type="in" activation="sigmoid"/>
+<neuron id="8398" type="in" activation="sigmoid"/>
+<neuron id="8399" type="in" activation="sigmoid"/>
+<neuron id="8400" type="in" activation="sigmoid"/>
+<neuron id="8401" type="in" activation="sigmoid"/>
+<neuron id="8402" type="in" activation="sigmoid"/>
+<neuron id="8403" type="in" activation="sigmoid"/>
+<neuron id="8404" type="in" activation="sigmoid"/>
+<neuron id="8405" type="out" activation="sigmoid"/>
+<neuron id="8406" type="out" activation="sigmoid"/>
+<neuron id="8407" type="out" activation="sigmoid"/>
+<neuron id="8408" type="out" activation="sigmoid"/>
+<neuron id="8409" type="hid" activation="sigmoid"/>
+<connection id="8410" src-id="8382" dest-id="8409" weight="0.29999804496765137"/>
+<connection id="8411" src-id="8383" dest-id="8409" weight="0.5578655004501343"/>
+<connection id="8412" src-id="8384" dest-id="8409" weight="-0.6429884433746338"/>
+<connection id="8413" src-id="8385" dest-id="8409" weight="-0.538540244102478"/>
+<connection id="8414" src-id="8386" dest-id="8409" weight="0.11097550392150879"/>
+<connection id="8415" src-id="8387" dest-id="8409" weight="0.7274140119552612"/>
+<connection id="8416" src-id="8388" dest-id="8409" weight="0.20860683917999268"/>
+<connection id="8417" src-id="8389" dest-id="8409" weight="0.7272191047668457"/>
+<connection id="8418" src-id="8390" dest-id="8409" weight="-0.6089355945587158"/>
+<connection id="8419" src-id="8391" dest-id="8409" weight="0.605973482131958"/>
+<connection id="8420" src-id="8392" dest-id="8409" weight="0.63881516456604"/>
+<connection id="8421" src-id="8393" dest-id="8409" weight="0.11960864067077637"/>
+<connection id="8422" src-id="8394" dest-id="8409" weight="-0.96489417552948"/>
+<connection id="8423" src-id="8395" dest-id="8409" weight="0.8756835460662842"/>
+<connection id="8424" src-id="8396" dest-id="8409" weight="0.15415644645690918"/>
+<connection id="8425" src-id="8397" dest-id="8409" weight="0.021008014678955078"/>
+<connection id="8426" src-id="8398" dest-id="8409" weight="0.9905574321746826"/>
+<connection id="8427" src-id="8399" dest-id="8409" weight="-0.8506590127944946"/>
+<connection id="8428" src-id="8400" dest-id="8409" weight="-0.0011360645294189453"/>
+<connection id="8429" src-id="8401" dest-id="8409" weight="0.8171719312667847"/>
+<connection id="8430" src-id="8402" dest-id="8409" weight="-0.30034196376800537"/>
+<connection id="8431" src-id="8403" dest-id="8409" weight="-0.931171178817749"/>
+<connection id="8432" src-id="8404" dest-id="8409" weight="0.8334313631057739"/>
+<connection id="8433" src-id="8409" dest-id="8405" weight="-0.15349018573760986"/>
+<connection id="8434" src-id="8409" dest-id="8406" weight="-0.1676427125930786"/>
+<connection id="8435" src-id="8409" dest-id="8407" weight="-0.010807991027832031"/>
+<connection id="8436" src-id="8409" dest-id="8408" weight="-0.7619969844818115"/>
+</chromosome>

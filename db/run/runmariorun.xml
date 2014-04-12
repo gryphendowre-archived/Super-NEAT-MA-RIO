@@ -1,0 +1,109 @@
+<run name="mariorun" timedatestamp="[20140412 17:13:17 - 20140412 17:33:47]" >
+<search-parameters>
+<population-size>30</population-size>
+<generations>150</generations>
+</search-parameters>
+<generation id="1" >
+<fitness>
+<max>1890</max>
+<min>292</min>
+<avg>692</avg>
+</fitness>
+<complexity>
+<champ>6512</champ>
+<max>236984</max>
+<min>2022</min>
+<avg>23526.633333333335</avg>
+</complexity>
+<specie id="81542" count="1">
+<chromosome id="81542" fitness="1890" />
+</specie>
+<specie id="81547" count="1">
+<chromosome id="81547" fitness="1471" />
+</specie>
+<specie id="117563" count="1">
+<chromosome id="117563" fitness="544" />
+</specie>
+<specie id="263911" count="1">
+<chromosome id="263911" fitness="517" />
+</specie>
+<specie id="263915" count="1">
+<chromosome id="263915" fitness="518" />
+</specie>
+<specie id="263919" count="1">
+<chromosome id="263919" fitness="854" />
+</specie>
+<specie id="381109" count="1">
+<chromosome id="381109" fitness="855" />
+</specie>
+<specie id="381110" count="1">
+<chromosome id="381110" fitness="846" />
+</specie>
+<specie id="381115" count="1">
+<chromosome id="381115" fitness="856" />
+</specie>
+<specie id="381117" count="1">
+<chromosome id="381117" fitness="518" />
+</specie>
+<specie id="381118" count="1">
+<chromosome id="381118" fitness="833" />
+</specie>
+<specie id="563756" count="1">
+<chromosome id="563756" fitness="831" />
+</specie>
+<specie id="563757" count="1">
+<chromosome id="563757" fitness="856" />
+</specie>
+<specie id="563761" count="1">
+<chromosome id="563761" fitness="472" />
+</specie>
+<specie id="563762" count="1">
+<chromosome id="563762" fitness="767" />
+</specie>
+<specie id="860661" count="1">
+<chromosome id="860661" fitness="545" />
+</specie>
+<specie id="860662" count="1">
+<chromosome id="860662" fitness="846" />
+</specie>
+<specie id="860663" count="1">
+<chromosome id="860663" fitness="292" />
+</specie>
+<specie id="860664" count="1">
+<chromosome id="860664" fitness="306" />
+</specie>
+<specie id="860665" count="1">
+<chromosome id="860665" fitness="852" />
+</specie>
+<specie id="860666" count="1">
+<chromosome id="860666" fitness="472" />
+</specie>
+<specie id="860667" count="1">
+<chromosome id="860667" fitness="851" />
+</specie>
+<specie id="860668" count="1">
+<chromosome id="860668" fitness="328" />
+</specie>
+<specie id="860669" count="1">
+<chromosome id="860669" fitness="329" />
+</specie>
+<specie id="860670" count="1">
+<chromosome id="860670" fitness="544" />
+</specie>
+<specie id="860671" count="1">
+<chromosome id="860671" fitness="515" />
+</specie>
+<specie id="860672" count="1">
+<chromosome id="860672" fitness="544" />
+</specie>
+<specie id="860673" count="1">
+<chromosome id="860673" fitness="328" />
+</specie>
+<specie id="860674" count="1">
+<chromosome id="860674" fitness="542" />
+</specie>
+<specie id="860675" count="1">
+<chromosome id="860675" fitness="849" />
+</specie>
+</generation>
+</run>

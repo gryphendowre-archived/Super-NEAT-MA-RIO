@@ -109,8 +109,10 @@ public class HelloWorld {
     {
 
 		Properties props = new Properties(MARIO_PROPS);
+		System.out.println("After Properties" ); 
     	Evolver evolve = new Evolver();
     	evolve.init(props);
+    	System.out.println("Evolve initialized" );
     	evolve.run();
     }
     

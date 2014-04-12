@@ -166,9 +166,10 @@ final public void evaluate( List genotypes, int generation ) {
 			genotype.setFitnessValue( 1 );
 		}
 		genomeNum++; 
-		System.gc(); 
+		System.out.println("Next Genome" ); 
 		
 	}
+	System.out.println("Next Gen... " ); 
 //	Iterator it2 = genotypes.iterator();
 //
 //	//most a fitness should be is one

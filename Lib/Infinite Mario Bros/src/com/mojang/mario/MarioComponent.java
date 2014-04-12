@@ -40,7 +40,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     private Scale2x scale2x = new Scale2x(320, 240);
     
     public static int type = LevelGenerator.TYPE_OVERGROUND;
-    public static int difficulty;
+    public int difficulty;
     public static int seed = new Random().nextInt(); 
     public static int x1 = new Random().nextInt(); 
     public static int y1 = new Random().nextInt(); 

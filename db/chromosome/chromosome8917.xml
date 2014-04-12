@@ -1,0 +1,56 @@
+<chromosome id="8917"><neuron id="8860" type="in" activation="sigmoid"/>
+<neuron id="8861" type="in" activation="sigmoid"/>
+<neuron id="8862" type="in" activation="sigmoid"/>
+<neuron id="8863" type="in" activation="sigmoid"/>
+<neuron id="8864" type="in" activation="sigmoid"/>
+<neuron id="8865" type="in" activation="sigmoid"/>
+<neuron id="8866" type="in" activation="sigmoid"/>
+<neuron id="8867" type="in" activation="sigmoid"/>
+<neuron id="8868" type="in" activation="sigmoid"/>
+<neuron id="8869" type="in" activation="sigmoid"/>
+<neuron id="8870" type="in" activation="sigmoid"/>
+<neuron id="8871" type="in" activation="sigmoid"/>
+<neuron id="8872" type="in" activation="sigmoid"/>
+<neuron id="8873" type="in" activation="sigmoid"/>
+<neuron id="8874" type="in" activation="sigmoid"/>
+<neuron id="8875" type="in" activation="sigmoid"/>
+<neuron id="8876" type="in" activation="sigmoid"/>
+<neuron id="8877" type="in" activation="sigmoid"/>
+<neuron id="8878" type="in" activation="sigmoid"/>
+<neuron id="8879" type="in" activation="sigmoid"/>
+<neuron id="8880" type="in" activation="sigmoid"/>
+<neuron id="8881" type="in" activation="sigmoid"/>
+<neuron id="8882" type="in" activation="sigmoid"/>
+<neuron id="8883" type="out" activation="sigmoid"/>
+<neuron id="8884" type="out" activation="sigmoid"/>
+<neuron id="8885" type="out" activation="sigmoid"/>
+<neuron id="8886" type="out" activation="sigmoid"/>
+<neuron id="8887" type="hid" activation="sigmoid"/>
+<connection id="8888" src-id="8860" dest-id="8887" weight="0.42231178283691406"/>
+<connection id="8889" src-id="8861" dest-id="8887" weight="0.45912230014801025"/>
+<connection id="8890" src-id="8862" dest-id="8887" weight="0.527580738067627"/>
+<connection id="8891" src-id="8863" dest-id="8887" weight="-0.2427959442138672"/>
+<connection id="8892" src-id="8864" dest-id="8887" weight="-0.09351205825805664"/>
+<connection id="8893" src-id="8865" dest-id="8887" weight="0.5906200408935547"/>
+<connection id="8894" src-id="8866" dest-id="8887" weight="0.2578237056732178"/>
+<connection id="8895" src-id="8867" dest-id="8887" weight="-0.2893943786621094"/>
+<connection id="8896" src-id="8868" dest-id="8887" weight="-0.7352622747421265"/>
+<connection id="8897" src-id="8869" dest-id="8887" weight="-0.2605973482131958"/>
+<connection id="8898" src-id="8870" dest-id="8887" weight="-0.3132420778274536"/>
+<connection id="8899" src-id="8871" dest-id="8887" weight="0.4279583692550659"/>
+<connection id="8900" src-id="8872" dest-id="8887" weight="0.24561071395874023"/>
+<connection id="8901" src-id="8873" dest-id="8887" weight="-0.034092068672180176"/>
+<connection id="8902" src-id="8874" dest-id="8887" weight="0.12315058708190918"/>
+<connection id="8903" src-id="8875" dest-id="8887" weight="-0.9261124134063721"/>
+<connection id="8904" src-id="8876" dest-id="8887" weight="-0.33742332458496094"/>
+<connection id="8905" src-id="8877" dest-id="8887" weight="-0.8390676975250244"/>
+<connection id="8906" src-id="8878" dest-id="8887" weight="-0.7464102506637573"/>
+<connection id="8907" src-id="8879" dest-id="8887" weight="0.7348247766494751"/>
+<connection id="8908" src-id="8880" dest-id="8887" weight="0.5240613222122192"/>
+<connection id="8909" src-id="8881" dest-id="8887" weight="-0.1801992654800415"/>
+<connection id="8910" src-id="8882" dest-id="8887" weight="0.8571436405181885"/>
+<connection id="8911" src-id="8887" dest-id="8883" weight="-0.11032581329345703"/>
+<connection id="8912" src-id="8887" dest-id="8884" weight="-0.7642945051193237"/>
+<connection id="8913" src-id="8887" dest-id="8885" weight="0.7699596881866455"/>
+<connection id="8914" src-id="8887" dest-id="8886" weight="0.6792135238647461"/>
+</chromosome>
