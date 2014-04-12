@@ -129,11 +129,11 @@ public class LevelRenderer
                 if (renderBehaviors)
                 {
                     
-                	if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BLOCK_ALL) > 0)
-                	{                      
-                        g.setColor(Color.RED);
-                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
-                    }
+//                	if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BLOCK_ALL) > 0)
+//                	{                      
+//                        g.setColor(Color.RED);
+//                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
+//                    }
 //                    if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_SPECIAL) > 0)
 //                    {
 //                        g.setColor(Color.PINK);

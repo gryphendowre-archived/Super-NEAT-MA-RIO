@@ -47,7 +47,7 @@ import com.anji.util.Reset;
  */
 public class Evolver implements Configurable {
 
-private static Logger logger = Logger.getLogger( Evolver.class );
+public static Logger logger = Logger.getLogger( Evolver.class );
 
 /**
  * properties key, # generations in run
@@ -160,7 +160,7 @@ public void init( Properties props ) throws Exception {
 		genotype = Genotype.randomInitialGenotype( config );
 		logger.info( "random genotype" );
 	}
-
+	champ = genotype.getFittestChromosome();
 }
 
 /**

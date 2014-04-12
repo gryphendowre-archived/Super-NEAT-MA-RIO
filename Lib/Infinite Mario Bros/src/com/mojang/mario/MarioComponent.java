@@ -40,7 +40,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     private Scale2x scale2x = new Scale2x(320, 240);
     
     public static int type = LevelGenerator.TYPE_OVERGROUND;
-    public static int difficulty = 0;
+    public static int difficulty;
     public static int seed = new Random().nextInt(); 
     public static int x1 = new Random().nextInt(); 
     public static int y1 = new Random().nextInt(); 
@@ -48,7 +48,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
     private int generation; 
     private int randomThreadNum;
     
-    public MarioComponent(int width, int height, long serialUID, int seed, int generation, int genomeNum)
+    public MarioComponent(int width, int height, long serialUID, int seed, int generation, int genomeNum, int difficulty)
     {
     	this.seed = seed; 
         this.setFocusable(true);
@@ -57,6 +57,7 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
         this.height = height;
         this.generation = generation ;
         this.randomThreadNum = genomeNum;
+        this.difficulty = difficulty; 
         Dimension size = new Dimension(width, height);
         setPreferredSize(size);
         setMinimumSize(size);

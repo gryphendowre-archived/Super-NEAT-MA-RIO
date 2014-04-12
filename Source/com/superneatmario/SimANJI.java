@@ -25,6 +25,7 @@ import com.anji.integration.Activator;
 import com.mojang.mario.Art;
 import com.mojang.mario.LevelScene;
 import com.mojang.mario.MarioComponent;
+import com.mojang.mario.sprites.Mario;
 
 public class SimANJI implements Runnable{
 
@@ -42,6 +43,19 @@ public class SimANJI implements Runnable{
 	private int genomeNum; 
 	private int randomThreadNum;
 	private int didWin; 
+	private int marioMode;
+	private int enemyKills;
+	private int difficulty; 
+	
+	public SimANJI(Activator activator, int seed, int difficulty ) {
+		this.genomeNum = genomeNum; 
+		this.activator = activator; 
+		this.seed = seed; 
+		//increase with testing
+		this.difficulty = difficulty; 
+		//sets time to always be 200 for testing
+		this.generation = 180; 
+	}
 	
 	public SimANJI(Activator activator, int seed, int genomeNum, int generation, int threadNum) {
 		this.genomeNum = genomeNum; 
@@ -49,6 +63,8 @@ public class SimANJI implements Runnable{
 		this.seed = seed; 
 		this.generation = generation;
 		this.randomThreadNum = threadNum;
+		//static for training
+		this.difficulty = 10; 
 	}
 
 	/*public void start(int i )
@@ -84,7 +100,7 @@ public class SimANJI implements Runnable{
 		// responses = keypressed for mario
 		//System.out.println("Serial ID " + ( genomeNum+18775993206607L)); 
 		
-		MarioComponent marioComponent = new MarioComponent(640, 480,  ( genomeNum+18775993206607L), seed, generation, genomeNum);
+		MarioComponent marioComponent = new MarioComponent(640, 480,  ( genomeNum+18775993206607L), seed, generation, genomeNum, difficulty );
         JFrame frame = new JFrame("Mario");
         frame.setContentPane(marioComponent);
         frame.pack();
@@ -136,13 +152,15 @@ public class SimANJI implements Runnable{
 			{
         		if (curScene.isWon)
         			didWin = 1; 
-				System.out.println("Mario won or loss"); 
+				//System.out.println("Mario won or loss"); 
 				curScene = (LevelScene)marioComponent.scene; 
-				System.out.println("Mario distance = " + curScene.mario.x);
-				System.out.println("Mario coins = " + curScene.mario.coins);   
+				//System.out.println("Mario distance = " + curScene.mario.x);
+				//System.out.println("Mario coins = " + curScene.mario.coins);   
 				setDistance(curScene.mario.x) ;
 				setCoins(curScene.mario.coins) ;
 				setTimeLeft(curScene.timeLeft); 
+				setMarioMode(curScene.mario); 
+				setEnemyKillCount(curScene.enemyKillCount); 
 				curScene.mario.resetStatic();
 				marioComponent.removeAll();				
 				marioComponent.stop();
@@ -156,7 +174,7 @@ public class SimANJI implements Runnable{
 				//System.out.println("Thread count " + Thread.activeCount()); 
 				marioComponent = null; 
 				System.gc(); 
-				convertImg_to_vid();
+				//convertImg_to_vid();
 				//System.out.println("Thread count " + Thread.activeCount()); 
 				break;
 			}
@@ -333,6 +351,28 @@ public class SimANJI implements Runnable{
 	    }
         //return true; 
 	}
+	private void setEnemyKillCount(int enemyKillCount) {
+		enemyKills = enemyKillCount; 
+	}
+	public int getEnemyKillCount()
+	{
+		return enemyKills; 
+	}
+
+	private void setMarioMode(Mario mario) {
+		
+		if(mario.fire && mario.large)
+			marioMode = 2; 
+		else if(mario.large && !mario.fire)
+			marioMode = 1; 
+		else if(!mario.large)
+			marioMode = 0; 
+		
+	}
+	public int getMarioMode() {
+		return marioMode; 
+	}
+
 	private void setTimeLeft(int timeLeft) {
 		this.timeLeft = timeLeft; 		
 	}

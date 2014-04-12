@@ -35,6 +35,7 @@ public class LevelScene extends Scene implements SpriteContext
     public int startTime = 0;
     public int timeLeft;
 
+    public int enemyKillCount; 
     //    private Recorder recorder = new Recorder();
     //    private Replayer replayer = null;
     
@@ -120,6 +121,7 @@ public class LevelScene extends Scene implements SpriteContext
         this.levelType = type;
         this.generation = generation; 
         this.genomeNum = genomeNum; 
+        enemyKillCount = 0; 
     }
 
     public void init()
@@ -178,7 +180,7 @@ public class LevelScene extends Scene implements SpriteContext
         
         //KANN time change
         //Increase time w/ generations (factor of 1 second per gen)
-        timeLeft = (generation+120)*15 ;
+        timeLeft = (180+20)*15 ;
 
         tick = 0;
     }
@@ -235,6 +237,7 @@ public class LevelScene extends Scene implements SpriteContext
 
         for (Sprite sprite : sprites)
         {
+        	
             if (sprite != mario)
             {
                 float xd = sprite.x - xCam;
@@ -367,6 +370,34 @@ public class LevelScene extends Scene implements SpriteContext
                     }
                 }
             }
+            for (Sprite sprite : sprites)
+            {          
+            	//if(sprite instanceof Enemy || sprite instanceof Shell )
+            	if (sprite.spriteTemplate != null)
+            	{
+	            	if(sprite.spriteTemplate.isDead)
+	            	{
+	            		if(sprite instanceof Enemy)
+	            		{
+	            			Enemy en = (Enemy)sprite; 
+	            			if(en.deadTime == 0)
+	            			{
+	            				enemyKillCount++; 
+	            			}
+	            		}
+	            		if(sprite instanceof Shell)
+	            		{
+	            			Shell sh = (Shell)sprite; 
+	            			if(sh.deadTime == 0)
+	            			{
+	            				enemyKillCount++; 
+	            			}
+	            		}
+	            		
+	            	}
+            	}
+            }
+            
             fireballsToCheck.clear();
         }
 
@@ -502,151 +533,151 @@ public class LevelScene extends Scene implements SpriteContext
             {
             	if(inD1X)
             	{
-            		//g.setColor(Color.BLACK);
+            		////g.setColor(Color.BLACK);
             		enemyD1LeftRight=1*behindOrFront;
             		if(inD1Y)
                 	{
-                		//g.setColor(Color.BLACK);
+                		////g.setColor(Color.BLACK);
                 		enemyD1UpDown=1*belowOrAbove;
                 	}
                 	else if(inD2Y)
                 	{
-                		//g.setColor(Color.RED);
+                		////g.setColor(Color.RED);
                 		enemyD2UpDown=1*belowOrAbove;
                 	}
                 	else if(inD3Y)
                 	{
-                		//g.setColor(Color.ORANGE);
+                		////g.setColor(Color.ORANGE);
                 		enemyD3UpDown=1*belowOrAbove;
                 	}
                 	else if(inD4Y)
                 	{
-                		//g.setColor(Color.YELLOW);
+                		////g.setColor(Color.YELLOW);
                 		enemyD4UpDown=1*belowOrAbove;
                 	}
                 	else if(inD5Y)
                 	{
-                		//g.setColor(Color.WHITE);
+                		////g.setColor(Color.WHITE);
                 		enemyD5UpDown=1*belowOrAbove;
                 	}
             	}
             	else if(inD2X)
             	{
-            		//g.setColor(Color.RED);
+            		////g.setColor(Color.RED);
             		enemyD2LeftRight=1*behindOrFront;
             		if(inD1Y)
                 	{
-                		//g.setColor(Color.BLACK);
+                		////g.setColor(Color.BLACK);
                 		enemyD1UpDown=1*belowOrAbove;
                 	}
                 	else if(inD2Y)
                 	{
-                		//g.setColor(Color.RED);
+                		////g.setColor(Color.RED);
                 		enemyD2UpDown=1*belowOrAbove;
                 	}
                 	else if(inD3Y)
                 	{
-                		//g.setColor(Color.ORANGE);
+                		////g.setColor(Color.ORANGE);
                 		enemyD3UpDown=1*belowOrAbove;
                 	}
                 	else if(inD4Y)
                 	{
-                		//g.setColor(Color.YELLOW);
+                		////g.setColor(Color.YELLOW);
                 		enemyD4UpDown=1*belowOrAbove;
                 	}
                 	else if(inD5Y)
                 	{
-                		//g.setColor(Color.WHITE);
+                		////g.setColor(Color.WHITE);
                 		enemyD5UpDown=1*belowOrAbove;
                 	}
             	}
             	else if(inD3X)
             	{
-            		//g.setColor(Color.ORANGE);
+            		////g.setColor(Color.ORANGE);
             		enemyD3LeftRight=1*behindOrFront;
             		if(inD1Y)
                 	{
-                		//g.setColor(Color.BLACK);
+                		////g.setColor(Color.BLACK);
                 		enemyD1UpDown=1*belowOrAbove;
                 	}
                 	else if(inD2Y)
                 	{
-                		//g.setColor(Color.RED);
+                		////g.setColor(Color.RED);
                 		enemyD2UpDown=1*belowOrAbove;
                 	}
                 	else if(inD3Y)
                 	{
-                		//g.setColor(Color.ORANGE);
+                		////g.setColor(Color.ORANGE);
                 		enemyD3UpDown=1*belowOrAbove;
                 	}
                 	else if(inD4Y)
                 	{
-                		//g.setColor(Color.YELLOW);
+                		////g.setColor(Color.YELLOW);
                 		enemyD4UpDown=1*belowOrAbove;
                 	}
                 	else if(inD5Y)
                 	{
-                		//g.setColor(Color.WHITE);
+                		////g.setColor(Color.WHITE);
                 		enemyD5UpDown=1*belowOrAbove;
                 	}
             	}
             	else if(inD4X)
             	{
-            		//g.setColor(Color.YELLOW);
+            		////g.setColor(Color.YELLOW);
             		enemyD4LeftRight=1*behindOrFront;
             		if(inD1Y)
                 	{
-                		//g.setColor(Color.BLACK);
+                		////g.setColor(Color.BLACK);
                 		enemyD1UpDown=1*belowOrAbove;
                 	}
                 	else if(inD2Y)
                 	{
-                		//g.setColor(Color.RED);
+                		////g.setColor(Color.RED);
                 		enemyD2UpDown=1*belowOrAbove;
                 	}
                 	else if(inD3Y)
                 	{
-                		//g.setColor(Color.ORANGE);
+                		////g.setColor(Color.ORANGE);
                 		enemyD3UpDown=1*belowOrAbove;
                 	}
                 	else if(inD4Y)
                 	{
-                		//g.setColor(Color.YELLOW);
+                		////g.setColor(Color.YELLOW);
                 		enemyD4UpDown=1*belowOrAbove;
                 	}
                 	else if(inD5Y)
                 	{
-                		//g.setColor(Color.WHITE);
+                		////g.setColor(Color.WHITE);
                 		enemyD5UpDown=1*belowOrAbove;
                 	}
             	}
             	else if(inD5X)
             	{
-            		//g.setColor(Color.WHITE);
+            		////g.setColor(Color.WHITE);
             		enemyD5LeftRight=1*behindOrFront;
             		if(inD1Y)
                 	{
-                		//g.setColor(Color.BLACK);
+                		////g.setColor(Color.BLACK);
                 		enemyD1UpDown=1*belowOrAbove;
                 	}
                 	else if(inD2Y)
                 	{
-                		//g.setColor(Color.RED);
+                		////g.setColor(Color.RED);
                 		enemyD2UpDown=1*belowOrAbove;
                 	}
                 	else if(inD3Y)
                 	{
-                		//g.setColor(Color.ORANGE);
+                		////g.setColor(Color.ORANGE);
                 		enemyD3UpDown=1*belowOrAbove;
                 	}
                 	else if(inD4Y)
                 	{
-                		//g.setColor(Color.YELLOW);
+                		////g.setColor(Color.YELLOW);
                 		enemyD4UpDown=1*belowOrAbove;
                 	}
                 	else if(inD5Y)
                 	{
-                		//g.setColor(Color.WHITE);
+                		////g.setColor(Color.WHITE);
                 		enemyD5UpDown=1*belowOrAbove;
                 	}
             	}
@@ -655,152 +686,152 @@ public class LevelScene extends Scene implements SpriteContext
             	
             	if(inD1X && inD1Y)
             	{
-            		g.setColor(Color.BLACK);
+            		//g.setColor(Color.BLACK);
             	}
             	else if(inD2X && inD2Y)
             	{
-            		g.setColor(Color.RED);
+            		//g.setColor(Color.RED);
             	}
             	else if(inD3X && inD3Y)
             	{
-            		g.setColor(Color.ORANGE);
+            		//g.setColor(Color.ORANGE);
             	}
             	else if(inD4X && inD4Y)
             	{
-            		g.setColor(Color.YELLOW);
+            		//g.setColor(Color.YELLOW);
             	}
             	else if(inD5X && inD5Y)
             	{
-            		g.setColor(Color.WHITE);
+            		//g.setColor(Color.WHITE);
             	}
             	//g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
             	           	            
-            	if(sprite instanceof Enemy)
-            	{
-            		Enemy s = (Enemy)sprite; 
-            		if(s.getType() == Enemy.ENEMY_GREEN_KOOPA || s.getType() == Enemy.ENEMY_RED_KOOPA)
-            		{
-            			            			
-            			//top
-                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
-                    	//bottom
-                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-            			//left
-                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
-                    	//right
-                    	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
-            		}
-            		else
-            		{
-            			//top
-                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
-                    	//bottom
-                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-            			//left side
-                    	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-                    	//right
-                    	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-            		}
-            		
-            	}
-            	
-            	else if(sprite instanceof FlowerEnemy)
-            	{
-            		FlowerEnemy s = (FlowerEnemy)sprite; 
-            		
-            		//top
-                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
-                	//bottom
-                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-        			//left
-                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
-                	//right
-                	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
-            	}
-            	else
-            	{
-            		//top
-                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
-                	//bottom
-                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-        			//left side
-                	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-                	//right
-                	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-            	}
-            	
-            }
-            else if(sprite instanceof Mushroom || sprite instanceof FireFlower)
-            {
-            	if(inD1X)
-            	{
-            		//g.setColor(Color.WHITE);
-            		goodItemD1LeftRight=1;
-            	}
-            	else if(inD2X)
-            	{
-            		//g.setColor(Color.GREEN);
-            		goodItemD2LeftRight=1;
-            	}
-            	else if(inD3X)
-            	{
-            		//g.setColor(Color.CYAN);
-            		goodItemD3LeftRight=1;
-            	}
-            	else if(inD4X)
-            	{
-            		//g.setColor(Color.BLUE);
-            		goodItemD4LeftRight=1;
-            	}
-            	else if(inD5X)
-            	{
-            		//g.setColor(Color.PINK);
-            		goodItemD5LeftRight=1;
-            	}
-            	
-            	if(inD1Y)
-            	{
-            		//g.setColor(Color.WHITE);
-            		goodItemD1UpDown=1;
-            	}
-            	else if(inD2Y)
-            	{
-            		//g.setColor(Color.GREEN);
-            		goodItemD2UpDown=1;
-            	}
-            	else if(inD3Y)
-            	{
-            		//g.setColor(Color.CYAN);
-            		goodItemD3UpDown=1;
-            	}
-            	else if(inD4Y)
-            	{
-            		//g.setColor(Color.BLUE);
-            		goodItemD4UpDown=1;
-            	}
-            	else if(inD5Y)
-            	{
-            		//g.setColor(Color.PINK);
-            		goodItemD5UpDown=1;
-            	}
-            	//g.setColor(Color.GREEN);
-            	//g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
-            	//top
-//            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
-//            	//bottom
-//            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
-//    			//left side
-//            	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-//            	//right
-//            	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
-            }
-            else if (sprite instanceof Fireball)
-            {
-            	g.setColor(Color.ORANGE);
-            	g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
-            }
+//            	if(sprite instanceof Enemy)
+//            	{
+//            		Enemy s = (Enemy)sprite; 
+//            		if(s.getType() == Enemy.ENEMY_GREEN_KOOPA || s.getType() == Enemy.ENEMY_RED_KOOPA)
+//            		{
+//            			            			
+//            			//top
+//                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
+//                    	//bottom
+//                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+//            			//left
+//                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+//                    	//right
+//                    	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+//            		}
+//            		else
+//            		{
+//            			//top
+//                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
+//                    	//bottom
+//                    	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+//            			//left side
+//                    	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+//                    	//right
+//                    	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+//            		}
+//            		
+//            	}
+//            	
+//            	else if(sprite instanceof FlowerEnemy)
+//            	{
+//            		FlowerEnemy s = (FlowerEnemy)sprite; 
+//            		
+//            		//top
+//                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
+//                	//bottom
+//                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+//        			//left
+//                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+//                	//right
+//                	g.fillRect((int)sprite.x +(sprite.wPic/2), (int)sprite.y- (sprite.hPic), 2, sprite.hPic);
+//            	}
+//            	else
+//            	{
+//            		//top
+//                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), sprite.wPic, 2);
+//                	//bottom
+//                	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+//        			//left side
+//                	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+//                	//right
+//                	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+//            	}
+//            	
+//            }
+//            else if(sprite instanceof Mushroom || sprite instanceof FireFlower)
+//            {
+//            	if(inD1X)
+//            	{
+//            		////g.setColor(Color.WHITE);
+//            		goodItemD1LeftRight=1;
+//            	}
+//            	else if(inD2X)
+//            	{
+//            		////g.setColor(Color.GREEN);
+//            		goodItemD2LeftRight=1;
+//            	}
+//            	else if(inD3X)
+//            	{
+//            		////g.setColor(Color.CYAN);
+//            		goodItemD3LeftRight=1;
+//            	}
+//            	else if(inD4X)
+//            	{
+//            		////g.setColor(Color.BLUE);
+//            		goodItemD4LeftRight=1;
+//            	}
+//            	else if(inD5X)
+//            	{
+//            		////g.setColor(Color.PINK);
+//            		goodItemD5LeftRight=1;
+//            	}
+//            	
+//            	if(inD1Y)
+//            	{
+//            		////g.setColor(Color.WHITE);
+//            		goodItemD1UpDown=1;
+//            	}
+//            	else if(inD2Y)
+//            	{
+//            		////g.setColor(Color.GREEN);
+//            		goodItemD2UpDown=1;
+//            	}
+//            	else if(inD3Y)
+//            	{
+//            		////g.setColor(Color.CYAN);
+//            		goodItemD3UpDown=1;
+//            	}
+//            	else if(inD4Y)
+//            	{
+//            		////g.setColor(Color.BLUE);
+//            		goodItemD4UpDown=1;
+//            	}
+//            	else if(inD5Y)
+//            	{
+//            		////g.setColor(Color.PINK);
+//            		goodItemD5UpDown=1;
+//            	}
+//            	////g.setColor(Color.GREEN);
+//            	//g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+//            	//top
+////            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y- (sprite.hPic), sprite.wPic, 2);
+////            	//bottom
+////            	g.fillRect((int)sprite.x -(sprite.wPic/2), (int)sprite.y, sprite.wPic, 2);
+////    			//left side
+////            	g.fillRect((int)sprite.x-(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+////            	//right
+////            	g.fillRect((int)sprite.x+(sprite.wPic/2), (int)sprite.y- (sprite.hPic/2), 2, sprite.hPic/2);
+//            }
+//            else if (sprite instanceof Fireball)
+//            {
+//            	//g.setColor(Color.ORANGE);
+//            	//g.drawLine((int)mario.x, (int)mario.y, (int)sprite.x, (int)sprite.y);
+//            }
             
-            
+            }
         }
 
         
@@ -900,56 +931,56 @@ public class LevelScene extends Scene implements SpriteContext
                 
                     if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_SPECIAL) > 0)
                     {
-                    	//g.setColor(new Color(139,69,19));
+                    	////g.setColor(new Color(139,69,19));
                         if(inD1X)
                     	{
-                    		//g.setColor(Color.GREEN);
+                    		////g.setColor(Color.GREEN);
                     		goodItemD1LeftRight=1;
                     	}
                     	else if(inD2X)
                     	{
-                    		//g.setColor(Color.CYAN);
+                    		////g.setColor(Color.CYAN);
                     		goodItemD2LeftRight=1;
                     	}
                     	else if(inD3X)
                     	{
-                    		//g.setColor(Color.BLUE);
+                    		////g.setColor(Color.BLUE);
                     		goodItemD3LeftRight=1;
                     	}
                     	else if(inD4X)
                     	{
-                    		//g.setColor(Color.MAGENTA);
+                    		////g.setColor(Color.MAGENTA);
                     		goodItemD4LeftRight=1;
                     	}
                     	else if(inD5X)
                     	{
-                    		//g.setColor(Color.PINK);
+                    		////g.setColor(Color.PINK);
                     		goodItemD5LeftRight=1;
                     	}
                         
                         if(inD1Y)
                     	{
-                    		//g.setColor(Color.GREEN);
+                    		////g.setColor(Color.GREEN);
                     		goodItemD1UpDown=1;
                     	}
                     	else if(inD2Y)
                     	{
-                    		//g.setColor(Color.CYAN);
+                    		////g.setColor(Color.CYAN);
                     		goodItemD2UpDown=1;
                     	}
                     	else if(inD3Y)
                     	{
-                    		//g.setColor(Color.BLUE);
+                    		////g.setColor(Color.BLUE);
                     		goodItemD3UpDown=1;
                     	}
                     	else if(inD4Y)
                     	{
-                    		//g.setColor(Color.MAGENTA);
+                    		////g.setColor(Color.MAGENTA);
                     		goodItemD4UpDown=1;
                     	}
                     	else if(inD5Y)
                     	{
-                    		//g.setColor(Color.PINK);
+                    		////g.setColor(Color.PINK);
                     		goodItemD5UpDown=1;
                     	}
  
@@ -962,60 +993,60 @@ public class LevelScene extends Scene implements SpriteContext
                     }
                     else if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BUMPABLE) > 0)
                     {
-                    	//g.setColor(new Color(139,69,19));
+                    	////g.setColor(new Color(139,69,19));
                     	if(inD1X)
                     	{
-                    		//g.setColor(Color.GREEN);
+                    		////g.setColor(Color.GREEN);
                     		goodItemD1LeftRight=1;
                     	}
                     	else if(inD2X)
                     	{
-                    		//g.setColor(Color.CYAN);
+                    		////g.setColor(Color.CYAN);
                     		goodItemD2LeftRight=1;
                     	}
                     	else if(inD3X)
                     	{
-                    		//g.setColor(Color.BLUE);
+                    		////g.setColor(Color.BLUE);
                     		goodItemD3LeftRight=1;
                     	}
                     	else if(inD4X)
                     	{
-                    		//g.setColor(Color.MAGENTA);
+                    		////g.setColor(Color.MAGENTA);
                     		goodItemD4LeftRight=1;
                     	}
                     	else if(inD5X)
                     	{
-                    		//g.setColor(Color.PINK);
+                    		////g.setColor(Color.PINK);
                     		goodItemD5LeftRight=1;
                     	}
                     	
                     	if(inD1Y)
                     	{
-                    		//g.setColor(Color.GREEN);
+                    		////g.setColor(Color.GREEN);
                     		goodItemD1UpDown=1;
                     	}
                     	else if(inD2Y)
                     	{
-                    		//g.setColor(Color.CYAN);
+                    		////g.setColor(Color.CYAN);
                     		goodItemD2UpDown=1;
                     	}
                     	else if(inD3Y)
                     	{
-                    		//g.setColor(Color.BLUE);
+                    		////g.setColor(Color.BLUE);
                     		goodItemD3UpDown=1;
                     	}
                     	else if(inD4Y)
                     	{
-                    		//g.setColor(Color.MAGENTA);
+                    		////g.setColor(Color.MAGENTA);
                     		goodItemD4UpDown=1;
                     	}
                     	else if(inD5Y)
                     	{
-                    		//g.setColor(Color.PINK);
+                    		////g.setColor(Color.PINK);
                     		goodItemD5UpDown=1;
                     	}
                     	
-                        //g.setColor(Color.BLUE);
+                        ////g.setColor(Color.BLUE);
                         //g.fillRect((x << 4) - xCam + 2, (y << 4) - yCam + 2, 4, 4);
                         //g.drawLine((int)marioX -xCam, (int)mario.y - yCam, (x << 4) - xCam + 2, (y << 4) - yCam + 2);
 //                    	g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
@@ -1025,65 +1056,65 @@ public class LevelScene extends Scene implements SpriteContext
                     }
                     else if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_BREAKABLE) > 0)
                     {
-                        //g.setColor(Color.GREEN);
+                        ////g.setColor(Color.GREEN);
                         //g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
                     }
                     else if (((Level.TILE_BEHAVIORS[b & 0xff]) & Level.BIT_PICKUPABLE) > 0)
                     {
-                    	//g.setColor(new Color(139,69,19));
+                    	////g.setColor(new Color(139,69,19));
                     	if(inD1X)
                     	{
-                    		//g.setColor(Color.GREEN);
+                    		////g.setColor(Color.GREEN);
                     		goodItemD1LeftRight=1;
                     	}
                     	else if(inD2X)
                     	{
-                    		//g.setColor(Color.CYAN);
+                    		////g.setColor(Color.CYAN);
                     		goodItemD2LeftRight=1;
                     	}
                     	else if(inD3X)
                     	{
-                    		//g.setColor(Color.BLUE);
+                    		////g.setColor(Color.BLUE);
                     		goodItemD3LeftRight=1;
                     	}
                     	else if(inD4X)
                     	{
-                    		//g.setColor(Color.MAGENTA);
+                    		////g.setColor(Color.MAGENTA);
                     		goodItemD4LeftRight=1;
                     	}
                     	else if(inD5X)
                     	{
-                    		//g.setColor(Color.PINK);
+                    		////g.setColor(Color.PINK);
                     		goodItemD5LeftRight=1;
                     	}
                     	
                     	if(inD1Y)
                     	{
-                    		//g.setColor(Color.GREEN);
+                    		////g.setColor(Color.GREEN);
                     		goodItemD1UpDown=1;
                     	}
                     	else if(inD2Y)
                     	{
-                    		//g.setColor(Color.CYAN);
+                    		////g.setColor(Color.CYAN);
                     		goodItemD2UpDown=1;
                     	}
                     	else if(inD3Y)
                     	{
-                    		//g.setColor(Color.BLUE);
+                    		////g.setColor(Color.BLUE);
                     		goodItemD3UpDown=1;
                     	}
                     	else if(inD4Y)
                     	{
-                    		//g.setColor(Color.MAGENTA);
+                    		////g.setColor(Color.MAGENTA);
                     		goodItemD4UpDown=1;
                     	}
                     	else if(inD5Y)
                     	{
-                    		//g.setColor(Color.PINK);
+                    		////g.setColor(Color.PINK);
                     		goodItemD5UpDown=1;
                     	}
 
-                        //g.setColor(Color.YELLOW);
+                        ////g.setColor(Color.YELLOW);
                     	//g.drawLine((int)marioX -xCam, (int)mario.y - yCam, ((x << 4) - xCam + 2), ((y << 4) - yCam + 2 + 4));
 //                    	g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
 //                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
@@ -1100,98 +1131,98 @@ public class LevelScene extends Scene implements SpriteContext
                     	
                     	if(blockY  <= marioY && blockY  >= level.height)
                     	{
-                    		g.setColor(new Color(139,69,19));
+                    		////g.setColor(new Color(139,69,19));
 	                    	if(inD1X)
 	                    	{
 	                    		firstXTrigger = true; 
-	                    		//g.setColor(Color.BLACK);
+	                    		////g.setColor(Color.BLACK);
 	                    		obstacleD1LeftRight=1*behindOrFront;
 	                    		
 	                    		if(inD1Y)
 		                    	{
-		                    		g.setColor(Color.BLACK);
-		                    		obstacleD1UpDown=1*belowOrAbove;
-		                    	}
-		                    	else if(inD2Y)
-		                    	{
-		                    		g.setColor(Color.DARK_GRAY);
-		                    		obstacleD2UpDown=1*belowOrAbove;
-		                    	}
-		                    	else if(inD3Y)
-		                    	{
-		                    		g.setColor(Color.GRAY);
-		                    		obstacleD3UpDown=1*belowOrAbove;
-		                    	}
-		                    	else if(inD4Y)
-		                    	{
-		                    		g.setColor(Color.LIGHT_GRAY);
-		                    		obstacleD4UpDown=1*belowOrAbove;
-		                    	}
-//		                    	else if(inD5Y)
-//		                    	{
-//		                    		//g.setColor(Color.WHITE);
-//		                    		obstacleD5UpDown=1*belowOrAbove;
-//		                    	}
-	                    	}
-	                    	else if(!firstXTrigger && inD2X)
-	                    	{
-	                    		g.setColor(Color.DARK_GRAY);
-	                    		obstacleD2LeftRight=1*behindOrFront;
-	                    		
-	                    		
-	                    		if(inD1Y)
-		                    	{
 		                    		//g.setColor(Color.BLACK);
-	                    			g.setColor(Color.DARK_GRAY);
 		                    		obstacleD1UpDown=1*belowOrAbove;
 		                    	}
 		                    	else if(inD2Y)
 		                    	{
-		                    		g.setColor(Color.GRAY);
 		                    		//g.setColor(Color.DARK_GRAY);
 		                    		obstacleD2UpDown=1*belowOrAbove;
 		                    	}
 		                    	else if(inD3Y)
 		                    	{
 		                    		//g.setColor(Color.GRAY);
-		                    		g.setColor(Color.LIGHT_GRAY);
 		                    		obstacleD3UpDown=1*belowOrAbove;
 		                    	}
 		                    	else if(inD4Y)
 		                    	{
 		                    		//g.setColor(Color.LIGHT_GRAY);
-		                    		g.setColor(Color.WHITE);
 		                    		obstacleD4UpDown=1*belowOrAbove;
 		                    	}
 //		                    	else if(inD5Y)
 //		                    	{
-//		                    		//g.setColor(Color.WHITE);
+//		                    		////g.setColor(Color.WHITE);
+//		                    		obstacleD5UpDown=1*belowOrAbove;
+//		                    	}
+	                    	}
+	                    	else if(!firstXTrigger && inD2X)
+	                    	{
+	                    		//g.setColor(Color.DARK_GRAY);
+	                    		obstacleD2LeftRight=1*behindOrFront;
+	                    		
+	                    		
+	                    		if(inD1Y)
+		                    	{
+		                    		////g.setColor(Color.BLACK);
+	                    			//g.setColor(Color.DARK_GRAY);
+		                    		obstacleD1UpDown=1*belowOrAbove;
+		                    	}
+		                    	else if(inD2Y)
+		                    	{
+		                    		//g.setColor(Color.GRAY);
+		                    		////g.setColor(Color.DARK_GRAY);
+		                    		obstacleD2UpDown=1*belowOrAbove;
+		                    	}
+		                    	else if(inD3Y)
+		                    	{
+		                    		////g.setColor(Color.GRAY);
+		                    		//g.setColor(Color.LIGHT_GRAY);
+		                    		obstacleD3UpDown=1*belowOrAbove;
+		                    	}
+		                    	else if(inD4Y)
+		                    	{
+		                    		////g.setColor(Color.LIGHT_GRAY);
+		                    		//g.setColor(Color.WHITE);
+		                    		obstacleD4UpDown=1*belowOrAbove;
+		                    	}
+//		                    	else if(inD5Y)
+//		                    	{
+//		                    		////g.setColor(Color.WHITE);
 //		                    		obstacleD5UpDown=1*belowOrAbove;
 //		                    	}
 	                    	}
 //	                    	else if(inD3X)
 //	                    	{
-//	                    		//g.setColor(Color.GRAY);
+//	                    		////g.setColor(Color.GRAY);
 //	                    		obstacleD3LeftRight=1*behindOrFront;
 //	                    	}
 //	                    	else if(inD4X)
 //	                    	{
-//	                    		//g.setColor(Color.LIGHT_GRAY);
+//	                    		////g.setColor(Color.LIGHT_GRAY);
 //	                    		obstacleD4LeftRight=1*behindOrFront;
 //	                    	}
 //	                    	else if(inD5X)
 //	                    	{
-//	                    		//g.setColor(Color.WHITE);
+//	                    		////g.setColor(Color.WHITE);
 //	                    		obstacleD5LeftRight=1*behindOrFront;
 //	                    	}
 
 	                    	
 	                    	
 	                    	
-	                    	g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
-	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
-	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 2, 16);
-	                        g.fillRect((x << 4) - xCam + 14, (y << 4) - yCam, 2, 16);  
+//	                    	g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
+//	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
+//	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 2, 16);
+//	                        g.fillRect((x << 4) - xCam + 14, (y << 4) - yCam, 2, 16);  
                     	}
                         colYBoxExist = true; 
                 	}
@@ -1219,8 +1250,8 @@ public class LevelScene extends Scene implements SpriteContext
     	                if (inD0Y )
     	                {
 //    	                	System.out.println("block y " + blockY + " mario y " + marioY); 
-    	                	g.setColor(Color.YELLOW);
-    	                    g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
+    	                	//g.setColor(Color.YELLOW);
+    	                    //g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
         	                foundPathEmpty = false; 
         	                colCountTilFull++; 
         	                if(numEmptySpace>0 && getFirstPlatform)
@@ -1233,8 +1264,8 @@ public class LevelScene extends Scene implements SpriteContext
     	                else if (inD2Y&& belowOrAbove<0)
     	                {
 //    	                	System.out.println("block y " + blockY + " mario y " + marioY); 
-    	                	g.setColor(Color.GREEN);
-    	                    g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
+    	                	//g.setColor(Color.GREEN);
+    	                    //g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
     	                    foundPathEmpty = false; 
     	                    colCountTilFull++; 
     	                    if(numEmptySpace>0 && getFirstPlatform)
@@ -1246,8 +1277,8 @@ public class LevelScene extends Scene implements SpriteContext
     	                else if (inD2Y&& belowOrAbove>0)
     	                {
 //    	                	System.out.println("block y " + blockY + " mario y " + marioY); 
-    	                	g.setColor(Color.RED);
-    	                    g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
+    	                	//g.setColor(Color.RED);
+    	                    //g.fillRect((x << 4) - xCam + 2 + 4, (y << 4) - yCam + 2, 4, 4);
     	                    foundPathEmpty = false; 
     	                    colCountTilFull++; 
     	                    
@@ -1282,63 +1313,63 @@ public class LevelScene extends Scene implements SpriteContext
                     {                    	
                     	if(!colYBoxExist)
                     	{
-                    		g.setColor(new Color(139,69,19));
+                    		////g.setColor(new Color(139,69,19));
                     		if(inD1X)
                     		{
-                    			g.setColor(Color.BLACK);
+                    			//g.setColor(Color.BLACK);
                     			holeD1LeftRight=1*behindOrFront;
                     		}
                     		else if(inD2X)
                     		{
-                    			g.setColor(Color.RED);
+                    			//g.setColor(Color.RED);
                     			holeD2LeftRight=1*behindOrFront;
                     		}
                     		else if(inD3X)
                     		{
-                    			g.setColor(Color.ORANGE);
+                    			//g.setColor(Color.ORANGE);
                     			holeD3LeftRight=1*behindOrFront;
                     		}
                     		else if(inD4X)
                     		{
-                    			g.setColor(Color.YELLOW);
+                    			//g.setColor(Color.YELLOW);
                     			holeD4LeftRight=1*behindOrFront;
                     		}
                     		else if(inD5X)
                     		{
-                    			g.setColor(Color.WHITE);
+                    			//g.setColor(Color.WHITE);
                     			holeD5LeftRight=1*behindOrFront;
                     		}
                     		
                     		if(inD1Y)
                     		{
-                    			//g.setColor(Color.BLACK);
+                    			////g.setColor(Color.BLACK);
                     			holeD1UpDown=1*belowOrAbove;
                     		}
                     		else if(inD2Y)
                     		{
-                    			//g.setColor(Color.RED);
+                    			////g.setColor(Color.RED);
                     			holeD2UpDown=1*belowOrAbove;
                     		}
                     		else if(inD3Y)
                     		{
-                    			//g.setColor(Color.ORANGE);
+                    			////g.setColor(Color.ORANGE);
                     			holeD3UpDown=1*belowOrAbove;
                     		}
                     		else if(inD4Y)
                     		{
-                    			//g.setColor(Color.YELLOW);
+                    			////g.setColor(Color.YELLOW);
                     			holeD4UpDown=1*belowOrAbove;
                     		}
                     		else if(inD5Y)
                     		{
-                    			//g.setColor(Color.WHITE);
+                    			////g.setColor(Color.WHITE);
                     			holeD5UpDown=1*belowOrAbove;
                     		}
                     		
-	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
-	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
-	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 2, 16);
-	                        g.fillRect((x << 4) - xCam + 14, (y << 4) - yCam, 2, 16);  
+//	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 16, 2);
+//	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam + 14, 16, 2);
+//	                        g.fillRect((x << 4) - xCam, (y << 4) - yCam, 2, 16);
+//	                        g.fillRect((x << 4) - xCam + 14, (y << 4) - yCam, 2, 16);  
 	                        
                     	}
                     }
@@ -1347,8 +1378,8 @@ public class LevelScene extends Scene implements SpriteContext
             
             if(foundPathEmpty && inD5X && (x<<4  >= (int)mario.x ) && mario.onGround && obstacleD1UpDown ==0)
             {
-                	g.setColor(Color.BLACK);
-                    g.fillRect((x << 4) - xCam + 2 + 4, (int)mario.y  , 4, 4);
+                	//g.setColor(Color.BLACK);
+                    //g.fillRect((x << 4) - xCam + 2 + 4, (int)mario.y  , 4, 4);
                     numEmptySpace++; 
                     
                     
@@ -1372,8 +1403,8 @@ public class LevelScene extends Scene implements SpriteContext
         g.setColor(Color.BLACK);
         layer.renderExit1(g, tick, paused?0:alpha);
         
-        drawStringDropShadow(g, "Generation " + df.format(this.generation), 0, 0, 7);
-        drawStringDropShadow(g, "Genome " + df.format(this.genomeNum), 0, 1, 7);
+        //drawStringDropShadow(g, "Generation " + df.format(this.generation), 0, 0, 7);
+        drawStringDropShadow(g, "Genome " + df.format(this.genomeNum), 0, 0, 7);
 //        drawStringDropShadow(g, "00000000", 0, 1, 7);
         
         drawStringDropShadow(g, "COIN", 14, 0, 7);
@@ -1534,7 +1565,7 @@ public class LevelScene extends Scene implements SpriteContext
             }
             else
             {
-            	System.out.println("Tile bumpable at " + x + "  " + y); 
+            	//System.out.println("Tile bumpable at " + x + "  " + y); 
                 Mario.getCoin();
                 //sound.play(Art.samples[Art.SAMPLE_GET_COIN], new FixedSoundSource(x * 16 + 8, y * 16 + 8), 1, 1, 1);
                 addSprite(new CoinAnim(x, y));

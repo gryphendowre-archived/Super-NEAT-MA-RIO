@@ -10,16 +10,16 @@ import com.mojang.sonar.FixedSoundSource;
 
 public class Mario extends Sprite
 {
-    public static boolean large = false;
-    public static boolean fire = false;
+    public static boolean large = true;
+    public static boolean fire = true;
     public static int coins = 0;
     public static int lives = 3;
     public static String levelString = "none";
 
     public static void resetStatic()
     {
-        large = false;
-        fire = false;
+        large = true;
+        fire = true;
         coins = 0;
         lives = 3;
         levelString = "none";
