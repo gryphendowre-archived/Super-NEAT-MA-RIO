@@ -22,7 +22,6 @@ import com.anji.util.Properties;
 public class HelloWorld {
 
 	private static final String MARIO_PROPS = "mario.properties";
-	private static final String MARIO_PROPS_TEST = "mario_test.properties";
 	
     public static void main(String[] args) throws Exception {
         System.out.println("Hello, World");

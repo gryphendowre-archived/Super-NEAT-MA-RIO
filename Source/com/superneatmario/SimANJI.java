@@ -173,7 +173,7 @@ public class SimANJI implements Runnable{
 				//Thread.dumpStack();
 				//System.out.println("Thread count " + Thread.activeCount()); 
 				marioComponent = null; 
-				System.gc(); 
+				
 				//convertImg_to_vid();
 				//System.out.println("Thread count " + Thread.activeCount()); 
 				break;

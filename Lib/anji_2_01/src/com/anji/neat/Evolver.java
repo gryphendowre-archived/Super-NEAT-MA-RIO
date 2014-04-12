@@ -160,7 +160,7 @@ public void init( Properties props ) throws Exception {
 		genotype = Genotype.randomInitialGenotype( config );
 		logger.info( "random genotype" );
 	}
-	champ = genotype.getFittestChromosome();
+	
 }
 
 /**
