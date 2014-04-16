@@ -54,10 +54,10 @@ public class HelloWorld {
     	double totalTimeLeft = 0.0; 
     	double totalKills = 0.0; 
     	double totalMode = 0.0; 
-    	
+    	int seed = 17564; 
     	for(int difficulty = 0; difficulty < 41; difficulty ++)
     	{	
-    		int seed = new Random().nextInt(); 
+    		
     		Chromosome genotype = bestChampEva; 
     	    //service.execute(new EvalThreadTask(activatorFactory, genotype, 0, seed, difficulty));
     		try 

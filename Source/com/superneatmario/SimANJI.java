@@ -64,7 +64,7 @@ public class SimANJI implements Runnable{
 		this.generation = generation;
 		this.randomThreadNum = threadNum;
 		//static for training
-		this.difficulty = 4; 
+		this.difficulty = 10; 
 	}
 
 	/*public void start(int i )
@@ -173,7 +173,7 @@ public class SimANJI implements Runnable{
 				//Thread.dumpStack();				
 				marioComponent = null; 
 				System.gc(); 
-				System.out.println("This is a test" ); 
+				//System.out.println("This is a test" ); 
 				//convertImg_to_vid();
 				//System.out.println("Thread count " + Thread.activeCount()); 
 				break;

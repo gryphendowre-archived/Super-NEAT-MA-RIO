@@ -121,7 +121,7 @@ public class LevelScene extends Scene implements SpriteContext
         this.levelType = type;
         this.generation = generation; 
         this.genomeNum = genomeNum; 
-        enemyKillCount = 0; 
+        this.enemyKillCount = 0; 
     }
 
     public void init()
@@ -180,7 +180,7 @@ public class LevelScene extends Scene implements SpriteContext
         
         //KANN time change
         //Increase time w/ generations (factor of 1 second per gen)
-        timeLeft = (180+20)*15 ;
+        timeLeft = (generation+20)*15 ;
 
         tick = 0;
     }
@@ -379,19 +379,12 @@ public class LevelScene extends Scene implements SpriteContext
 	            	{
 	            		if(sprite instanceof Enemy)
 	            		{
-	            			Enemy en = (Enemy)sprite; 
-	            			if(en.deadTime == 0)
-	            			{
 	            				enemyKillCount++; 
-	            			}
+	            			
 	            		}
 	            		if(sprite instanceof Shell)
 	            		{
-	            			Shell sh = (Shell)sprite; 
-	            			if(sh.deadTime == 0)
-	            			{
-	            				enemyKillCount++; 
-	            			}
+	            				enemyKillCount++; 	            		
 	            		}
 	            		
 	            	}

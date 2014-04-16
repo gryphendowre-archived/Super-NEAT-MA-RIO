@@ -156,7 +156,7 @@ final public void evaluate( List genotypes, int generation ) {
 			//after death, or win, fitness = distance mario made
 				//calculateErrorFitness( responses, activator.getMinResponse(),
 				//activator.getMaxResponse()
-				System.out.println("Fitness Val " + (int)(sa.getDistance() /*+ sa.getCoins()*/ )); 
+				//System.out.println("Fitness Val " + (int)(sa.getDistance() /*+ sa.getCoins()*/ )); 
 				genotype.setFitnessValue( (int)(sa.getDistance()*1.5 +  sa.didMarioWin()*sa.getTimeLeft()/*+ sa.getCoins()*COIN_ALPHA*/ ) );
 			}
 				
@@ -166,10 +166,10 @@ final public void evaluate( List genotypes, int generation ) {
 			genotype.setFitnessValue( 1 );
 		}
 		genomeNum++; 
-		System.out.println("Next Genome" ); 
+		//System.out.println("Next Genome" ); 
 		
 	}
-	System.out.println("Next Gen... " ); 
+	//System.out.println("Next Gen... " ); 
 //	Iterator it2 = genotypes.iterator();
 //
 //	//most a fitness should be is one

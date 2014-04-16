@@ -161,6 +161,9 @@ public void init( Properties props ) throws Exception {
 		logger.info( "random genotype" );
 	}
 	
+	if(genotype.getFittestChromosome() != null)
+		champ = genotype.getFittestChromosome();
+	
 }
 
 /**
